@@ -1,0 +1,143 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff0f0f0"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" >
+
+            <EditText
+                android:id="@+id/pub_market_name"
+                style="@style/input_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:hint="请输入商品名称" >
+
+                <requestFocus />
+            </EditText>
+
+            <LinearLayout
+                android:id="@+id/liner_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/pub_market_name"
+                android:orientation="horizontal" >
+
+                <Spinner
+                    android:id="@+id/pub_market_type1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/pub_market_type2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/liner_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/liner_type"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/pub_market_price"
+                    style="@style/input_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:hint="出售价格" />
+
+                <EditText
+                    android:id="@+id/pub_market_price_new"
+                    style="@style/input_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:hint="入手价格" />
+
+                <Spinner
+                    android:id="@+id/pub_market_chengse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/liner_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/liner_price"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/pub_market_user_name"
+                    style="@style/input_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:ems="10"
+                    android:hint="您的姓名" />
+
+                <EditText
+                    android:id="@+id/pub_market_user_phone"
+                    style="@style/input_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:ems="10"
+                    android:hint="您的电话 "
+                    android:phoneNumber="true" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/pub_market_info"
+                style="@style/input_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/liner_user"
+                android:ems="10"
+                android:gravity="left"
+                android:hint="请输入物品描述以及详细信息" />
+
+            <GridView
+                android:id="@+id/pub_market_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="160dp"
+                android:layout_below="@id/pub_market_info"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/global_input_top"
+                android:horizontalSpacing="12dp"
+                android:numColumns="4"
+                android:verticalSpacing="12dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</LinearLayout>

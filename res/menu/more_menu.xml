@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/sixin"
+        android:title="私信">
+    </item>
+    <item
+        android:id="@+id/liuyan"
+        android:title="留言">
+    </item>
+    <item
+        android:id="@+id/duanxin"
+        android:title="短信">
+    </item>
+    <item
+        android:id="@+id/dianhua"
+        android:title="电话">
+    </item>
+
+</menu>

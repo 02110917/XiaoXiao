@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff0f0f0"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <include layout="@layout/header" />
+
+        <GridView
+            android:id="@+id/child_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            android:columnWidth="90dip"
+            android:gravity="center"
+            android:horizontalSpacing="5dip"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="auto_fit"
+            android:padding="5dip"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dip" >
+        </GridView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/diary_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:padding="5dip" >
+
+        <Button
+            android:id="@+id/show_image_scan"
+            android:layout_width="60dip"
+            android:layout_height="35dip"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/widget_button_bg"
+            android:text="预览"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14" />
+
+        <Button
+            android:id="@+id/show_image_sure"
+            android:layout_width="60dip"
+            android:layout_height="35dip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/widget_button_bg"
+            android:text="确定"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14" />
+    </RelativeLayout>
+
+</LinearLayout>

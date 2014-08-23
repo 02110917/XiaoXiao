@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_detail_header"
+   	android:layout_width="fill_parent"
+   	android:layout_height="wrap_content"
+   	android:paddingLeft="2dip"
+   	android:paddingRight="2dip"
+   	android:gravity="center_vertical"
+   	android:orientation="horizontal"
+   	android:background="@drawable/head_bg">
+   	<ImageView 
+   		android:id="@+id/head_left_view"
+	   	android:layout_width="wrap_content" 
+	   	android:layout_height="wrap_content" 
+	   	android:layout_gravity="left|center"
+	   	android:clickable="true" 
+	   	android:background="@drawable/head_back"/>
+   	<TextView 
+   	    android:id="@+id/head_title"
+   		style="@style/head_title" 
+   		android:layout_gravity="center"
+   		android:text="内容正文"/>
+   	<ProgressBar 
+		android:id="@+id/head_right_progressBar" 
+		style="@style/loading_small"
+		android:layout_gravity="right|center"
+		android:layout_marginRight="5dip"/>
+   	<ImageView 
+   		android:id="@+id/head_right_view"
+	   	android:layout_width="wrap_content" 
+	   	android:layout_height="wrap_content" 
+	   	android:layout_gravity="right|center"
+	   	android:clickable="true" 
+	   	android:src="@drawable/head_refresh"
+		android:visibility="gone"/>
+   	 	<Button 
+   		android:id="@+id/head_right_btn"
+	   	 android:layout_width="45dip"
+    	android:layout_height="wrap_content"
+	   	android:layout_gravity="right|center"
+	   	android:background="@drawable/login_btn_selector" 
+	   	 android:text="发送"
+		android:visibility="gone"/>
+   	 
+</FrameLayout>
+

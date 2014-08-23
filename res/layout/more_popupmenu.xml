@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="150dp"
+    android:background="#000000"
+    android:alpha="0.8"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/more_ly"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:background="@drawable/more_menu_bg"
+        android:text="留    言"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/more_sx"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="私    信"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/more_dx"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="短    信"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/more_dh"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="电    话"
+        android:textSize="18sp" />
+
+</LinearLayout>

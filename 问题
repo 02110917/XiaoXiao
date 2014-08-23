@@ -1,0 +1,22 @@
+1.Fragment 嵌套 
+
+若要在一个Fragment中嵌套另外的Fragment 
+ 那么在Fragment中， 就不能使用getActivity().getFragmentManager() 这样会使得嵌套的Fragment不显示
+ 要使用getChildFragmentManager()
+ 
+ 
+ Handler   问题
+ 
+ Handler  运行的自己的独有的线程 
+ 
+ 如果一个activity destory 了  但是其里面的 Handler的线程还没有结束 所有， 当handler有消息时， 再其他的activity里也能接收到。 
+ 
+ 
+ 
+ websocket断开连接后 在service onclose中 每隔10s重新发起连接
+ 
+ websocket发送消息  服务器 接收到发送给 好友 好友接收到 发送回应  原发送方接收到回应 将数据库 置 isSendTo为TRUE 回应消息体为原消息发送的时间
+ 
+ 
+ chat 数据表 还行要Id 
+ 

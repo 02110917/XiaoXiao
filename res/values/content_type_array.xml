@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="content_type_array">
+        <item >问答</item>
+        <item >招新招聘</item>
+        <item >公告信息</item>
+    </string-array>
+    
+</resources>

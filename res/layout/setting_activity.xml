@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:background="#fff1f1f1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/title" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="4.0dip"
+            android:paddingRight="4.0dip" >
+
+            <LinearLayout
+                android:id="@+id/account_manager"
+                style="@style/setting_bg_layout"
+                android:background="@drawable/more_up"
+                android:layout_marginTop="10.0dip" >
+
+                <TextView
+                    android:id="@+id/account_name"
+                    style="@style/setting_bg_text"
+                    android:text="账号管理" />
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    style="@style/setting_bg_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/person_info"
+                android:background="@drawable/more_down"
+                style="@style/setting_bg_layout" >
+
+                <TextView
+                    android:id="@+id/person_info_text"
+                    style="@style/setting_bg_text"
+                    android:text="个人资料" />
+
+                <ImageView
+                    android:id="@+id/arrow1"
+                    style="@style/setting_bg_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/msg_remind"
+                style="@style/setting_bg_layout"
+                android:background="@drawable/more_up"
+                android:layout_marginTop="10.0dip" >
+
+                <TextView
+                    android:id="@+id/msg_remind_text"
+                    style="@style/setting_bg_text"
+                    android:text="消息提醒" />
+
+                <TextView
+                    android:id="@+id/frequency_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10.0dip"
+                    android:singleLine="true"
+                    android:textColor="#ff7f7f7f"
+                    android:textSize="12.0sp" />
+
+                <ImageView
+                    android:id="@+id/arrow2"
+                    style="@style/setting_bg_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sign_remind"
+                 android:background="@drawable/more_down"
+                style="@style/setting_bg_layout" >
+
+                <TextView
+                    android:id="@+id/sign_remind_text"
+                    style="@style/setting_bg_text"
+                    android:text="每日签到提醒" />
+
+                <TextView
+                    android:id="@+id/sign_remind_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10.0dip"
+                    android:singleLine="true"
+                    android:textColor="#ff7f7f7f"
+                    android:textSize="12.0sp" />
+
+                <ImageView
+                    android:id="@+id/arrow7"
+                    style="@style/setting_bg_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/position_paper"
+                style="@style/setting_bg_layout"
+                 android:background="@drawable/more_up"
+                android:layout_marginTop="10.0dip" >
+
+                <TextView
+                    android:id="@+id/position_paper_text"
+                    style="@style/setting_bg_text"
+                    android:text="意见反馈" />
+
+                <ImageView
+                    android:id="@+id/arrow5"
+                    style="@style/setting_bg_arrow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/clear_cash"
+                 android:background="@drawable/more_middle"
+                style="@style/setting_bg_layout" >
+
+                <TextView
+                    android:id="@+id/clear_cash_text"
+                    style="@style/setting_bg_text"
+                    android:text="清除缓存" />
+            </LinearLayout>
+
+            <FrameLayout
+                style="@style/setting_bg_layout"
+                android:layout_marginBottom="10.0dip"
+                android:gravity="center_vertical" >
+
+                <LinearLayout
+                    android:id="@+id/about_tieba"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                     android:background="@drawable/more_down"
+                    android:gravity="center_vertical" >
+
+                    <TextView
+                        android:id="@+id/about_tieba_text"
+                        style="@style/setting_bg_text"
+                        android:text="关于我们" />
+
+                    <ImageView
+                        android:id="@+id/arrow6"
+                        style="@style/setting_bg_arrow" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/new_version_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="108.0dip"
+                    android:src="@drawable/ico_news_prompt"
+                    android:visibility="gone" />
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <include 
+        android:id="@+id/title"
+        layout="@layout/header" />
+
+</RelativeLayout>

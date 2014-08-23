@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="35.0dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/frame_btn_main_news"
+            style="@style/frame_button"
+            android:text="@string/frame_title_main_news" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame_button_cutline" />
+
+        <Button
+            android:id="@+id/frame_btn_main_lost"
+            style="@style/frame_button"
+            android:text="@string/frame_title_main_lost" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame_button_cutline" />
+
+        <!-- 
+        <Button
+            android:id="@+id/frame_btn_main_diary"
+            style="@style/frame_button"
+            android:text="@string/frame_title_main_diary" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame_button_cutline" />
+ 		-->
+        <Button
+            android:id="@+id/frame_btn_main_market"
+            style="@style/frame_button"
+            android:text="@string/frame_title_main_market" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/frame_button_cutline" />
+
+        <Button
+            android:id="@+id/frame_btn_main_ask"
+            style="@style/frame_button"
+            android:text="@string/frame_title_main_ask" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</LinearLayout>

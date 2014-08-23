@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff0f0f0"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/diary_input"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/global_input_top"
+            android:ems="10"
+            android:gravity="left"
+            android:hint="说点什么吧..."
+            android:padding="10dp"
+            android:singleLine="false" >
+
+            <requestFocus />
+        </EditText>
+
+        <GridView
+            android:id="@+id/myGrid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/global_input_top"
+            android:horizontalSpacing="12dp"
+            android:numColumns="4"
+            android:verticalSpacing="12dp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_item_from"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/chat_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/chat_time_bg"
+        android:text="中午12:19" />
+
+    <LinearLayout style="@style/ChattingUIContent" >
+
+        <ImageView
+            android:id="@+id/chatting_avatar_iv"
+            style="@style/ChattingUIAvatarFrom"
+            android:layout_marginRight="0.0dip"
+            android:contentDescription="头像"
+            android:focusable="false" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/chatting_user_tv"
+                style="@style/ChattingUISenderText"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/chatting_content_itv"
+                style="@style/ChattingUIText"
+                android:background="@drawable/chatfrom_bg"
+                android:maxWidth="225.0dip"
+                android:minHeight="40.0dip"
+                android:text="我很好啊！！" />
+
+            <TextView
+                android:id="@+id/chatting_tranlsate_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7.0dip"
+                android:layout_marginTop="4.0dip"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

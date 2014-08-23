@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="35.0dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <com.flying.xiao.widget.DrawableCenterButton
+            android:id="@+id/market_head_type"
+            style="@style/market_head_button"
+            android:text="类别" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/spit_line" />
+
+        <com.flying.xiao.widget.DrawableCenterButton
+            android:id="@+id/market_head_price"
+            style="@style/market_head_button"
+            android:text="价格" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/spit_line" />
+
+        <com.flying.xiao.widget.DrawableCenterButton
+            android:id="@+id/market_head_sale"
+            style="@style/market_head_button"
+            android:text="买卖" />
+    </LinearLayout>
+
+    <com.flying.xiao.widget.PullDownListView
+        android:id="@+id/main_fragment_list_view_market"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <ListView
+            android:id="@+id/main_fragment_list_view_market_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.0"
+            android:divider="@null"
+            android:drawSelectorOnTop="false"
+            android:fadingEdgeLength="0.0sp" />
+    </com.flying.xiao.widget.PullDownListView>
+
+</LinearLayout>

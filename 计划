@@ -1,0 +1,7 @@
+2014-7-30: 
+客户端:完成二手物品详情页面 参照58同城  
+
+
+Websocket 即使推送 
+
+客户端 :    程序启动  开启service websocket 登陆   用service接收消息   

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+<include layout="@layout/header"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <com.flying.xiao.widget.PullDownListView
+            android:id="@+id/my_dynamic_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" >
+
+            <ListView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.0"
+                android:divider="@null"
+                android:drawSelectorOnTop="false"
+                android:fadingEdgeLength="0.0sp" />
+        </com.flying.xiao.widget.PullDownListView>
+    </LinearLayout>
+
+  <include layout="@layout/diary_footer" />
+</LinearLayout>

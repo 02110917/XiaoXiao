@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header" />
+
+    <com.flying.xiao.widget.ScrollViewExtend
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/market_detail_image_page"
+                android:layout_width="fill_parent"
+                android:layout_height="180dip"
+                android:focusable="true" />
+
+            <ImageView
+                android:id="@+id/line1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/market_detail_image_page"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/line" />
+
+            <RelativeLayout
+                android:id="@+id/relative1"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@id/line1" >
+
+                <TextView
+                    android:id="@+id/market_detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@+id/market_detail_scantimes"
+                    android:gravity="center_vertical"
+                    
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/text_size_20" />
+
+                <TextView
+                    android:id="@+id/market_detail_pub_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:drawableLeft="@drawable/time_icon_normal"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/market_detail_scantimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:drawableLeft="@drawable/time_icon_normal"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/market_detail_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignRight="@+id/market_detail_scantimes"
+                    android:gravity="center_vertical"
+                    android:text="20元"
+                    android:textColor="#ff4500"
+                    android:textSize="@dimen/text_size_22" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/relative1"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/line" />
+
+            <TextView
+                android:id="@+id/business_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line2"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="详细信息"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/text_size_20" />
+
+            <TextView
+                android:id="@+id/market_detail_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/business_name"
+                android:singleLine="false"
+                 />
+
+            <TextView
+                android:id="@+id/showpagerindex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/market_detail_image_page"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:alpha="0.5"
+                android:background="@drawable/gallery_bg"
+                android:text="1/1"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </com.flying.xiao.widget.ScrollViewExtend>
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        layout="@layout/market_detail_footer" />
+
+</LinearLayout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/login_page" android:background="#fff0f0f0" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:id="@+id/login_container" android:scrollX="0.0dip" android:scrollY="0.0dip" android:scrollbars="none" android:fadingEdgeLength="0.0px" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@+id/login_title_bar" android:layout_centerHorizontal="true" android:layout_centerVertical="true">
+        <LinearLayout android:orientation="vertical" android:id="@+id/view_login" android:paddingBottom="10.0dip" android:layout_width="fill_parent" android:layout_height="fill_parent">
+            <RelativeLayout android:id="@+id/view_sso_login" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_weight="0.0">
+                <ImageView android:id="@+id/sso_bg" android:paddingTop="-5.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content" android:src="@drawable/sso_login_bg" android:scaleType="fitXY" />
+                <LinearLayout android:id="@+id/sso_login" android:paddingTop="50.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true">
+                    <ImageView android:id="@+id/wxquick" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/btn_sso_wx_selector" android:layout_weight="1.0" />
+                    <ImageView android:id="@+id/qquick" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4.0dip" android:layout_marginRight="4.0dip" android:src="@drawable/btn_sso_qq_selector" android:layout_weight="1.0" />
+                </LinearLayout>
+                <ImageView android:id="@+id/huo_line" android:background="@drawable/huo" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_alignBottom="@+id/sso_bg" />
+            </RelativeLayout>
+            <LinearLayout android:orientation="vertical" android:id="@+id/view_low_qq_login" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="0.0">
+                <EditText android:textSize="16.0sp" android:textColorHint="#ff999999" android:id="@+id/account" android:background="@drawable/global_input_top" android:paddingLeft="15.0dip" android:paddingTop="2.0dip" android:paddingRight="15.0dip" android:paddingBottom="2.0dip" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="12.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="12.0dip" android:hint="@string/login_input_account" android:ems="10" android:singleLine="true" android:drawableLeft="@drawable/login_icon_account" android:drawablePadding="15.0dip" android:inputType="text" />
+                <EditText android:textSize="16.0sp" android:textColorHint="#ff999999" android:id="@+id/password" android:background="@drawable/global_input_top" android:paddingLeft="15.0dip" android:paddingTop="2.0dip" android:paddingRight="15.0dip" android:paddingBottom="2.0dip" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="12.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="12.0dip" android:layout_marginBottom="20.0dip" android:hint="@string/login_input_password" android:ems="10" android:singleLine="true" android:drawableLeft="@drawable/login_icon_password" android:drawablePadding="15.0dip" android:inputType="textPassword" />
+                <Button android:enabled="false" android:textSize="18.0sp" android:textColor="#ffffffff" android:id="@+id/btn_login" android:background="@drawable/btn_login_selector" android:layout_width="fill_parent" android:layout_height="50.0dip" android:layout_marginLeft="12.0dip" android:layout_marginRight="12.0dip" android:text="@string/login" android:singleLine="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

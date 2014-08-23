@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.flying.xiao"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
+	<uses-permission android:name="android.permission.SEND_SMS"/>
+    <application
+        android:name="com.flying.xiao.app.AppContext"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.Base.Light" >
+        <activity
+            android:name="com.flying.xiao.AppStart"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.flying.xiao.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.flying.xiao.ContentDetail"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.LostDetail"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.DiaryDetail"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MarketDetail"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.CommentPub"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MessagePub"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MyHomeActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.UserInfoDetail"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.SettingActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.UserLoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MyInfoActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MyFriends"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MyDynamic"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+         <activity
+            android:name="com.flying.xiao.MyCollect"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+          <activity
+            android:name="com.flying.xiao.MyPubContent"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.PubDiaryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.PubLostActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.PubMarketActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.PubContentActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.AlbumActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.ShowImageActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+         <activity
+            android:name="com.flying.xiao.MyMessage"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+          <activity
+            android:name="com.flying.xiao.ChatActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+           <activity
+            android:name="com.flying.xiao.MyChatActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            <activity
+            android:name="com.flying.xiao.PubLostAndMarketComment"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1101686352" />
+            </intent-filter>
+        </activity>
+
+        <service android:name=".service.WebSocketService" >
+        </service>
+       
+        <receiver android:name="com.flying.xiao.boardcastreceive.WebSocketMsgReceive">
+           <intent-filter >
+               <action android:name="com.flying.xiao.WebSocketMsgReceive"/>
+           </intent-filter> 
+        </receiver>
+         
+    </application>
+
+</manifest>

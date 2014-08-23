@@ -1,0 +1,268 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingBottom="15.0dip"
+        android:paddingLeft="8.0dip"
+        android:paddingRight="8.0dip" >
+
+        <TextView
+            android:id="@+id/text_error"
+            android:layout_width="wrap_content"
+            android:layout_height="25.0dip"
+            android:drawableLeft="@drawable/login_error"
+            android:gravity="center_vertical"
+            android:paddingTop="2.0dip"
+            android:singleLine="true"
+            android:textColor="#ffe00000"
+            android:textSize="14.0sp"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_input_top"
+            android:orientation="horizontal"
+            android:paddingLeft="13.0dip"
+            android:paddingRight="10.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16.0dip"
+                android:paddingBottom="12.0dip"
+                android:paddingTop="12.0dip"
+                android:text="类    型"
+                android:textColor="@color/reg_font_color"
+                android:textSize="16.0sp" />
+
+            <Spinner
+                android:id="@+id/user_type"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:singleLine="true"
+                android:textColor="@color/reg_font_color"
+                android:textSize="14.0sp" />
+
+           
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/input_phone_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_input_middle"
+            android:paddingLeft="13.0dip"
+            android:paddingRight="10.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16.0dip"
+                android:paddingBottom="12.0dip"
+                android:paddingTop="12.0dip"
+                android:text="名    称"
+                android:textColor="@color/reg_font_color"
+                android:textSize="16.0sp" />
+
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:singleLine="true"
+                android:hint="您的姓名、部门名称、商家名称"
+                android:textColor="@color/reg_font_color"
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/del_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:clickable="true"
+                android:padding="6.0dip"
+                android:src="@drawable/home_search_quit"
+                android:visibility="gone" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/user_name_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_input_middle"
+            android:orientation="horizontal"
+            android:paddingLeft="13.0dip"
+            android:paddingRight="10.0dip" >
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16.0dip"
+                android:paddingBottom="12.0dip"
+                android:paddingTop="12.0dip"
+                android:text="@string/user"
+                android:textColor="@color/reg_font_color"
+                android:textSize="16.0sp" />
+
+            <EditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:hint="@string/user_name_rule"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="@color/reg_font_color"
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/del_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:clickable="true"
+                android:padding="6.0dip"
+                android:src="@drawable/home_search_quit"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/input_psw_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_input_middle"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="13.0dip"
+            android:paddingRight="10.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="16.0dip"
+                android:paddingBottom="12.0dip"
+                android:paddingTop="12.0dip"
+                android:text="@string/psw_tip"
+                android:textColor="@color/reg_font_color"
+                android:textSize="16.0sp" />
+
+            <EditText
+                android:id="@+id/edit_psw"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="16.0dip"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:hint="@string/user_psw_rule"
+                android:inputType="textPassword"
+                android:maxLength="14"
+                android:password="true"
+                android:singleLine="true"
+                android:textColor="@color/reg_font_color"
+                android:textSize="14.0sp" />
+
+            <Button
+                android:id="@+id/show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/show_psw"
+                android:onClick="showPsd"
+                android:text="@string/show"
+                android:textColor="@color/reg_font_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/input_phone_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_input_under"
+            android:paddingLeft="13.0dip"
+            android:paddingRight="10.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16.0dip"
+                android:paddingBottom="12.0dip"
+                android:paddingTop="12.0dip"
+                android:text="@string/account_mobile"
+                android:textColor="@color/reg_font_color"
+                android:textSize="16.0sp" />
+
+            <EditText
+                android:id="@+id/edit_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:background="@null"
+                android:phoneNumber="true"
+                android:singleLine="true"
+                android:textColor="@color/reg_font_color"
+                android:textSize="14.0sp" />
+
+            <ImageView
+                android:id="@+id/del_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:clickable="true"
+                android:padding="6.0dip"
+                android:src="@drawable/home_search_quit"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        
+
+        <LinearLayout
+            android:id="@+id/layout_login"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10.0dip"
+            android:background="@drawable/login_bg"
+            android:clickable="false"
+            android:gravity="center" >
+
+            <ProgressBar
+                android:id="@+id/progress_login"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateDrawable="@drawable/login_progressbar"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/text_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:padding="5.0dip"
+                android:text="注册"
+                android:textColor="#ffffffff"
+                android:textSize="16.0sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

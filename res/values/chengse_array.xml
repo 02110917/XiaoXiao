@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cengse_array">
+        <item >全新</item>
+        <item >9.5成新</item>
+        <item >9成新</item>
+        <item >8.5成新</item>
+        <item >8成新</item>
+        <item >7.5成新</item>
+        <item >7成新</item>
+        <item >6.5成新</item>
+        <item >6成新</item>
+        <item >5.5成新</item>
+        <item >5成新</item>
+    </string-array>
+    
+</resources>

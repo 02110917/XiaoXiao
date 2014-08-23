@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/header" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/chat_list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.0"
+            android:clickable="false"
+            android:divider="@null"
+            android:drawSelectorOnTop="false"
+            android:fadingEdgeLength="0.0sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chat_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dip" >
+
+        <EditText
+            android:id="@+id/chat_editer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoLink="web|email"
+            android:background="@drawable/reply_edittext_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="top" >
+        </EditText>
+
+        <Button
+            android:id="@+id/chat_send"
+            android:layout_width="45dip"
+            android:layout_height="34dip"
+            android:layout_marginLeft="5dip"
+            android:background="@drawable/widget_button_bg"
+            android:text="回复"
+            android:textColor="@color/black"
+            android:textSize="14dip" />
+    </LinearLayout>
+
+</LinearLayout>

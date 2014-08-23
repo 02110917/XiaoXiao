@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent"
+  	android:orientation="vertical"
+  	android:background="@color/white">
+
+	<include layout="@layout/header"/>
+
+	<ViewSwitcher
+    	android:id="@+id/content_detail_viewswitcher" 
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_weight="1">
+	    <ScrollView
+	    	android:id="@+id/content_detail_scrollview" 
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:layout_weight="1"
+	    	android:scrollbars="vertical"
+	    	android:fadingEdge="none">
+
+		   	<LinearLayout
+		   	    android:layout_width="fill_parent"
+		   	    android:layout_height="458dp"
+		   	    android:orientation="vertical" >
+
+		   	    <TextView
+		   	        android:id="@+id/content_detail_title"
+		   	        android:layout_width="fill_parent"
+		   	        android:layout_height="wrap_content"
+		   	        android:layout_marginLeft="6.0dip"
+		   	        android:layout_marginRight="6.0dip"
+		   	        android:layout_marginTop="10.0dip"
+		   	        android:textColor="@color/black"
+		   	        android:textSize="@dimen/text_size_18"
+		   	        android:textStyle="bold" />
+
+		   	    <LinearLayout
+		   	        android:layout_width="fill_parent"
+		   	        android:layout_height="wrap_content"
+		   	        android:layout_marginLeft="6.0dip"
+		   	        android:layout_marginRight="6.0dip"
+		   	        android:layout_marginTop="6.0dip"
+		   	        android:gravity="center_vertical"
+		   	        android:orientation="horizontal" >
+
+		   	        <TextView
+		   	            android:id="@+id/content_detail_author"
+		   	            android:layout_width="wrap_content"
+		   	            android:layout_height="wrap_content"
+		   	            android:textColor="@color/author_text"
+		   	            android:textSize="@dimen/text_size_13" />
+
+		   	        <TextView
+		   	            android:layout_width="wrap_content"
+		   	            android:layout_height="wrap_content"
+		   	            android:layout_marginLeft="6.0dip"
+		   	            android:text="发布于"
+		   	            android:textColor="@color/gray"
+		   	            android:textSize="@dimen/text_size_12" />
+
+		   	        <TextView
+		   	            android:id="@+id/content_detail_date"
+		   	            android:layout_width="wrap_content"
+		   	            android:layout_height="wrap_content"
+		   	            android:layout_marginLeft="6.0dip"
+		   	            android:textColor="@color/gray"
+		   	            android:textSize="@dimen/text_size_12" />
+
+		   	        <ImageView
+		   	            android:layout_width="wrap_content"
+		   	            android:layout_height="wrap_content"
+		   	            android:layout_gravity="center_vertical"
+		   	            android:layout_marginLeft="10.0dip"
+		   	            android:src="@drawable/widget_comment_count_icon" />
+
+		   	        <TextView
+		   	            android:id="@+id/content_detail_commentcount"
+		   	            android:layout_width="wrap_content"
+		   	            android:layout_height="wrap_content"
+		   	            android:layout_marginLeft="3.0dip"
+		   	            android:textColor="@color/gray"
+		   	            android:textSize="@dimen/text_size_12" />
+		   	    </LinearLayout>
+
+		   	    <View style="@style/detail_cut_line" />
+
+		   	    <WebView
+		   	        android:id="@+id/department_detail_webview"
+		   	        android:layout_width="fill_parent"
+		   	        android:layout_height="wrap_content"
+		   	        android:layout_weight="4.06"
+		   	        android:background="@color/white" />
+		   	</LinearLayout>
+	
+	    </ScrollView>
+    	    
+	    <include layout="@layout/comment_list"/>
+	    
+   	</ViewSwitcher>
+    
+   	<include layout="@layout/content_detail_footer"/>
+   	
+</LinearLayout>

@@ -147,6 +147,7 @@ public class MainDiary extends Fragment implements PullDownListView.OnRefreshLis
 				isRecomment=false ;
 				pubCommentPosition=position;
 				etEditComment.requestFocus();
+				etEditComment.setHint("说点什么吧...");
 			}
 		});
 		mAdapter.setRePubListener(new OnRePubCommentCliclListener()
@@ -159,6 +160,7 @@ public class MainDiary extends Fragment implements PullDownListView.OnRefreshLis
 				recommentId=commentId;
 				pubCommentPosition=position;
 				etEditComment.requestFocus();
+				etEditComment.setHint("说点什么吧...");
 			}
 		});
 		mHandler = new Handler()

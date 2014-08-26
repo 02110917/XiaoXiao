@@ -15,6 +15,7 @@ import com.flying.xiao.R;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.common.URLs;
+import com.flying.xiao.constant.Constant;
 import com.flying.xiao.entity.XContent;
 import com.flying.xiao.util.ImageManager2;
 
@@ -107,7 +108,7 @@ public class ListViewMainContentAdapter extends BaseAdapter
 
 		// 设置文字和图片
 		final XContent con = listItems.get(position);
-		String faceURL = con.getConImageUrl();
+		String faceURL = con.getConImageUrl()==null?"":con.getConImageUrl();
 		System.out.println("image url---"+faceURL);
 		if (faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
 		{
@@ -128,6 +129,13 @@ public class ListViewMainContentAdapter extends BaseAdapter
 		listItemView.face.setTag(URLs.HOST+faceURL);
 		listItemView.author.setText(con.getUserInfo().getUserRealName());
 		listItemView.title.setText(con.getConTitle());
+		if(con.getConTypeId()==Constant.ContentType.CONTENT_TYPE_LOST){
+			if(con.isLost()){
+				listItemView.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lost, 0, 0, 0);
+			}else{
+				listItemView.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.get, 0, 0, 0);
+			}
+		}
 		listItemView.title.setTag(con);// 设置隐藏参数(实体类)
 		
 		listItemView.date.setText(StringUtils.friendly_time(con.getConPubTime().toString()));

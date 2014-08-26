@@ -11,7 +11,17 @@ public class XMessage extends Base
      private String msgInfo;
      private Timestamp msgSendTime;
      private XMessage msgReply; //ªÿ∏¥’‚Ãı¡Ù—‘  
-     private List<XMessage> replys;
+     private XMessage msgReplyMain ;//
+     
+     public XMessage getMsgReplyMain()
+	{
+		return msgReplyMain;
+	}
+	public void setMsgReplyMain(XMessage msgReplyMain)
+	{
+		this.msgReplyMain = msgReplyMain;
+	}
+	private List<XMessage> replys;
      
 	public List<XMessage> getReplys()
 	{

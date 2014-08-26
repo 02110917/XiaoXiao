@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -42,16 +43,18 @@ public class MainActivity extends BaseActivity
 	private Fragment communityFragment; // 社区
 	private Fragment meFragment;
 	private RadioGroup mRadioGroup;
+	private RadioButton mRBtnMain ;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
 	private ImageView fbSetting;
+	private ImageView mainHeadLogo;
 	private TextView mainHeadTitle;
 	private ImageButton mRightBtn;
 	private QuickActionWidget mGrid;// 快捷栏控件
-
+	
 	private AppContext appContext;// 全局Context
 	private String[] titles = new String[]
-	{ "首页", "新鲜事", "社区", "个人" };
-
+	{ "首页", "广场", "社区", "个人" };
+	private int[]headImages=new int[]{R.drawable.main,R.drawable.square,R.drawable.community,R.drawable.personal};
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -90,7 +93,10 @@ public class MainActivity extends BaseActivity
 	 */
 	private void initFootBar()
 	{
-
+		mainHeadLogo=(ImageView)findViewById(R.id.main_head_logo);
+		mRBtnMain=(RadioButton)findViewById(R.id.footbar_main);
+		mRBtnMain.setChecked(true);
+		
 		fbSetting = (ImageView) findViewById(R.id.main_footbar_pub);
 		fbSetting.setOnClickListener(new View.OnClickListener()
 		{
@@ -100,6 +106,7 @@ public class MainActivity extends BaseActivity
 				// 展示快捷栏&判断是否登录&是否加载文章图片
 //				UIHelper.showSettingLoginOrLogout(MainActivity.this, mGrid.getQuickAction(0));
 				mGrid.show(v);
+				
 			}
 		});
 	}
@@ -126,6 +133,7 @@ public class MainActivity extends BaseActivity
 			public void OnRgsExtraCheckedChanged(RadioGroup radioGroup, int checkedId, int index)
 			{
 				mainHeadTitle.setText(titles[index]);
+				mainHeadLogo.setImageResource(headImages[index]);
 				if(index==3){
 					mRightBtn.setBackgroundResource(R.drawable.widget_bar_set);
 				}else{
@@ -164,10 +172,10 @@ public class MainActivity extends BaseActivity
 	private void initQuickActionGrid()
 	{
 		mGrid = new QuickActionGrid(this);
-		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_myinfo, R.string.main_menu_diary));
-		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_software, R.string.main_menu_pub_lost));
-		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_search, R.string.main_menu_pub_market));
-		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.ic_menu_setting, R.string.main_menu_ask));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.pub_diary, R.string.main_menu_diary));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.pub_lost, R.string.main_menu_pub_lost));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.pub_market, R.string.main_menu_pub_market));
+		mGrid.addQuickAction(new MyQuickAction(this, R.drawable.pub_news, R.string.main_menu_ask));
 		mGrid.setOnQuickActionClickListener(mActionListener);
 	}
 

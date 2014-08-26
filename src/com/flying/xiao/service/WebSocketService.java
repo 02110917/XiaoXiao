@@ -173,13 +173,13 @@ public class WebSocketService extends Service
 				@Override
 				public void onOpen()
 				{
-					UIHelper.ToastMessage(WebSocketService.this, "onOpen", true);
+//					UIHelper.ToastMessage(WebSocketService.this, "onOpen", true);
 					threadHeartFlag=true ;
 					threadReconnectFalg=false;
 					heartReSendTime=0 ;
 					if (hearttThread == null || !hearttThread.isAlive())
 					{
-						UIHelper.ToastMessage(WebSocketService.this, "启动线程..hearttThread", true);
+//						UIHelper.ToastMessage(WebSocketService.this, "启动线程..hearttThread", true);
 						hearttThread = new HeartThread();
 						hearttThread.start();
 					}
@@ -200,7 +200,7 @@ public class WebSocketService extends Service
 				@Override
 				public void onClose(int code, String reason)
 				{
-					UIHelper.ToastMessage(WebSocketService.this, "onClose："+reason, true);
+//					UIHelper.ToastMessage(WebSocketService.this, "onClose："+reason, true);
 					dbHelper.updateUserOffLine(); // 断开连接 将好友在线状态置为false
 					Intent intent = new Intent();
 					WMessage msg = new WMessage();

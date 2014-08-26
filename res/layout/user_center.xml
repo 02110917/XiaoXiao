@@ -138,7 +138,7 @@
                         <ImageView
                             android:id="@+id/likes_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_post" />
+                            android:src="@drawable/my_dynamic" />
 
                         <TextView
                             android:id="@+id/likes_text"
@@ -157,7 +157,7 @@
                         <ImageView
                             android:id="@+id/attention_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_fass" />
+                            android:src="@drawable/my_friend" />
 
                         <TextView
                             android:id="@+id/my_attention_text"
@@ -176,7 +176,7 @@
                         <ImageView
                             android:id="@+id/fans_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_collect" />
+                            android:src="@drawable/my_collect" />
 
                         <TextView
                             android:id="@+id/fans_text"
@@ -203,7 +203,7 @@
                         <ImageView
                             android:id="@+id/likes_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_news" />
+                            android:src="@drawable/my_chat" />
 
                         <TextView
                             android:id="@+id/likes_text"
@@ -225,7 +225,7 @@
                         <ImageView
                             android:id="@+id/attention_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_news" />
+                            android:src="@drawable/my_message" />
 
                         <TextView
                             android:id="@+id/my_attention_text"
@@ -247,7 +247,7 @@
                         <ImageView
                             android:id="@+id/fans_image"
                             style="@style/personal_big_button_icon"
-                            android:src="@drawable/icon_my_news" />
+                            android:src="@drawable/my_pub" />
 
                         <TextView
                             android:id="@+id/fans_text"

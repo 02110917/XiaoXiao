@@ -77,10 +77,10 @@
 
                 <ImageView
                     android:id="@+id/diary_listitem_praise_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="22dp"
+                    android:layout_height="18dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/widget_comment_count_icon" />
+                    android:src="@drawable/praise" />
 
                 <TextView
                     android:id="@+id/diary_listitem_praise"
@@ -88,19 +88,21 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dip"
                     android:text="赞"
+                    android:gravity="center"
                     android:textColor="@color/listitem_gray"
-                    android:textSize="@dimen/text_size_10" />
+                    android:textSize="@dimen/text_size_13" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/diary_listitem_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_marginLeft="20dip"
-                android:drawableLeft="@drawable/widget_comment_count_icon"
+                android:drawableLeft="@drawable/comment"
+                android:drawablePadding="3dp"
                 android:text="评论"
                 android:textColor="@color/listitem_gray"
-                android:textSize="@dimen/text_size_10" />
+                android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
         <LinearLayout

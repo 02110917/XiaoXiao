@@ -3,6 +3,24 @@ package com.flying.xiao;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import com.flying.xiao.adapter.GridImageAdapter;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
@@ -16,22 +34,9 @@ import com.flying.xiao.entity.XPraise;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.util.ImageManager2;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.method.LinkMovementMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 
 /**
- * 内容详情
+ * 新鲜事详情
  */
 public class DiaryDetail extends BaseActivity{
 
@@ -44,15 +49,21 @@ public class DiaryDetail extends BaseActivity{
 	public GridView gridView;
 	public LinearLayout relies;
 	public LinearLayout praiseLin;
+	public LinearLayout diaryLin;
 	public ImageView praiseImage;
 	public TextView praiseText;
 	
 	private LinearLayout pubcommentLin;
 	private GridImageAdapter gridImageAdapter;
+	
+	private EditText commentInput;
+	private Button commentBtn ;
 	private List<XPraise> xpraises;
 	private XContent con;
-	
+	private ProgressDialog mProgress;
 	private Context context ;
+	
+	private long replyId =0;  //别人的评论id
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -93,6 +104,7 @@ public class DiaryDetail extends BaseActivity{
 					{
 						con.setMeIsPraise(false);
 					}
+					initPraise();
 					break;
 				case Constant.HandlerMessageCode.PRAISE_OPERATE_ERROR:
 					xp = (XPraise) msg.obj;
@@ -103,14 +115,37 @@ public class DiaryDetail extends BaseActivity{
 					{
 						con.getPraiseList().remove(xp);
 					}
+					initPraise();
 					UIHelper.ToastMessage(context, "操作失败...");
 					break;
 				case Constant.HandlerMessageCode.USER_NOT_LOGIN:
-					xp = (XPraise) msg.obj;
-					con.getPraiseList().remove(xp);
+					if(msg.obj instanceof XPraise){
+						xp = (XPraise) msg.obj;
+						con.getPraiseList().remove(xp);
+					}
+					if (mProgress != null)
+						mProgress.dismiss();
 					UIHelper.ToastMessage(context, R.string.user_login_out_of_date);
 					UIHelper.showLoginDialog(context);
 					break;
+					
+				case Constant.HandlerMessageCode.PUB_COMMENT_ERROR: // 发布评论失败
+					if (mProgress != null)
+						mProgress.dismiss();
+					UIHelper.ToastMessage(context, R.string.pub_comment_error);
+					break;
+				case Constant.HandlerMessageCode.PUB_COMMENT_SUCCESS:// //发表评论成功
+					if (mProgress != null)
+						mProgress.dismiss();
+					pubcommentLin.setVisibility(View.GONE);
+					commentInput.setText("");
+					commentInput.clearFocus();
+					XComment com = (XComment) msg.obj;
+					con.getComments().add(com);
+					// 更新评论列表
+					initPraise();
+					break;
+					
 				default:
 					break;
 
@@ -131,6 +166,7 @@ public class DiaryDetail extends BaseActivity{
 	}
 	
 	private void initView(){
+		diaryLin=(LinearLayout)findViewById(R.id.diary_detail_lin);
 		pubcommentLin=(LinearLayout)findViewById(R.id.diary_footer);
 		userface = (ImageView) findViewById(R.id.diary_listitem_userface);
 		username = (TextView) findViewById(R.id.diary_listitem_username);
@@ -142,7 +178,19 @@ public class DiaryDetail extends BaseActivity{
 		praiseLin = (LinearLayout) findViewById(R.id.diary_listitem_praise_lin);
 		praiseImage = (ImageView) findViewById(R.id.diary_listitem_praise_image);
 		praiseText = (TextView) findViewById(R.id.diary_listitem_praise);
-		
+		commentInput=(EditText)findViewById(R.id.diary_foot_editer);
+		commentBtn=(Button)findViewById(R.id.diary_foot_pubcomment);
+		commentBtn.setOnClickListener(onclickListener);
+		diaryLin.setOnTouchListener(new OnTouchListener()
+		{
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				pubcommentLin.setVisibility(View.GONE);
+				return false;
+			}
+		});
 		
 		List<XImage> ilist=con.getImages();
 		int size=0;
@@ -185,6 +233,11 @@ public class DiaryDetail extends BaseActivity{
 			}
 		});
 		userface.setTag(URLs.HOST + faceURL);
+		initPraise();
+		
+	}
+	
+	private void initPraise(){
 		relies.setVisibility(View.GONE);
 		relies.removeAllViews();// 先清空
 		btncomment.setOnClickListener(onclickListener);
@@ -216,9 +269,11 @@ public class DiaryDetail extends BaseActivity{
 		if (con.isMeIsPraise())
 		{
 			praiseText.setText("已赞");
+			praiseImage.setImageResource(R.drawable.praise_already);
 		} else
 		{
 			praiseText.setText("赞");
+			praiseImage.setImageResource(R.drawable.praise);
 		}
 	
 		praiseLin.setOnClickListener( onclickListener);
@@ -270,6 +325,8 @@ public class DiaryDetail extends BaseActivity{
 						if (appContext.isLogin())
 						{
 							pubcommentLin.setVisibility(View.VISIBLE);
+							replyId=reply.getPlId();
+							commentInput.setHint("回复 "+reply.getXuserInfo().getUserRealName()+":");
 //							if (rePubListener != null)
 //								rePubListener.onReCommentClick(position, reply.getPlId());
 						} else
@@ -283,7 +340,6 @@ public class DiaryDetail extends BaseActivity{
 
 			relies.setVisibility(View.VISIBLE);
 		}
-		
 	}
 	
 	private OnClickListener onclickListener=new OnClickListener()
@@ -298,6 +354,8 @@ public class DiaryDetail extends BaseActivity{
 				if (appContext.isLogin())
 				{
 					pubcommentLin.setVisibility(View.VISIBLE);
+					commentInput.setHint("说点什么吧...");
+					replyId=0;
 				} else
 				{
 					UIHelper.ToastMessage(context, "您还未登陆,请先登录...");
@@ -330,6 +388,7 @@ public class DiaryDetail extends BaseActivity{
 						}
 						con.getPraiseList().add(0, praise);
 					}
+					initPraise();
 					NetControl.getShare(context).praiseOpreate(praise, con.isMeIsPraise(), mHandler);
 				} else
 				{
@@ -337,9 +396,25 @@ public class DiaryDetail extends BaseActivity{
 					UIHelper.showLoginDialog(context);
 				}
 				break ;
+			case R.id.diary_foot_pubcomment:
+				String commentStr=commentInput.getText().toString().trim();
+				if(StringUtils.isEmpty(commentStr)){
+					UIHelper.ToastMessage(context, "输入不能为空...");
+					return ;
+				}
+				if (!appContext.isLogin())
+				{
+					UIHelper.showLoginDialog(context);
+					return;
+				}
+				NetControl.getShare(context).pubComment(appContext.getUserInfo().getId(),con.getId(),
+						commentStr, replyId,mHandler);
+				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
+				break ;
 			default:
 				break;
 			}
 		}
 	};
+	
 }

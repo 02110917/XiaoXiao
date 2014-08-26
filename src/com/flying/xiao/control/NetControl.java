@@ -321,6 +321,8 @@ public class NetControl
 	}
 	
 	public void praiseOpreate(final XPraise xp,final boolean isCancel,final Handler handler){
+		if(xp==null||xp.getUserInfo()==null)
+			return ;
 		final long userId=xp.getUserInfo().getId();
 		final long contentId=xp.getContentId();
 		

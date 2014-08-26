@@ -12,7 +12,7 @@
 		android:layout_centerVertical="true"
 		android:layout_alignParentLeft="true"
 		android:layout_marginLeft="5.0dip"
-		android:src="@drawable/frame_logo_news"/>
+		android:src="@drawable/main"/>
     
     <TextView 
         android:id="@+id/main_head_title"

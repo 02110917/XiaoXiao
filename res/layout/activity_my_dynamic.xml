@@ -4,12 +4,15 @@
     android:layout_height="fill_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-<include layout="@layout/header"/>
+
+    <include layout="@layout/header" />
+
     <LinearLayout
+        android:id="@+id/my_dynamic_lin_outsite"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:layout_weight="1"
+        android:background="@color/white"
         android:orientation="vertical" >
 
         <com.flying.xiao.widget.PullDownListView
@@ -27,5 +30,6 @@
         </com.flying.xiao.widget.PullDownListView>
     </LinearLayout>
 
-  <include layout="@layout/diary_footer" />
+    <include layout="@layout/diary_footer" />
+
 </LinearLayout>

@@ -236,9 +236,11 @@ public class ListViewMainDiaryAdapter extends BaseAdapter
 		if (con.isMeIsPraise())
 		{
 			listItemView.praiseText.setText("ÒÑÔÞ");
+			listItemView.praiseImage.setImageResource(R.drawable.praise_already);
 		} else
 		{
 			listItemView.praiseText.setText("ÔÞ");
+			listItemView.praiseImage.setImageResource(R.drawable.praise);
 		}
 		final Handler handler = new Handler()
 		{

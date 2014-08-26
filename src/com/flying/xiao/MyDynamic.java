@@ -6,26 +6,29 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.flying.xiao.adapter.ListViewMyDynamicAdapter;
+import com.flying.xiao.adapter.ListViewMyDynamicAdapter.IReply;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
+import com.flying.xiao.entity.XComment;
 import com.flying.xiao.entity.XContent;
 import com.flying.xiao.entity.XDynamic;
+import com.flying.xiao.entity.XMessage;
 import com.flying.xiao.widget.PullDownListView;
 
 public class MyDynamic extends BaseActivity implements PullDownListView.OnRefreshListioner
@@ -37,10 +40,11 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 	private PullDownListView mPullDownListview;
 	private ListView mListView;
 	public LinearLayout pubCommentEditLin ;
+	public LinearLayout pubCommentOutSiteLine ;
 	public Button btnPubComment ;
 	public EditText etEditComment ;
 	private ProgressDialog mProgress;
-	
+	private int replyId=0;
 	private int page =0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -82,6 +86,9 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 			}
 		});
 		pubCommentEditLin=(LinearLayout)findViewById(R.id.diary_footer);
+		pubCommentOutSiteLine=(LinearLayout)findViewById(R.id.my_dynamic_lin_outsite);
+		pubCommentOutSiteLine.setOnTouchListener(listener);
+		mListView.setOnTouchListener(listener);
 		btnPubComment=(Button)findViewById(R.id.diary_foot_pubcomment);
 		etEditComment=(EditText)findViewById(R.id.diary_foot_editer);
 		btnPubComment.setOnClickListener(new OnClickListener()
@@ -102,32 +109,30 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 					UIHelper.showLoginDialog(MyDynamic.this);
 					return;
 				}
-				long replyId=0;
-//				if(isRecomment){
-//					replyId=recommentId;
-//				}
-//				NetControl.getShare(getActivity()).pubComment(ac.getUserInfo().getId(),mDiaryList.get(pubCommentPosition).getId(),
-//						_commentStr, replyId,mHandler);
+				XDynamic dynamic=myDynamicList.get(replyId);
 				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
+				if(dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT||dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME){
+					XContent content=dynamic.getContent();
+					NetControl.getShare(MyDynamic.this).pubComment(appContext.getUserInfo().getId(), content.getId(),
+							_commentStr, dynamic.getCommentId(),mHandler);
+				}else{
+					XMessage message=dynamic.getMessage();
+					NetControl.getShare(MyDynamic.this).pubMessage(appContext.getUserInfo().getId(), _commentStr,
+							message.getMsgId(),message.getMsgReplyMain()==null?message.getMsgId():message.getMsgReplyMain().getMsgId(),
+							mHandler);
+				}
 			}
 		});
-		adapter = new ListViewMyDynamicAdapter(this,pubCommentEditLin, myDynamicList, R.layout.activity_my_dynamic_listitem);
-		mListView.setAdapter(adapter);
-		mListView.setOnScrollListener(new OnScrollListener()
+		adapter = new ListViewMyDynamicAdapter(this,pubCommentEditLin, myDynamicList, R.layout.activity_my_dynamic_listitem,new IReply()
 		{
 			
 			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState)
+			public void reply(int id)
 			{
-				pubCommentEditLin.setVisibility(View.GONE);
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-			{
-				
+				replyId=id;
 			}
 		});
+		mListView.setAdapter(adapter);
 	}
 
 	private void initData()
@@ -141,6 +146,8 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 				super.handleMessage(msg);
 				mPullDownListview.onRefreshComplete();
 				mPullDownListview.onLoadMoreComplete();
+				if (mProgress != null)
+					mProgress.dismiss();
 				switch (msg.what)
 				{
 				case Constant.HandlerMessageCode.USER_NOT_LOGIN:
@@ -163,7 +170,18 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 					myDynamicList.addAll(list);
 					adapter.notifyDataSetChanged();
 					break ;
-					
+				case Constant.HandlerMessageCode.PUB_MESSAGE_ERROR: // 发布评论失败
+					UIHelper.ToastMessage(MyDynamic.this, R.string.pub_comment_error);
+					break;
+				case Constant.HandlerMessageCode.PUB_MESSAGE_SUCCESS:// //发表评论成功
+					UIHelper.ToastMessage(MyDynamic.this, "回复成功");
+					break;
+				case Constant.HandlerMessageCode.PUB_COMMENT_SUCCESS:// //发表评论成功
+					UIHelper.ToastMessage(MyDynamic.this, "回复成功");
+					break;
+				case Constant.HandlerMessageCode.PUB_COMMENT_ERROR:
+					UIHelper.ToastMessage(MyDynamic.this, "操作失败...");
+					break ;
 				default:
 					break;
 				}
@@ -186,5 +204,14 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 		page++;
 		NetControl.getShare(this).getMyDynamic(mHandler,page);
 	}
-
+private OnTouchListener listener =new OnTouchListener()
+{
+	
+	@Override
+	public boolean onTouch(View v, MotionEvent event)
+	{
+		pubCommentEditLin.setVisibility(View.GONE);
+		return false;
+	}
+};
 }

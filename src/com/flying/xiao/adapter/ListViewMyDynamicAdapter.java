@@ -33,19 +33,7 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
 	private View pubcommentLin;
-	private OnPubBtnClickListener pubBtnListener;
-	private OnRePubCommentCliclListener rePubListener;
-
-	public void setRePubListener(OnRePubCommentCliclListener rePubListener)
-	{
-		this.rePubListener = rePubListener;
-	}
-
-	public void setPubBtnListener(OnPubBtnClickListener pubBtnListener)
-	{
-		this.pubBtnListener = pubBtnListener;
-	}
-
+	private IReply reply ;
 	static class ListItemView
 	{ // 自定义控件集合
 		public ImageView userface;
@@ -67,13 +55,14 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 	 * @param resource
 	 * @param pubcommentLin
 	 */
-	public ListViewMyDynamicAdapter(Context context, View pubcommentLin, List<XDynamic> data, int resource)
+	public ListViewMyDynamicAdapter(Context context, View pubcommentLin, List<XDynamic> data, int resource,IReply reply)
 	{
 		this.context = context;
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
 		this.listItems = data;
 		this.pubcommentLin = pubcommentLin;
+		this.reply=reply;
 	}
 
 	public int getCount()
@@ -186,8 +175,8 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 				if (ac.isLogin())
 				{
 					pubcommentLin.setVisibility(View.VISIBLE);
-					if (pubBtnListener != null)
-						pubBtnListener.onPubCommentBtnClick(position);
+					if (reply != null)
+						reply.reply(position);
 				} else
 				{
 					UIHelper.ToastMessage(context, "您还未登陆,请先登录...");
@@ -208,13 +197,7 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 		return convertView;
 	}
 
-	public interface OnPubBtnClickListener
-	{
-		public void onPubCommentBtnClick(int position);
-	}
-
-	public interface OnRePubCommentCliclListener
-	{
-		public void onReCommentClick(int position, long commentId);
+	public interface IReply{
+		public void reply(int id);
 	}
 }

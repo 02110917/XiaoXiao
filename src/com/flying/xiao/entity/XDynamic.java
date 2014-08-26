@@ -21,7 +21,26 @@ public  class XDynamic extends Base
 	
 	private XContent content ;
 	
+	private XMessage message ;
 	
+	private long commentId ;
+	
+	public long getCommentId()
+	{
+		return commentId;
+	}
+	public void setCommentId(long commentId)
+	{
+		this.commentId = commentId;
+	}
+	public XMessage getMessage()
+	{
+		return message;
+	}
+	public void setMessage(XMessage message)
+	{
+		this.message = message;
+	}
 	public XContent getContent()
 	{
 		return content;

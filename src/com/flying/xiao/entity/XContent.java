@@ -24,6 +24,7 @@ public class XContent extends Base
 	private List<XComment> comments;
 	private String conSummary;
 	
+	private boolean isLost=true ;
 	
 //	@Override
 //	public <T> void copy(T t)
@@ -37,10 +38,22 @@ public class XContent extends Base
 //		user.copy(((Content)t).getUserInfo());
 //		this.setUserInfo(user);
 //	}
+	
 	public List<XImage> getImages()
 	{
 		return images;
 	}
+	
+	public boolean isLost()
+	{
+		return isLost;
+	}
+
+	public void setLost(boolean isLost)
+	{
+		this.isLost = isLost;
+	}
+
 	public void setImages(List<XImage> images)
 	{
 		this.images = images;

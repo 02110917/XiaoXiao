@@ -14,8 +14,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.CALL_PHONE"/>
-	<uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
         android:name="com.flying.xiao.app.AppContext"
         android:allowBackup="true"
@@ -76,10 +77,10 @@
         <activity
             android:name="com.flying.xiao.MyDynamic"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-         <activity
+        <activity
             android:name="com.flying.xiao.MyCollect"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-          <activity
+        <activity
             android:name="com.flying.xiao.MyPubContent"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
@@ -100,17 +101,20 @@
         <activity
             android:name="com.flying.xiao.ShowImageActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-         <activity
+        <activity
             android:name="com.flying.xiao.MyMessage"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-          <activity
+        <activity
             android:name="com.flying.xiao.ChatActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-           <activity
+        <activity
             android:name="com.flying.xiao.MyChatActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-            <activity
+        <activity
             android:name="com.flying.xiao.PubLostAndMarketComment"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.flying.xiao.FullScreenPictureActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.flying.xiao.MainActivity"
@@ -140,13 +144,12 @@
 
         <service android:name=".service.WebSocketService" >
         </service>
-       
-        <receiver android:name="com.flying.xiao.boardcastreceive.WebSocketMsgReceive">
-           <intent-filter >
-               <action android:name="com.flying.xiao.WebSocketMsgReceive"/>
-           </intent-filter> 
+
+        <receiver android:name="com.flying.xiao.boardcastreceive.WebSocketMsgReceive" >
+            <intent-filter>
+                <action android:name="com.flying.xiao.WebSocketMsgReceive" />
+            </intent-filter>
         </receiver>
-         
     </application>
 
 </manifest>

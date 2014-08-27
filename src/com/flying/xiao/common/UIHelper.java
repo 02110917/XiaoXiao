@@ -1,5 +1,7 @@
 package com.flying.xiao.common;
 
+import java.util.ArrayList;
+
 import greendroid.widget.MyQuickAction;
 import greendroid.widget.QuickAction;
 import android.app.Activity;
@@ -27,6 +29,7 @@ import com.flying.xiao.ChatActivity;
 import com.flying.xiao.CommentPub;
 import com.flying.xiao.ContentDetail;
 import com.flying.xiao.DiaryDetail;
+import com.flying.xiao.FullScreenPictureActivity;
 import com.flying.xiao.LostDetail;
 import com.flying.xiao.MainActivity;
 import com.flying.xiao.MarketDetail;
@@ -61,8 +64,7 @@ import com.flying.xiao.service.WebSocketService;
  * @version 1.0
  * @created 2012-3-21
  */
-public class UIHelper
-{
+public class UIHelper {
 
 	/** 全局web样式 */
 	public final static String WEB_STYLE = "<style>* {font-size:16px;line-height:20px;} p {color:#333;} a {color:#3E62A6;} img {max-width:310px;} "
@@ -71,12 +73,25 @@ public class UIHelper
 			+ "a.tag {font-size:15px;text-decoration:none;background-color:#bbd6f3;border-bottom:2px solid #3E6D8E;border-right:2px solid #7F9FB6;color:#284a7b;margin:2px 2px 2px 0;padding:2px 4px;white-space:nowrap;}</style>";
 
 	/**
+	 * 图片全屏浏览
+	 * 
+	 * @param activity
+	 * @author xzj
+	 */
+	public static void showFullScreenPicture(Context activity,
+			ArrayList<String> urls, int currentPosition) {
+		Intent intent = new Intent(activity, FullScreenPictureActivity.class);
+		intent.putStringArrayListExtra("pictureurls", urls);
+		intent.putExtra("currentPosition", currentPosition);
+		activity.startActivity(intent);
+	}
+
+	/**
 	 * 显示首页
 	 * 
 	 * @param activity
 	 */
-	public static void showHome(Activity activity)
-	{
+	public static void showHome(Activity activity) {
 		Intent intent = new Intent(activity, MainActivity.class);
 		activity.startActivity(intent);
 		activity.finish();
@@ -87,8 +102,7 @@ public class UIHelper
 	 * 
 	 * @param activity
 	 */
-	public static void showLoginDialog(Context context)
-	{
+	public static void showLoginDialog(Context context) {
 		showLoginOrRegiste((Activity) context, true);
 	}
 
@@ -97,44 +111,38 @@ public class UIHelper
 	 * 
 	 * @param context
 	 */
-	public static void showMyInfo(Context context)
-	{
+	public static void showMyInfo(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyInfoActivity.class);
 		context.startActivity(intent);
 	}
 
-	public static void showMyFriends(Context context)
-	{
+	public static void showMyFriends(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyFriends.class);
 		context.startActivity(intent);
 	}
 
-	public static void showMyCollect(Context context, int showType)
-	{
+	public static void showMyCollect(Context context, int showType) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyCollect.class);
 		intent.putExtra("showType", showType);
 		context.startActivity(intent);
 	}
 
-	public static void showMyDynamic(Context context)
-	{
+	public static void showMyDynamic(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyDynamic.class);
 		context.startActivity(intent);
 	}
 
-	public static void showMyMessage(Context context)
-	{
+	public static void showMyMessage(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyMessage.class);
 		context.startActivity(intent);
 	}
 
-	public static void showMyChat(Context context)
-	{
+	public static void showMyChat(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, MyChatActivity.class);
 		context.startActivity(intent);
@@ -147,21 +155,17 @@ public class UIHelper
 	 * @param content
 	 * @param contentType
 	 */
-	public static void showContentInfo(Context context, int index, int contentType)
-	{
+	public static void showContentInfo(Context context, int index,
+			int contentType) {
 		Intent intent = new Intent();
 		if (contentType == Constant.ContentType.CONTENT_TYPE_ASK
-				|| contentType == Constant.ContentType.CONTENT_TYPE_NEWS)
-		{
+				|| contentType == Constant.ContentType.CONTENT_TYPE_NEWS) {
 			intent.setClass(context, ContentDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_LOST)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_LOST) {
 			intent.setClass(context, LostDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_MARKET)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_MARKET) {
 			intent.setClass(context, MarketDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_DIARY)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_DIARY) {
 			intent.setClass(context, DiaryDetail.class);
 		}
 		intent.putExtra("conType", contentType);
@@ -169,21 +173,17 @@ public class UIHelper
 		context.startActivity(intent);
 	}
 
-	public static void showContentInfo(Context context, XContent content, int contentType)
-	{
+	public static void showContentInfo(Context context, XContent content,
+			int contentType) {
 		Intent intent = new Intent();
 		if (contentType == Constant.ContentType.CONTENT_TYPE_ASK
-				|| contentType == Constant.ContentType.CONTENT_TYPE_NEWS)
-		{
+				|| contentType == Constant.ContentType.CONTENT_TYPE_NEWS) {
 			intent.setClass(context, ContentDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_LOST)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_LOST) {
 			intent.setClass(context, LostDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_MARKET)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_MARKET) {
 			intent.setClass(context, MarketDetail.class);
-		} else if (contentType == Constant.ContentType.CONTENT_TYPE_DIARY)
-		{
+		} else if (contentType == Constant.ContentType.CONTENT_TYPE_DIARY) {
 			intent.setClass(context, DiaryDetail.class);
 		}
 		intent.putExtra("conType", contentType);
@@ -201,49 +201,44 @@ public class UIHelper
 	 * @param type
 	 *            user type
 	 */
-	public static void showCommunityInfo(Context context, int index, int type)
-	{
+	public static void showCommunityInfo(Context context, int index, int type) {
 		Intent intent = new Intent();
 		intent.putExtra("index", index);
 		intent.putExtra("userType", type);
-		if (type == Constant.UserType.User_TYPE_DEPARTMENT || type == Constant.UserType.User_TYPE_BUSINESS)
-		{
+		if (type == Constant.UserType.User_TYPE_DEPARTMENT
+				|| type == Constant.UserType.User_TYPE_BUSINESS) {
 			intent.setClass(context, UserInfoDetail.class);
 		}
 		context.startActivity(intent);
 	}
 
-	public static void showUserInfo(Context context, XUserInfo userInfo)
-	{
+	public static void showUserInfo(Context context, XUserInfo userInfo) {
 		Intent intent = new Intent();
 		intent.putExtra("userinfo", userInfo);
 		intent.setClass(context, UserInfoDetail.class);
 		context.startActivity(intent);
 	}
 
-	public static void showPubDiary(Context context)
-	{
+	public static void showPubDiary(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, PubDiaryActivity.class);
 		context.startActivity(intent);
 	}
 
-	public static void showPubLost(Context context)
-	{
+	public static void showPubLost(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, PubLostActivity.class);
 		context.startActivity(intent);
 	}
 
-	public static void showPubMarket(Context context)
-	{
+	public static void showPubMarket(Context context) {
 		Intent intent = new Intent();
 		intent.setClass(context, PubMarketActivity.class);
 		context.startActivity(intent);
 	}
 
-	public static void showPubContent(Context context, int contentType, int wzType)
-	{
+	public static void showPubContent(Context context, int contentType,
+			int wzType) {
 		Intent intent = new Intent();
 		intent.setClass(context, PubContentActivity.class);
 		intent.putExtra("type", contentType);
@@ -258,16 +253,14 @@ public class UIHelper
 	 * @param context
 	 * @param userInfo
 	 */
-	public static void showPicture(Activity context)
-	{
+	public static void showPicture(Activity context) {
 		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 		intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		intent.setType("image/*");
 		context.startActivityForResult(intent, MyInfoActivity.FROM_ALBUM);
 	}
 
-	public static void showCamera(Activity context, Uri imageUrl)
-	{
+	public static void showCamera(Activity context, Uri imageUrl) {
 		Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUrl);
 		// intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
@@ -283,8 +276,8 @@ public class UIHelper
 	 * @param outputY
 	 * @param requestCode
 	 */
-	public static void showCropImage(Activity context, Uri uri, int outputX, int outputY, int requestCode)
-	{
+	public static void showCropImage(Activity context, Uri uri, int outputX,
+			int outputY, int requestCode) {
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");
 		intent.putExtra("crop", "true");
@@ -304,15 +297,15 @@ public class UIHelper
 	 * @param activity
 	 * @param qa
 	 */
-	public static void showSettingLoginOrLogout(Activity activity, QuickAction qa)
-	{
-		if (((AppContext) activity.getApplication()).isLogin())
-		{
-			qa.setIcon(MyQuickAction.buildDrawable(activity, R.drawable.ic_menu_logout));
+	public static void showSettingLoginOrLogout(Activity activity,
+			QuickAction qa) {
+		if (((AppContext) activity.getApplication()).isLogin()) {
+			qa.setIcon(MyQuickAction.buildDrawable(activity,
+					R.drawable.ic_menu_logout));
 			qa.setTitle(activity.getString(R.string.main_menu_logout));
-		} else
-		{
-			qa.setIcon(MyQuickAction.buildDrawable(activity, R.drawable.ic_menu_login));
+		} else {
+			qa.setIcon(MyQuickAction.buildDrawable(activity,
+					R.drawable.ic_menu_login));
 			qa.setTitle(activity.getString(R.string.main_menu_login));
 		}
 	}
@@ -322,33 +315,28 @@ public class UIHelper
 	 * 
 	 * @param activity
 	 */
-	public static void loginOrLogout(Activity activity)
-	{
+	public static void loginOrLogout(Activity activity) {
 		AppContext ac = (AppContext) activity.getApplication();
-		if (ac.isLogin())
-		{
+		if (ac.isLogin()) {
 			ac.Logout();
-			if (activity instanceof MainActivity)
-			{
+			if (activity instanceof MainActivity) {
 				((MainActivity) activity).getmWebSocketService().recontent();
 			}
 			ToastMessage(activity, "已退出登录");
-		} else
-		{
+		} else {
 			showLoginDialog(activity);
 		}
 	}
 
-	public static void showChat(Context context, XUserInfo userInfo)
-	{
+	public static void showChat(Context context, XUserInfo userInfo) {
 		Intent intent = new Intent();
 		intent.setClass(context, ChatActivity.class);
 		intent.putExtra("userInfo", userInfo);
 		context.startActivity(intent);
 	}
 
-	public static void showLostAndMarketCommentPub(Context context, long contentId)
-	{
+	public static void showLostAndMarketCommentPub(Context context,
+			long contentId) {
 		Intent intent = new Intent();
 		intent.setClass(context, PubLostAndMarketComment.class);
 		intent.putExtra("contentId", contentId);
@@ -360,8 +348,7 @@ public class UIHelper
 	 * 
 	 * @param phone
 	 */
-	public static void showCallPhone(Context context, String phone)
-	{
+	public static void showCallPhone(Context context, String phone) {
 		Intent i = new Intent();
 		i.setAction(Intent.ACTION_CALL);
 		i.setData(Uri.parse("tel:" + phone));
@@ -374,8 +361,7 @@ public class UIHelper
 	 * @param context
 	 * @param phone
 	 */
-	public static void showSendMsg(Context context, String phone)
-	{
+	public static void showSendMsg(Context context, String phone) {
 		Intent i = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phone));
 		// i.setAction(Intent.ACTION_VIEW);
 		// i.setType("vnd.android.dir/mms-sms");
@@ -388,23 +374,19 @@ public class UIHelper
 	 * 
 	 * @param msg
 	 */
-	public static void ToastMessage(Context cont, String msg)
-	{
+	public static void ToastMessage(Context cont, String msg) {
 		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
 	}
 
-	public static void ToastMessage(Context cont, String msg, boolean isTest)
-	{
+	public static void ToastMessage(Context cont, String msg, boolean isTest) {
 		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
 	}
 
-	public static void ToastMessage(Context cont, int msg)
-	{
+	public static void ToastMessage(Context cont, int msg) {
 		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
 	}
 
-	public static void ToastMessage(Context cont, String msg, int time)
-	{
+	public static void ToastMessage(Context cont, String msg, int time) {
 		Toast.makeText(cont, msg, time).show();
 	}
 
@@ -414,13 +396,10 @@ public class UIHelper
 	 * @param activity
 	 * @return
 	 */
-	public static View.OnClickListener finish(final Activity activity)
-	{
-		return new View.OnClickListener()
-		{
+	public static View.OnClickListener finish(final Activity activity) {
+		return new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				activity.finish();
 			}
 		};
@@ -439,9 +418,8 @@ public class UIHelper
 	 * @param author
 	 * @param content
 	 */
-	public static void showCommentReply(Activity context, long commentid, long contentid, long authorid,
-			String author, String content)
-	{
+	public static void showCommentReply(Activity context, long commentid,
+			long contentid, long authorid, String author, String content) {
 		Intent intent = new Intent(context, CommentPub.class);
 		intent.putExtra("comment_id", commentid);
 		intent.putExtra("content_id", contentid);
@@ -461,8 +439,7 @@ public class UIHelper
 	 * @param context
 	 * @param userId
 	 */
-	public static void showMessagePub(Activity context, long userId)
-	{
+	public static void showMessagePub(Activity context, long userId) {
 		Intent intent = new Intent(context, MessagePub.class);
 		intent.putExtra("userId", userId);
 		context.startActivity(intent);
@@ -473,8 +450,7 @@ public class UIHelper
 	 * 
 	 * @param context
 	 */
-	public static void showSetting(Activity context)
-	{
+	public static void showSetting(Activity context) {
 		Intent intent = new Intent(context, SettingActivity.class);
 		context.startActivity(intent);
 	}
@@ -485,8 +461,7 @@ public class UIHelper
 	 * @param context
 	 * @param isLogin
 	 */
-	public static void showLoginOrRegiste(Activity context, boolean isLogin)
-	{
+	public static void showLoginOrRegiste(Activity context, boolean isLogin) {
 		Intent intent = new Intent(context, UserLoginActivity.class);
 		intent.putExtra("isLogin", isLogin);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -501,8 +476,7 @@ public class UIHelper
 	 *            用户类型 1个人 2商家 3部门
 	 * @param userInfo
 	 */
-	public static void showMyHome(Context context, XUserInfo userInfo)
-	{
+	public static void showMyHome(Context context, XUserInfo userInfo) {
 
 	}
 
@@ -511,8 +485,7 @@ public class UIHelper
 	 * 
 	 * @param context
 	 */
-	public static void bindService(Context context, ServiceConnection connection)
-	{
+	public static void bindService(Context context, ServiceConnection connection) {
 		Intent bindIntent = new Intent(context, WebSocketService.class);
 		context.bindService(bindIntent, connection, Context.BIND_AUTO_CREATE);
 	}
@@ -522,8 +495,8 @@ public class UIHelper
 	 * 
 	 * @param context
 	 */
-	public static void unBindService(Context context, ServiceConnection connection)
-	{
+	public static void unBindService(Context context,
+			ServiceConnection connection) {
 		context.unbindService(connection);
 	}
 
@@ -534,14 +507,13 @@ public class UIHelper
 	 * @param body
 	 * @return
 	 */
-	public static SpannableString parseQuoteSpan(String name, String body)
-	{
+	public static SpannableString parseQuoteSpan(String name, String body) {
 		SpannableString sp = new SpannableString("回复：" + name + "\n" + body);
 		// 设置用户名字体加粗、高亮
-		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 3, 3 + name.length(),
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 3, 3 + name.length(),
-				Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sp.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 3,
+				3 + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sp.setSpan(new ForegroundColorSpan(Color.parseColor("#0e5986")), 3,
+				3 + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return sp;
 	}
 
@@ -551,22 +523,21 @@ public class UIHelper
 	 * @param cont
 	 * @param crashReport
 	 */
-	public static void sendAppCrashReport(final Context cont, final String crashReport)
-	{
-		//发送错误报告
+	public static void sendAppCrashReport(final Context cont,
+			final String crashReport) {
+		// 发送错误报告
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
 		builder.setIcon(android.R.drawable.ic_dialog_info);
 		builder.setTitle(R.string.app_error);
 		builder.setMessage(R.string.app_error_message);
-		builder.setNegativeButton(R.string.sure, new DialogInterface.OnClickListener()
-		{
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-				// 退出
-				AppManager.getAppManager().AppExit(cont);
-			}
-		});
+		builder.setNegativeButton(R.string.sure,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// 退出
+						AppManager.getAppManager().AppExit(cont);
+					}
+				});
 		builder.show();
 	}
 
@@ -575,34 +546,31 @@ public class UIHelper
 	 * 
 	 * @param cont
 	 */
-	public static void Exit(final Context cont)
-	{
+	public static void Exit(final Context cont) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
 		builder.setIcon(android.R.drawable.ic_dialog_info);
 		builder.setTitle(R.string.app_menu_surelogout);
-		builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-				// 退出
-				AppManager.getAppManager().AppExit(cont);
-			}
-		});
-		builder.setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener()
-		{
-			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
-				dialog.dismiss();
-			}
-		});
+		builder.setPositiveButton(R.string.sure,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						// 退出
+						AppManager.getAppManager().AppExit(cont);
+					}
+				});
+		builder.setNegativeButton(R.string.cancle,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 		builder.show();
 	}
 
-	private static SpannableStringBuilder setUnderlineAndHightLighr(String str, int start, int end)
-	{
+	private static SpannableStringBuilder setUnderlineAndHightLighr(String str,
+			int start, int end) {
 		SpannableStringBuilder spannable = new SpannableStringBuilder(str);
 		CharacterStyle span_2 = new ForegroundColorSpan(Color.RED);
 		spannable.setSpan(span_2, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -617,14 +585,12 @@ public class UIHelper
 	 * @param l
 	 * @return
 	 */
-	public static SpannableString getClickableSpan(final Context activity, final XUserInfo userInfo)
-	{
-		OnClickListener l = new OnClickListener()
-		{
+	public static SpannableString getClickableSpan(final Context activity,
+			final XUserInfo userInfo) {
+		OnClickListener l = new OnClickListener() {
 
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				showUserInfo(activity, userInfo);
 				// showMyHome(activity, userInfo);
 				System.out.println("click text ");
@@ -634,28 +600,26 @@ public class UIHelper
 		String str = userInfo.getUserRealName();
 		int start = 0;
 		int end = str.length();
-		SpannableString spanableInfo = new SpannableString(setUnderlineAndHightLighr(str, start, end));
-		spanableInfo.setSpan(new Clickable(l, str.substring(start, end)), start, end,
-				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		SpannableString spanableInfo = new SpannableString(
+				setUnderlineAndHightLighr(str, start, end));
+		spanableInfo.setSpan(new Clickable(l, str.substring(start, end)),
+				start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return spanableInfo;
 	}
 
 }
 
-class Clickable extends ClickableSpan implements OnClickListener
-{
+class Clickable extends ClickableSpan implements OnClickListener {
 	private final OnClickListener mListener;
 	private final String str;
 
-	public Clickable(OnClickListener l, String str)
-	{
+	public Clickable(OnClickListener l, String str) {
 		this.mListener = l;
 		this.str = str;
 	}
 
 	@Override
-	public void onClick(View v)
-	{
+	public void onClick(View v) {
 		v.setTag(str);
 		mListener.onClick(v);
 	}

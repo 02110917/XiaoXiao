@@ -81,7 +81,7 @@ public class BaseActivity extends FragmentActivity
 		mHeadLeftView = (ImageView) findViewById(R.id.head_left_view);
 		if (mHeadLeftView != null)
 		{
-			if(this instanceof PubLostActivity|| this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
+			if(this instanceof MyInfoActivity|| this instanceof PubLostActivity|| this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
 				mHeadLeftView.setOnClickListener(new OnClickListener()
 				{
 					
@@ -171,7 +171,7 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	public void onBackPressed()
 	{
-		if(this instanceof PubLostActivity||this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
+		if(this instanceof MyInfoActivity||this instanceof PubLostActivity||this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
 			ShowDialogUtil.showDialog(this);
 		}else
 		{

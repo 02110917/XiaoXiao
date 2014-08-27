@@ -79,10 +79,11 @@ public class UIHelper {
 	 * @author xzj
 	 */
 	public static void showFullScreenPicture(Context activity,
-			ArrayList<String> urls, int currentPosition) {
+			ArrayList<String> urls, int currentPosition, int flag) {
 		Intent intent = new Intent(activity, FullScreenPictureActivity.class);
 		intent.putStringArrayListExtra("pictureurls", urls);
 		intent.putExtra("currentPosition", currentPosition);
+		intent.putExtra("picturetype", flag);
 		activity.startActivity(intent);
 	}
 

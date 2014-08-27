@@ -207,7 +207,8 @@ public class DiaryDetail extends BaseActivity {
 					pictureUrls.add(URLs.HOST + image.getImageUrl());
 				}
 
-				UIHelper.showFullScreenPicture(context, pictureUrls, position);
+				UIHelper.showFullScreenPicture(context, pictureUrls, position,
+						Constant.PictureType.TYPE_NET);
 
 			}
 

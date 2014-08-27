@@ -28,7 +28,7 @@
     <string name="main_menu_logout">注销登录</string>
     <string name="main_menu_myinfo">我的资料</string>
     <string name="main_menu_pub_lost">失物</string>
-     <string name="main_menu_diary">新鲜事</string>
+    <string name="main_menu_diary">新鲜事</string>
     <string name="main_menu_pub_market">商品</string>
     <string name="main_menu_picshow">显示图片</string>
     <string name="main_menu_picnoshow">隐藏图片</string>
@@ -64,8 +64,7 @@
     <string name="account_regedit">注册</string>
     <string name="account_logining">正在登录中…</string>
     <string name="title_login">登录百度帐号</string>
-
-     <string name="check_username">检测用户名</string>
+    <string name="check_username">检测用户名</string>
     <string name="name_not_use">恭喜你,该用户名还没有被注册过!</string>
     <string name="input_name">请输入用户名</string>
     <string name="account_regedit_baidu">注册百度帐号</string>
@@ -83,4 +82,6 @@
     <string name="user_psw_rule">6–14位,字母区分大小写</string>
     <string name="change_vcode">换一张</string>
     <string name="psw_tip">密　码</string>
+    <string name="picture_unchecked">请选择图片哦~！</string>
+
 </resources>

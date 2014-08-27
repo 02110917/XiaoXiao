@@ -1,5 +1,6 @@
 package com.flying.xiao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -12,6 +13,8 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.flying.xiao.adapter.ChildAdapter;
+import com.flying.xiao.common.UIHelper;
+import com.flying.xiao.constant.Constant;
 
 public class ShowImageActivity extends BaseActivity {
 	private GridView mGridView;
@@ -63,7 +66,14 @@ public class ShowImageActivity extends BaseActivity {
 				break;
 
 			case R.id.show_image_scan:
-				
+				ArrayList<String> pictureUrls = adapter.getSelectItems();
+				if (pictureUrls != null && pictureUrls.size() > 0) {
+					UIHelper.showFullScreenPicture(ShowImageActivity.this,
+							pictureUrls, 0, Constant.PictureType.TYPE_NATIVE);
+				} else {
+					UIHelper.ToastMessage(ShowImageActivity.this,
+							R.string.picture_unchecked);
+				}
 				break;
 			default:
 				break;

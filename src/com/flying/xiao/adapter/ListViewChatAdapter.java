@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.flying.xiao.R;
-import com.flying.xiao.app.AppConfig;
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;

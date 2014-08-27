@@ -1,13 +1,20 @@
 package com.flying.xiao;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +29,7 @@ import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
 import com.flying.xiao.entity.RContent;
+import com.flying.xiao.util.MD5;
 
 public class PubContentActivity extends BaseActivity
 {
@@ -38,12 +46,17 @@ public class PubContentActivity extends BaseActivity
 	private ArrayAdapter<String> adapter;
 	private int type;
 
+	private static final int MENU_ITEM1 = Menu.FIRST;
+	private static final int MENU_ITEM2 = Menu.FIRST + 1;
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+	String userMd5="";
 	// private int wzType;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_content);
+		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
 		type = getIntent().getIntExtra("type", 0);
 		// wzType=getIntent().getIntExtra("wztype", 0);
 		this.initHeadView();
@@ -81,6 +94,7 @@ public class PubContentActivity extends BaseActivity
 		dataList.add("camera_default");
 		gridImageAdapter = new GridImageAdapter(this, dataList);
 		gridView.setAdapter(gridImageAdapter);
+		registerForContextMenu(gridView);
 		mHandler = new Handler()
 		{
 
@@ -126,12 +140,7 @@ public class PubContentActivity extends BaseActivity
 				if (position == dataList.size() - 1)
 				{
 
-					Intent intent = new Intent(PubContentActivity.this, AlbumActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
-					intent.putExtras(bundle);
-					// startActivity(intent);
-					startActivityForResult(intent, 0);
+					view.performLongClick();
 
 				}
 
@@ -157,6 +166,11 @@ public class PubContentActivity extends BaseActivity
 					dataList.addAll(tDataList);
 					gridImageAdapter.notifyDataSetChanged();
 				}
+			}
+		}else if(requestCode==1){
+			if(resultCode==RESULT_OK){
+				dataList.add(0, imageUrl);
+				gridImageAdapter.notifyDataSetChanged();
 			}
 		}
 
@@ -240,5 +254,40 @@ public class PubContentActivity extends BaseActivity
 	{
 		this.type = type;
 	}
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		menu.setHeaderTitle("²Ù×÷");
+		menu.add(0, MENU_ITEM1, 0, "Ïà²á");
+		menu.add(0, MENU_ITEM2, 0, "ÅÄÕÕ");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
 
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case MENU_ITEM1:
+			Intent intent = new Intent(PubContentActivity.this, AlbumActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
+			intent.putExtras(bundle);
+			// startActivity(intent);
+			startActivityForResult(intent, 0);
+			break;
+		case MENU_ITEM2:
+			UIHelper.showCamera(this, getImageUri());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
+	public Uri getImageUri()
+	{
+		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		return Uri.fromFile(new File(imageUrl));
+	}
 }

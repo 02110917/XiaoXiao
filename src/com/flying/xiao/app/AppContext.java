@@ -16,6 +16,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
@@ -60,7 +62,7 @@ public class AppContext extends Application
 	{
 		super.onCreate();
 		// 注册App异常崩溃处理器
-		// Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+		 Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
 		this.dirPath=this.getFilesDir().getAbsolutePath();
 		this.headImagePath=dirPath + "/xiao_headimage.png";
 		this.userInfoPath=dirPath + "/xiao_userinfo";
@@ -267,6 +269,19 @@ public class AppContext extends Application
 		clearUserInfo();
 	}
 
-	
+	/**
+	 * 获取App安装包信息
+	 * @return
+	 */
+	public PackageInfo getPackageInfo() {
+		PackageInfo info = null;
+		try { 
+			info = getPackageManager().getPackageInfo(getPackageName(), 0);
+		} catch (NameNotFoundException e) {    
+			e.printStackTrace(System.err);
+		} 
+		if(info == null) info = new PackageInfo();
+		return info;
+	}
 	
 }

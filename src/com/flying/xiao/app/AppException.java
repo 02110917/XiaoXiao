@@ -13,10 +13,14 @@ import java.util.Date;
 import org.apache.http.HttpException;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.os.Environment;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.flying.xiao.R;
+import com.flying.xiao.common.UIHelper;
+import com.flying.xiao.http.HttpUtil;
 
 /**
  * 应用程序异常类：用于捕获异常和提示错误信息
@@ -199,9 +203,55 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 	@Override
 	public void uncaughtException(Thread thread, Throwable ex)
 	{
-		// TODO Auto-generated method stub
-		
+		if(!handleException(ex) && mDefaultHandler != null) {
+			mDefaultHandler.uncaughtException(thread, ex);
+		}
 	}
-	
+	/**
+	 * 自定义异常处理:收集错误信息&发送错误报告
+	 * @param ex
+	 * @return true:处理了该异常信息;否则返回false
+	 */
+	private boolean handleException(Throwable ex) {
+		if(ex == null) {
+			return false;
+		}
+		
+		final Context context = AppManager.getAppManager().currentActivity();
+		
+		if(context == null) {
+			return false;
+		}
+		
+		final String crashReport = getCrashReport(context, ex);
+		//显示异常信息&发送报告
+		new Thread() {
+			public void run() {
+				Looper.prepare();
+				UIHelper.sendAppCrashReport(context, crashReport);
+				HttpUtil.sendExceptionReport(((AppContext)context.getApplicationContext()),crashReport);
+				Looper.loop();
+			}
+
+		}.start();
+		return true;
+	}
+	/**
+	 * 获取APP崩溃异常报告
+	 * @param ex
+	 * @return
+	 */
+	private String getCrashReport(Context context, Throwable ex) {
+		PackageInfo pinfo = ((AppContext)context.getApplicationContext()).getPackageInfo();
+		StringBuffer exceptionStr = new StringBuffer();
+		exceptionStr.append("Version: "+pinfo.versionName+"("+pinfo.versionCode+")\n");
+		exceptionStr.append("Android: "+android.os.Build.VERSION.RELEASE+"("+android.os.Build.MODEL+")\n");
+		exceptionStr.append("Exception: "+ex.getMessage()+"\n");
+		StackTraceElement[] elements = ex.getStackTrace();
+		for (int i = 0; i < elements.length; i++) {
+			exceptionStr.append(elements[i].toString()+"\n");
+		}
+		return exceptionStr.toString();
+	}
 
 }

@@ -2,7 +2,6 @@ package com.flying.xiao;
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +9,7 @@ import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -17,11 +17,9 @@ import android.widget.TextView;
 
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppManager;
-import com.flying.xiao.boardcastreceive.WebSocketMsgReceive;
+import com.flying.xiao.common.ShowDialogUtil;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.service.WebSocketService;
-
-import de.tavendo.autobahn.WebSocket;
 
 /**
  * 应用程序Activity的基类
@@ -82,7 +80,22 @@ public class BaseActivity extends FragmentActivity
 
 		mHeadLeftView = (ImageView) findViewById(R.id.head_left_view);
 		if (mHeadLeftView != null)
-			mHeadLeftView.setOnClickListener(UIHelper.finish(this));
+		{
+			if(this instanceof PubLostActivity|| this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
+				mHeadLeftView.setOnClickListener(new OnClickListener()
+				{
+					
+					@Override
+					public void onClick(View v)
+					{
+						ShowDialogUtil.showDialog(BaseActivity.this);
+					}
+				});
+			}else{
+				mHeadLeftView.setOnClickListener(UIHelper.finish(this));
+			}
+		}
+			
 		mHeadTitle = (TextView) findViewById(R.id.head_title);
 		mHeadRightView = (ImageView) findViewById(R.id.head_right_view);
 		mHeadProgressBar = (ProgressBar) findViewById(R.id.head_right_progressBar);
@@ -158,8 +171,13 @@ public class BaseActivity extends FragmentActivity
 	@Override
 	public void onBackPressed()
 	{
+		if(this instanceof PubLostActivity||this instanceof PubDiaryActivity || this instanceof PubContentActivity ||this instanceof PubMarketActivity){
+			ShowDialogUtil.showDialog(this);
+		}else
+		{
 		super.onBackPressed();
 		overridePendingTransition(0, R.anim.base_slide_right_out);
+		}
 	}
 
 	@Override

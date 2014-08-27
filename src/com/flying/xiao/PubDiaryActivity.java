@@ -1,13 +1,20 @@
 package com.flying.xiao;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -15,10 +22,12 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.flying.xiao.adapter.GridImageAdapter;
+import com.flying.xiao.common.ShowDialogUtil;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
+import com.flying.xiao.util.MD5;
 
 public class PubDiaryActivity extends BaseActivity
 {
@@ -27,12 +36,18 @@ public class PubDiaryActivity extends BaseActivity
 	private GridView gridView;
 	private ArrayList<String> dataList ;
 	private GridImageAdapter gridImageAdapter;
-	 private ProgressDialog mProgress;
+	private ProgressDialog mProgress;
+	 
+	private static final int MENU_ITEM1 = Menu.FIRST;
+	private static final int MENU_ITEM2 = Menu.FIRST + 1;
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+	String userMd5="";
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_diary);
+		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
@@ -58,6 +73,7 @@ public class PubDiaryActivity extends BaseActivity
 		dataList.add("camera_default");
 		gridImageAdapter = new GridImageAdapter(this, dataList);
 		gridView.setAdapter(gridImageAdapter);
+		registerForContextMenu(gridView);
 		mHandler=new Handler(){
 
 			@Override
@@ -98,14 +114,7 @@ public class PubDiaryActivity extends BaseActivity
 
 				if (position == dataList.size() - 1) {
 
-					Intent intent = new Intent(PubDiaryActivity.this,
-							AlbumActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("dataList",
-							getIntentArrayList(dataList));
-					intent.putExtras(bundle);
-//					startActivity(intent);
-					startActivityForResult(intent, 0);
+					view.performLongClick();
 
 				}
 
@@ -127,6 +136,11 @@ public class PubDiaryActivity extends BaseActivity
 					dataList.addAll(tDataList);
 					gridImageAdapter.notifyDataSetChanged();
 				}
+			}
+		}else if(requestCode==1){
+			if(resultCode==RESULT_OK){
+				dataList.add(0, imageUrl);
+				gridImageAdapter.notifyDataSetChanged();
 			}
 		}
 		
@@ -162,4 +176,40 @@ public class PubDiaryActivity extends BaseActivity
 			NetControl.getShare(PubDiaryActivity.this).pubDiaryOrLost(_content, dataList, mHandler,Constant.ContentType.CONTENT_TYPE_DIARY);
 		}
 	};
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		menu.setHeaderTitle("²Ù×÷");
+		menu.add(0, MENU_ITEM1, 0, "Ïà²á");
+		menu.add(0, MENU_ITEM2, 0, "ÅÄÕÕ");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case MENU_ITEM1:
+			Intent intent = new Intent(PubDiaryActivity.this, AlbumActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
+			intent.putExtras(bundle);
+			// startActivity(intent);
+			startActivityForResult(intent, 0);
+			break;
+		case MENU_ITEM2:
+			UIHelper.showCamera(this, getImageUri());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
+	public Uri getImageUri()
+	{
+		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		return Uri.fromFile(new File(imageUrl));
+	}
 }

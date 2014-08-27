@@ -1,15 +1,22 @@
 package com.flying.xiao;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,6 +38,7 @@ import com.flying.xiao.entity.RLost;
 import com.flying.xiao.entity.RMarket;
 import com.flying.xiao.entity.XGoodType;
 import com.flying.xiao.entity.XMarketTypeSecond;
+import com.flying.xiao.util.MD5;
 
 public class PubMarketActivity extends BaseActivity
 {
@@ -58,7 +66,11 @@ public class PubMarketActivity extends BaseActivity
 	private List<XGoodType> mTypeList;
 	private List<String> mTypeStrList = new ArrayList<String>();
 	private List<XMarketTypeSecond> mTypeSecondList = new ArrayList<XMarketTypeSecond>();
-
+	
+	private static final int MENU_ITEM1 = Menu.FIRST;
+	private static final int MENU_ITEM2 = Menu.FIRST + 1;
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+	String userMd5="";
 	// private List<String> mTypeSecondStrList = new ArrayList<String>();
 
 	@Override
@@ -66,6 +78,7 @@ public class PubMarketActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_market);
+		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
@@ -130,6 +143,7 @@ public class PubMarketActivity extends BaseActivity
 		dataList.add("camera_default");
 		gridImageAdapter = new GridImageAdapter(this, dataList);
 		gridView.setAdapter(gridImageAdapter);
+		registerForContextMenu(gridView);
 		mHandler = new Handler()
 		{
 
@@ -190,12 +204,7 @@ public class PubMarketActivity extends BaseActivity
 				if (position == dataList.size() - 1)
 				{
 
-					Intent intent = new Intent(PubMarketActivity.this, AlbumActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
-					intent.putExtras(bundle);
-					// startActivity(intent);
-					startActivityForResult(intent, 0);
+					view.performLongClick();
 
 				}
 
@@ -221,6 +230,11 @@ public class PubMarketActivity extends BaseActivity
 					dataList.addAll(tDataList);
 					gridImageAdapter.notifyDataSetChanged();
 				}
+			}
+		}else if(requestCode==1){
+			if(resultCode==RESULT_OK){
+				dataList.add(0, imageUrl);
+				gridImageAdapter.notifyDataSetChanged();
 			}
 		}
 
@@ -268,6 +282,10 @@ public class PubMarketActivity extends BaseActivity
 					|| StringUtils.isEmpty(_info) || StringUtils.isEmpty(_chengse))
 			{
 				UIHelper.ToastMessage(PubMarketActivity.this, "输入信息不能为空...", Toast.LENGTH_SHORT);
+				return;
+			}
+			else if(dataList.size()<=1){
+				UIHelper.ToastMessage(PubMarketActivity.this, "请至少选择一张图片上传...", Toast.LENGTH_SHORT);
 				return;
 			}
 			RMarket m=new RMarket();
@@ -342,5 +360,42 @@ public class PubMarketActivity extends BaseActivity
 			return v;
 		}
 
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		menu.setHeaderTitle("操作");
+		menu.add(0, MENU_ITEM1, 0, "相册");
+		menu.add(0, MENU_ITEM2, 0, "拍照");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case MENU_ITEM1:
+			Intent intent = new Intent(PubMarketActivity.this, AlbumActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
+			intent.putExtras(bundle);
+			// startActivity(intent);
+			startActivityForResult(intent, 0);
+			break;
+		case MENU_ITEM2:
+			UIHelper.showCamera(this, getImageUri());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
+	public Uri getImageUri()
+	{
+		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		return Uri.fromFile(new File(imageUrl));
 	}
 }

@@ -987,4 +987,17 @@ public class HttpUtil
 		}
 		return base;
 	}
+	
+	public static void sendExceptionReport(AppContext appContext, String report){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("exceptionReport", report);
+		try
+		{
+			String result=http_post(appContext, URLs.URL_SEND_EXCEPTION_REPORT, params);
+			System.out.println("result---"+result);
+		} catch (AppException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

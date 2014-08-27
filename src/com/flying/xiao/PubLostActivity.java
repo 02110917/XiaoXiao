@@ -1,14 +1,26 @@
 package com.flying.xiao;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,6 +34,7 @@ import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
 import com.flying.xiao.entity.RLost;
+import com.flying.xiao.util.MD5;
 
 public class PubLostActivity extends BaseActivity
 {
@@ -37,12 +50,17 @@ public class PubLostActivity extends BaseActivity
 	private ArrayList<String> dataList;
 	private GridImageAdapter gridImageAdapter;
 	private ProgressDialog mProgress;
-
+	
+	private static final int MENU_ITEM1 = Menu.FIRST;
+	private static final int MENU_ITEM2 = Menu.FIRST + 1;
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+	String userMd5="";
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_lost);
+		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
@@ -74,6 +92,7 @@ public class PubLostActivity extends BaseActivity
 		dataList.add("camera_default");
 		gridImageAdapter = new GridImageAdapter(this, dataList);
 		gridView.setAdapter(gridImageAdapter);
+		registerForContextMenu(gridView);
 		mHandler = new Handler()
 		{
 
@@ -118,14 +137,7 @@ public class PubLostActivity extends BaseActivity
 
 				if (position == dataList.size() - 1)
 				{
-
-					Intent intent = new Intent(PubLostActivity.this, AlbumActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
-					intent.putExtras(bundle);
-					// startActivity(intent);
-					startActivityForResult(intent, 0);
-
+					view.performLongClick();
 				}
 
 			}
@@ -150,6 +162,11 @@ public class PubLostActivity extends BaseActivity
 					dataList.addAll(tDataList);
 					gridImageAdapter.notifyDataSetChanged();
 				}
+			}
+		}else if(requestCode==1){
+			if(resultCode==RESULT_OK){
+				dataList.add(0, imageUrl);
+				gridImageAdapter.notifyDataSetChanged();
 			}
 		}
 
@@ -190,6 +207,10 @@ public class PubLostActivity extends BaseActivity
 				UIHelper.ToastMessage(PubLostActivity.this, "输入信息不能为空...", Toast.LENGTH_SHORT);
 				return;
 			}
+			else if(dataList.size()<=1){
+				UIHelper.ToastMessage(PubLostActivity.this, "请至少选择一张图片上传...", Toast.LENGTH_SHORT);
+				return;
+			}
 			RLost rLost=new RLost();
 			rLost.setName(_name);
 			rLost.setPlace(_place);
@@ -204,4 +225,42 @@ public class PubLostActivity extends BaseActivity
 		}
 	};
 
+
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+	{
+		menu.setHeaderTitle("操作");
+		menu.add(0, MENU_ITEM1, 0, "相册");
+		menu.add(0, MENU_ITEM2, 0, "拍照");
+		super.onCreateContextMenu(menu, v, menuInfo);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+		case MENU_ITEM1:
+			Intent intent = new Intent(PubLostActivity.this, AlbumActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList("dataList", getIntentArrayList(dataList));
+			intent.putExtras(bundle);
+			// startActivity(intent);
+			startActivityForResult(intent, 0);
+			break;
+		case MENU_ITEM2:
+			UIHelper.showCamera(this, getImageUri());
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+	
+	public Uri getImageUri()
+	{
+		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		return Uri.fromFile(new File(imageUrl));
+	}
 }

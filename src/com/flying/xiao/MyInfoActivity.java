@@ -60,9 +60,9 @@ public class MyInfoActivity extends BaseActivity
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
 
-	public static final int TAKE_PICTURE = 0; // ≈ƒ’’
-	public static final int FROM_ALBUM = 1; // ¥”œ‡≤·
-	public static final int CROP_PICTURE = 2; // ÕºœÒ≤√ºÙ
+	public static final int TAKE_PICTURE = 1; // ≈ƒ’’
+	public static final int FROM_ALBUM = 2; // ¥”œ‡≤·
+	public static final int CROP_PICTURE = 3; // ÕºœÒ≤√ºÙ
 
 	private String md5;
 	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";

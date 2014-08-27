@@ -11,9 +11,6 @@ import android.content.Context;
 
 /**
  * 应用程序Activity管理类：用于Activity管理和应用程序退出
- * @author liux (http://my.oschina.net/liux)
- * @version 1.0
- * @created 2012-3-21
  */
 public class AppManager {
 	
@@ -97,6 +94,9 @@ public class AppManager {
 			ActivityManager activityMgr= (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 			activityMgr.restartPackage(context.getPackageName());
 			System.exit(0);
-		} catch (Exception e) {	}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 }

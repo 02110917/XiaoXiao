@@ -5,7 +5,7 @@ public class URLs implements Serializable {
 	
 //	public final static String HOST = "http://xiaolife.net";
 //	public final static String HOST = "http://zhangmin.web.myjhost.net/";
-//	public final static String HOST = "http://192.168.3.103:8080";
+//	public final static String HOST = "http://192.168.23.1:8080";
 	public final static String HOST = "http://115.29.79.84";
 //	public final static String HOST = "http://192.168.1.105:8080";
 //	public final static String HOST = "http://192.168.43.186:8080";
@@ -42,6 +42,9 @@ public class URLs implements Serializable {
 	public final static String URL_PUB_MARKET =HOST+ "/XiaoServer/servlet/PubMarket";
 	public final static String URL_PUB_CONTENT =HOST+ "/XiaoServer/servlet/PubContent";
 	public final static String URL_GET_MY_MESSAGE =HOST+ "/XiaoServer/servlet/GetMyMessage";
+	public final static String URL_SEND_EXCEPTION_REPORT =HOST+ "/XiaoServer/servlet/ExceptionReport";
+	
+	
 	
 	
 	}

@@ -143,9 +143,9 @@ public class Constant {
 	}
 
 	public static class MainContentFragmentShowType {
-		public static final int TYPE_MAIN = 0;
-		public static final int TYPE_MY_PUB = 1;
-		public static final int TYPE_MY_COLLECT = 2;
+		public static final int TYPE_MAIN = 0; //全局
+		public static final int TYPE_MY_PUB = 1; //我发布的
+		public static final int TYPE_MY_COLLECT = 2; //我收藏的
 
 	}
 

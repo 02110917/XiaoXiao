@@ -117,6 +117,9 @@
             android:name="com.flying.xiao.FullScreenPictureActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
+            android:name="com.flying.xiao.AlertPasswordActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
             android:name="com.flying.xiao.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"

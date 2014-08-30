@@ -20,6 +20,7 @@ public class Constant {
 		public static final int SAVE_ERROR = 0X0E;
 		public static final int ADD_FRIEND_IS_YOUR_FRIEND_ALERADY = 0X0F;
 		public static final int USER_REGISTER_USERNAME_HAVE = 0X10;
+
 	}
 
 	public static class ContentType {
@@ -101,6 +102,9 @@ public class Constant {
 
 		public static final int GET_MY_MESSAGE_FAIL = 38;
 		public static final int GET_MY_MESSAGE_SUCCESS = 39;
+		
+		public static final int SEARCH_DATA_SUCCESS = 40;
+		public static final int SEARCH_DATA_FAIL = 41;
 	}
 
 	public static class WebsocketCode {

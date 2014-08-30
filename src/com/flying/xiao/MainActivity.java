@@ -154,6 +154,7 @@ public class MainActivity extends BaseActivity
 				case R.id.footbar_main:
 				case R.id.footbar_life:
 				case R.id.footbar_community:
+					UIHelper.showSearchActivity(MainActivity.this);
 					break ;
 				case R.id.footbar_me:
 					UIHelper.showSetting(MainActivity.this);

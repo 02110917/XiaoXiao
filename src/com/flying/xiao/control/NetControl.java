@@ -1,6 +1,5 @@
 package com.flying.xiao.control;
 
-import java.io.File;
 import java.util.List;
 
 import android.content.Context;
@@ -720,5 +719,37 @@ public class NetControl {
 				handler.sendMessage(msg);
 			}
 		}).start();
+	}
+	/**
+	 * ¼ìË÷Êý¾Ý  
+	 * @param type  -1 user 
+	 * @param pageIndex
+	 * @param handler
+	 */
+	public void loadLvSearchData(final String keywork,final int type,final int pageIndex,final Handler handler,final int action){ 
+		new Thread(){
+			public void run() {
+				Message msg = new Message();
+				try {
+					List xuserInfos=HttpUtil.loadSearchData(appContext,type, keywork, pageIndex);
+					if(xuserInfos==null)
+					{
+						msg.what =-1;
+					}
+					else{
+						msg.what =xuserInfos.size();
+						msg.obj = xuserInfos;
+					}
+					
+	            } catch (AppException e) {
+	            	e.printStackTrace();
+	            	msg.what = -1;
+	            	msg.obj = e;
+	            }
+				msg.arg1=action;
+				msg.arg2=type;
+					handler.sendMessage(msg);
+			}
+		}.start();
 	}
 }

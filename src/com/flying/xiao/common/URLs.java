@@ -43,6 +43,8 @@ public class URLs implements Serializable {
 	public final static String URL_PUB_CONTENT =HOST+ "/XiaoServer/servlet/PubContent";
 	public final static String URL_GET_MY_MESSAGE =HOST+ "/XiaoServer/servlet/GetMyMessage";
 	public final static String URL_SEND_EXCEPTION_REPORT =HOST+ "/XiaoServer/servlet/ExceptionReport";
+	public final static String URL_SEARCH_CONTENT =HOST+ "/XiaoServer/servlet/SearchContent";
+	public final static String URL_SEARCH_USER =HOST+ "/XiaoServer/servlet/SearchUser";
 	
 	
 	

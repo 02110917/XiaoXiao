@@ -934,4 +934,55 @@ public class HttpUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * ¼ìË÷Êý¾Ý
+	 * @param type
+	 * @param keyword
+	 * @param page
+	 * @return
+	 * @throws AppException 
+	 */
+	public static List loadSearchData(AppContext appContext,int type,String keyword,int page) throws AppException{
+		List lists=null;
+		String url;
+		//¼ìË÷content
+		if(type!=-1){ 
+			url=URLs.URL_SEARCH_CONTENT; 
+		}else{ //¼ìË÷User
+			url=URLs.URL_SEARCH_USER;
+		}
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("key", keyword);
+		params.put("type", type+"");
+		params.put("page", page+"");
+		try
+		{
+			String result=http_post(appContext, url, params);
+			Gson gson=new Gson();
+			try
+			{
+			if(type!=-1)
+			{
+				lists=gson.fromJson(result, new TypeToken<List<XContent>>()
+						{
+						}.getType());
+			}else{
+				lists=gson.fromJson(result, new TypeToken<List<XUserInfo>>()
+						{
+						}.getType());
+			}
+			}catch(JsonSyntaxException e){
+				e.printStackTrace();
+				throw AppException.network(e);
+			}
+			System.out.println("result---"+result);
+		} catch (AppException e)
+		{
+			e.printStackTrace();
+			throw AppException.network(e);
+		}
+		return lists;
+	}
+	
 }

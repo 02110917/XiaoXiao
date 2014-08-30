@@ -47,6 +47,7 @@ import com.flying.xiao.PubLostActivity;
 import com.flying.xiao.PubLostAndMarketComment;
 import com.flying.xiao.PubMarketActivity;
 import com.flying.xiao.R;
+import com.flying.xiao.SearchActivity;
 import com.flying.xiao.SettingActivity;
 import com.flying.xiao.UserInfoDetail;
 import com.flying.xiao.UserLoginActivity;
@@ -67,6 +68,16 @@ import com.flying.xiao.service.WebSocketService;
  */
 public class UIHelper {
 
+	public final static int LISTVIEW_ACTION_INIT = 0x01;
+	public final static int LISTVIEW_ACTION_REFRESH = 0x02;
+	public final static int LISTVIEW_ACTION_SCROLL = 0x03;
+	public final static int LISTVIEW_ACTION_CHANGE_CATALOG = 0x04;
+	
+	public final static int LISTVIEW_DATA_MORE = 0x01;
+	public final static int LISTVIEW_DATA_LOADING = 0x02;
+	public final static int LISTVIEW_DATA_FULL = 0x03;
+	public final static int LISTVIEW_DATA_EMPTY = 0x04;
+	
 	/** 全局web样式 */
 	public final static String WEB_STYLE = "<style>* {font-size:16px;line-height:20px;} p {color:#333;} a {color:#3E62A6;} img {max-width:310px;} "
 			+ "img.alignleft {float:left;max-width:120px;margin:0 10px 5px 0;border:1px solid #ccc;background:#fff;padding:2px;} "
@@ -494,6 +505,11 @@ public class UIHelper {
 
 	}
 
+	public static void showSearchActivity(Context context){
+		Intent intent = new Intent(context, SearchActivity.class);
+		context.startActivity(intent);
+	}
+	
 	/**
 	 * 绑定服务
 	 * 

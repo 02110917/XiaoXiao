@@ -83,5 +83,12 @@
     <string name="change_vcode">换一张</string>
     <string name="psw_tip">密　码</string>
     <string name="picture_unchecked">请选择图片哦~！</string>
+    <string name="old_password">请输入旧密码</string>
+    <string name="new_password">新密码</string>
+    <string name="current_password">当前密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="new_password_prompt">请输入新密码</string>
+    <string name="new_password_prompt_again">请再次输入新密码</string>
+    <string name="confirm">确认</string>
 
 </resources>

@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.flying.xiao.AlertPasswordActivity;
 import com.flying.xiao.ChatActivity;
 import com.flying.xiao.CommentPub;
 import com.flying.xiao.ContentDetail;
@@ -118,6 +119,18 @@ public class UIHelper {
 		showLoginOrRegiste((Activity) context, true);
 	}
 
+	/**
+	 * 显示修改密码页面
+	 * 
+	 * @param activity
+	 */
+	public static void showAlertPassword(Context context) {
+		Intent intent = new Intent();
+		intent.setClass(context, AlertPasswordActivity.class);
+		context.startActivity(intent);
+	}
+
+	
 	/**
 	 * 显示个人资料
 	 * 

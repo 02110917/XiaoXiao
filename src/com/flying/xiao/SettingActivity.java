@@ -2,13 +2,14 @@ package com.flying.xiao;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.flying.xiao.common.UIHelper;
 
 public class SettingActivity extends BaseActivity
 {
-
+	//设置Onclick就不用找出来了
+	//private LinearLayout accountManage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -30,6 +31,7 @@ public class SettingActivity extends BaseActivity
 
 	private void initView()
 	{
+		//accountManage = (LinearLayout)findViewById(R.id.account_manager);
 	}
 
 	public void settingClick(View v)
@@ -37,7 +39,7 @@ public class SettingActivity extends BaseActivity
 		switch (v.getId())
 		{
 		case R.id.account_manager:// 账号管理
-
+			UIHelper.showAlertPassword(this);
 			break;
 		case R.id.person_info:// 我的资料
 			UIHelper.showMyInfo(this);

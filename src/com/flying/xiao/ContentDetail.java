@@ -29,6 +29,7 @@ import com.flying.xiao.adapter.ListViewCommentAdapter;
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
+import com.flying.xiao.common.URLs;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
 import com.flying.xiao.entity.XComment;
@@ -257,6 +258,7 @@ public class ContentDetail extends BaseActivity
 
 					String body = UIHelper.WEB_STYLE + xconDetail.getContentInfo()
 							+ "<div style=\"margin-bottom: 80px\" />";
+					body = body.replaceAll("src=\"/XiaoServer/", "src=\""+URLs.HOST+"/XiaoServer/");
 					body = body.replaceAll("(<img[^>]*?)\\s+width\\s*=\\s*\\S+", "$1");
 					body = body.replaceAll("(<img[^>]*?)\\s+height\\s*=\\s*\\S+", "$1");
 					//

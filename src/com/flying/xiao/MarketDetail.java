@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,7 +49,7 @@ public class MarketDetail extends BaseActivity {
 	private TextView mPubTime;
 	private TextView mScanTimes;// ä¯ÀÀ´ÎÊý
 	private TextView mPrice;
-	private TextView mDetailInfo;
+	private WebView mDetailInfo;
 	private ProgressBar progressBar;
 	private ViewPager mImagePage;
 	/**
@@ -127,7 +128,10 @@ public class MarketDetail extends BaseActivity {
 		mPubTime = (TextView) findViewById(R.id.market_detail_pub_time);
 		mScanTimes = (TextView) findViewById(R.id.market_detail_scantimes);
 		mPrice = (TextView) findViewById(R.id.market_detail_price);
-		mDetailInfo = (TextView) findViewById(R.id.market_detail_info);
+		mDetailInfo = (WebView) findViewById(R.id.market_detail_info);
+		mDetailInfo.getSettings().setSupportZoom(true);
+		mDetailInfo.getSettings().setBuiltInZoomControls(true);
+		mDetailInfo.getSettings().setDefaultFontSize(15);
 		mImagePage = (ViewPager) findViewById(R.id.market_detail_image_page);
 		mPhone = (TextView) findViewById(R.id.market_detail_footer_phone);
 		/**
@@ -169,7 +173,13 @@ public class MarketDetail extends BaseActivity {
 				case Constant.HandlerMessageCode.CONTENT_DETAIL_LOAD_DATA_SUCCESS:
 					XMarketDetail xmarketDetail = (XMarketDetail) msg.obj;
 					headButtonSwitch(DATA_LOAD_COMPLETE);
-					mDetailInfo.setText(xmarketDetail.getEsMiaoshu());
+					String body = UIHelper.WEB_STYLE + xmarketDetail.getEsMiaoshu()
+							+ "<div style=\"margin-bottom: 80px\" />";
+					body = body.replaceAll("src=\"/XiaoServer/", "src=\""+URLs.HOST+"/XiaoServer/");
+					body = body.replaceAll("(<img[^>]*?)\\s+width\\s*=\\s*\\S+", "$1");
+					body = body.replaceAll("(<img[^>]*?)\\s+height\\s*=\\s*\\S+", "$1");
+					//
+					mDetailInfo.loadDataWithBaseURL(null, body, "text/html", "utf-8", null);
 					mPhone.setText(xmarketDetail.getEsPhone());
 					mPubname.setText(xmarketDetail.getEsName());
 					break;

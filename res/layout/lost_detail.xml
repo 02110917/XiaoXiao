@@ -95,14 +95,12 @@
                 android:text="详细信息"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_20" />
-
-            <TextView
-                android:id="@+id/lost_detail_info"
-                android:layout_width="match_parent"
+ 			<WebView
+		   	    android:id="@+id/lost_detail_info"
+		   	    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/business_name"
-                android:singleLine="false"
-                 />
+		   	    android:background="@color/white" />
 
             <TextView
                 android:id="@+id/showpagerindex"

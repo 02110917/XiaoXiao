@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,7 @@ public class LostDetail extends BaseActivity {
 	private TextView mTitle;
 	private TextView mPubTime;
 	private TextView mPlace; // 丢失地点
-	private TextView mDetailInfo;
+	private WebView mDetailInfo;
 	private ViewPager mImagePage;
 	/**
 	 * footer
@@ -121,7 +122,10 @@ public class LostDetail extends BaseActivity {
 		mPlace = (TextView) findViewById(R.id.lost_detail_place);
 		mTitle = (TextView) findViewById(R.id.lost_detail_title);
 		mPubTime = (TextView) findViewById(R.id.lost_detail_pub_time);
-		mDetailInfo = (TextView) findViewById(R.id.lost_detail_info);
+		mDetailInfo = (WebView) findViewById(R.id.lost_detail_info);
+		mDetailInfo.getSettings().setSupportZoom(true);
+		mDetailInfo.getSettings().setBuiltInZoomControls(true);
+		mDetailInfo.getSettings().setDefaultFontSize(15);
 		mImagePage = (ViewPager) findViewById(R.id.lost_detail_image_page);
 		/**
 		 * 底部按钮
@@ -159,7 +163,14 @@ public class LostDetail extends BaseActivity {
 				case Constant.HandlerMessageCode.CONTENT_DETAIL_LOAD_DATA_SUCCESS:
 					XLostDetail xLostDetail = (XLostDetail) msg.obj;
 					headButtonSwitch(DATA_LOAD_COMPLETE);
-					mDetailInfo.setText(xLostDetail.getLostInfo());
+					String body = UIHelper.WEB_STYLE + xLostDetail.getLostInfo()
+							+ "<div style=\"margin-bottom: 80px\" />";
+					body = body.replaceAll("src=\"/XiaoServer/", "src=\""+URLs.HOST+"/XiaoServer/");
+					body = body.replaceAll("(<img[^>]*?)\\s+width\\s*=\\s*\\S+", "$1");
+					body = body.replaceAll("(<img[^>]*?)\\s+height\\s*=\\s*\\S+", "$1");
+					//
+					mDetailInfo.loadDataWithBaseURL(null, body, "text/html", "utf-8", null);
+//					mDetailInfo.setText(xLostDetail.getLostInfo());
 					mPlace.setText(xLostDetail.getLostPlace());
 					mPhone.setText(xLostDetail.getLostPhone());
 					if (xLostDetail.getLostName() != null)

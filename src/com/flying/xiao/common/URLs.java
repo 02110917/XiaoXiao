@@ -14,6 +14,7 @@ public class URLs implements Serializable {
 	
 	private final static String URL_SPLITTER = "/";
 	private final static String URL_UNDERLINE = "_";
+//	public final static String WSURI = "ws://192.168.23.1:8080/XiaoServer/websocket";
 	public final static String WSURI = "ws://115.29.79.84/XiaoServer/websocket";
 //	public final static String WSURI = "ws://xiaolife.net/XiaoServer/websocket";
 //	public final static String WSURI = "ws://zhangmin.web.myjhost.net/XiaoServer/websocket";

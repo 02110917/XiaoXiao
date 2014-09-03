@@ -27,8 +27,6 @@ public class MyFriends extends BaseActivity
 	private ListViewMyFriendAdapter adapter;
 	private DBHelper dbHelper;
 	
-	private WebSocketMsgReceive receive;
-	private IntentFilter filter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -90,7 +88,7 @@ public class MyFriends extends BaseActivity
 					break;
 				case Constant.HandlerMessageCode.GET_MY_FRIENDS_SUCCESS:
 					List<XUserInfo> list = (List<XUserInfo>) msg.obj;
-					dbHelper.insertFriends(list);
+//					dbHelper.insertFriends(list);
 					myFriendList.clear();
 					myFriendList.addAll(dbHelper.selectFriends());
 //					myFriendList.clear();
@@ -104,7 +102,8 @@ public class MyFriends extends BaseActivity
 				}
 			}
 		};
-		NetControl.getShare(this).getMyFriends(mHandler);
+//		getmWebSocketService().getAllFriends();//获取所有好友列表
+//		NetControl.getShare(this).getMyFriends(mHandler);
 
 	}
 
@@ -118,22 +117,6 @@ public class MyFriends extends BaseActivity
 		adapter.notifyDataSetChanged();
 	}
 	
-	@Override
-	protected void onStart()
-	{
-		super.onStart();
-		receive = new WebSocketMsgReceive();
-		filter = new IntentFilter();
-		filter.addAction("com.flying.xiao.WebSocketMsgReceive");
-		registerReceiver(receive, filter);
-	}
-
-	@Override
-	protected void onStop()
-	{
-		super.onStop();
-		unregisterReceiver(receive);
-	}
 
 	@Override
 	protected void onResume()

@@ -530,8 +530,7 @@ public class NetControl {
 			}
 		}).start();
 	}
-
-	public void getMyFriends(final Handler handler) {
+	public void getUserInfosByName(final Handler handler,final String users) {
 		new Thread(new Runnable() {
 
 			@Override
@@ -539,21 +538,21 @@ public class NetControl {
 				Message msg = new Message();
 				try {
 					List<XUserInfo> userInfos = HttpUtil
-							.getMyFriends(appContext);
+							.getUserInfosByName(appContext, users);
 					if (userInfos == null) {
-						msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_FAIL;
+						msg.what = Constant.HandlerMessageCode.GET_MY_USERS_FAILED;
 						msg.obj = "获取数据出错";
 						return;
 					}
 
-					msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_SUCCESS;
+					msg.what = Constant.HandlerMessageCode.GET_MY_USERS_SUCCESS;
 					msg.obj = userInfos;
 				} catch (AppException e) {
 					if (e.getType() == AppException.USER_NOT_LOGIN) {
 						msg.what = Constant.HandlerMessageCode.USER_NOT_LOGIN;
 						msg.obj = "您还未登陆";
 					} else {
-						msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_FAIL;
+						msg.what = Constant.HandlerMessageCode.GET_MY_USERS_FAILED;
 						msg.obj = e;
 					}
 					e.printStackTrace();
@@ -562,6 +561,37 @@ public class NetControl {
 			}
 		}).start();
 	}
+//	public void getMyFriends(final Handler handler) {
+//		new Thread(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				Message msg = new Message();
+//				try {
+//					List<XUserInfo> userInfos = HttpUtil
+//							.getMyFriends(appContext);
+//					if (userInfos == null) {
+//						msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_FAIL;
+//						msg.obj = "获取数据出错";
+//						return;
+//					}
+//
+//					msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_SUCCESS;
+//					msg.obj = userInfos;
+//				} catch (AppException e) {
+//					if (e.getType() == AppException.USER_NOT_LOGIN) {
+//						msg.what = Constant.HandlerMessageCode.USER_NOT_LOGIN;
+//						msg.obj = "您还未登陆";
+//					} else {
+//						msg.what = Constant.HandlerMessageCode.GET_MY_FRIENDS_FAIL;
+//						msg.obj = e;
+//					}
+//					e.printStackTrace();
+//				}
+//				handler.sendMessage(msg);
+//			}
+//		}).start();
+//	}
 
 	public void getMyDynamic(final Handler handler, final int page) {
 		new Thread(new Runnable() {

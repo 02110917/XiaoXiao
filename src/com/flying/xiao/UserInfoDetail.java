@@ -23,10 +23,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.flying.xiao.adapter.MyFragmentPaperAdapter;
+import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.common.URLs;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
+import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.fragment.MainDiary;
 import com.flying.xiao.fragment.UserInfoDetailFragment;
@@ -81,6 +83,7 @@ public class UserInfoDetail extends BaseActivity
 			{
 				userInfo = appContext.listManager.getDepartmentList().get(index);
 			}
+			userInfo.setMeFriend(DBHelper.getDbHelper(this).isHaveThisUser(userInfo.getId()));
 		}
 		/**
 		 * 顶部
@@ -235,6 +238,14 @@ public class UserInfoDetail extends BaseActivity
 					mAddfriend.setText("已关注");
 					userInfo.setMeFriend(true);
 					break;
+				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_FAILD: //xmpp add friend faild
+					UIHelper.ToastMessage(appContext, "添加好友失败,请重试...");
+					break ;
+				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS: //
+//					UIHelper.ToastMessage(appContext, "添加好友成功");
+					DBHelper.getDbHelper(UserInfoDetail.this).insertFriend(userInfo);
+					mAddfriend.setText("已关注");
+					userInfo.setMeFriend(true);
 				default:
 					break;
 				}
@@ -262,7 +273,9 @@ public class UserInfoDetail extends BaseActivity
 				{
 					mHandler.sendEmptyMessage(Constant.HandlerMessageCode.ADD_FRIEND_IS_YOUR_FRIEND_ALERADY);
 				}
-				NetControl.getShare(UserInfoDetail.this).addFriend(userInfo.getId(), mHandler);
+				if(getmWebSocketService().isXmppLogin())
+					XmppControl.getShare(UserInfoDetail.this).addFriend(userInfo.getUserName(), userInfo.getUserRealName(), mHandler);
+//				NetControl.getShare(UserInfoDetail.this).addFriend(userInfo.getId(), mHandler);
 				break;
 			case R.id.department_detail_gg:
 			case R.id.department_detail_bmjs:

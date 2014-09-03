@@ -14,14 +14,20 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flying.xiao.BaseActivity;
+import com.flying.xiao.MainActivity;
 import com.flying.xiao.R;
+import com.flying.xiao.SearchActivity;
 import com.flying.xiao.app.AppContext;
+import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.common.URLs;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.control.NetControl;
+import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.XUserInfo;
+import com.flying.xiao.service.WebSocketService;
 import com.flying.xiao.util.ImageManager2;
 /**
  * 社区adapter
@@ -59,6 +65,26 @@ public class ListViewCommunityAdapter extends BaseAdapter
 		this.listItems = data;
 		appContext=(AppContext) ((Activity)context).getApplication();
 	}
+	
+	
+	
+	@Override
+	public void notifyDataSetChanged()
+	{
+		//通过与我的还有比较  设置user列表是否是我的好友
+		for(XUserInfo user:listItems){
+			if(DBHelper.getDbHelper(context).isHaveThisUser(user.getId())){
+				user.setMeFriend(true);
+			}
+		}
+		super.notifyDataSetChanged();
+		
+	}
+
+	private void setUsersState(){
+		
+	}
+
 	@Override
 	public int getCount()
 	{
@@ -81,7 +107,7 @@ public class ListViewCommunityAdapter extends BaseAdapter
 	 * ListView Item设置
 	 */
 	@Override
-	public View getView( int position, View convertView, ViewGroup parent)
+	public View getView( final int position, View convertView, ViewGroup parent)
 	{
 		// 自定义视图
 		final ListItemView listItemView;
@@ -145,32 +171,52 @@ public class ListViewCommunityAdapter extends BaseAdapter
 					break ;
 				case Constant.HandlerMessageCode.ADD_FRIEND_SUCCESS:
 					listItemView.collection.setImageResource(R.drawable.head_favorite_y);
-					userInfo.setMeFriend(true);
+					listItems.get(position).setMeFriend(true);
 					notifyDataSetChanged();
 					break ;
+				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_FAILD: //xmpp add friend faild
+					UIHelper.ToastMessage(appContext, "添加好友失败,请重试...");
+//					listItemView.collection.setImageResource(R.drawable.head_favorite);
+					break ;
+				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS: //
+					UIHelper.ToastMessage(appContext, "添加好友成功");
+//					listItemView.collection.setImageResource(R.drawable.head_favorite_y);
+//					listItems.get(clickposition).setMeFriend(true);
+					DBHelper.getDbHelper(context).insertFriend(listItems.get(clickposition));
+					notifyDataSetChanged();
 				default:
 					break;
 				}
 			}};
 		
-		listItemView.collection.setOnClickListener(new OnClickListener()
-		{
-			
-			@Override
-			public void onClick(View v)
-			{
-				if(!appContext.isLogin()){
-					handler.sendEmptyMessage(Constant.HandlerMessageCode.USER_NOT_LOGIN);
-				}
-				if(userInfo.isMeFriend()){
-					handler.sendEmptyMessage(Constant.HandlerMessageCode.ADD_FRIEND_IS_YOUR_FRIEND_ALERADY);
-				}
-				NetControl.getShare(context).addFriend(userInfo.getId(), handler);
-			}
-		});
+		listItemView.collection.setOnClickListener(new MyCollectListener(userInfo,position));
 		return convertView;
 	}
-
+	private  int clickposition=0;
+	private class MyCollectListener implements OnClickListener{
+		private XUserInfo userInfo ;
+		public MyCollectListener(XUserInfo userInfo,int collectClickPosition){
+			this.userInfo=userInfo;
+			clickposition=collectClickPosition-1;
+		}
+		@Override
+		public void onClick(View v)
+		{
+			if(!appContext.isLogin()){
+				handler.sendEmptyMessage(Constant.HandlerMessageCode.USER_NOT_LOGIN);
+			}
+			if(userInfo.isMeFriend()){
+				handler.sendEmptyMessage(Constant.HandlerMessageCode.ADD_FRIEND_IS_YOUR_FRIEND_ALERADY);
+			}
+//			if((Activity)context instanceof MainActivity||(Activity)context instanceof SearchActivity){
+//				((BaseActivity)context).getmWebSocketService().addFriend(userInfo.getUserName(), userInfo.getUserRealName());
+//			}
+			if(((BaseActivity)context).getmWebSocketService().isXmppLogin())
+				XmppControl.getShare(context).addFriend(userInfo.getUserName(), userInfo.getUserRealName(), handler);
+//			NetControl.getShare(context).addFriend(userInfo.getId(), handler);
+		}
+		
+	}
 	
 	/**
 	 * 点击头像 进入我的页面

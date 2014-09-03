@@ -1,9 +1,10 @@
 package com.flying.xiao.common;
 
-import java.util.ArrayList;
-
 import greendroid.widget.MyQuickAction;
 import greendroid.widget.QuickAction;
+
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -53,10 +54,10 @@ import com.flying.xiao.UserInfoDetail;
 import com.flying.xiao.UserLoginActivity;
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppManager;
+import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.entity.XContent;
 import com.flying.xiao.entity.XUserInfo;
-import com.flying.xiao.http.HttpUtil;
 import com.flying.xiao.service.WebSocketService;
 
 /**
@@ -345,7 +346,9 @@ public class UIHelper {
 		if (ac.isLogin()) {
 			ac.Logout();
 			if (activity instanceof MainActivity) {
-				((MainActivity) activity).getmWebSocketService().recontent();
+				//调用getmWebSocketService一定要在BaseActivity绑定service
+				((MainActivity)activity).getmWebSocketService().setXmppLogin(false);
+				XmppControl.getShare(activity).deleteAccount();
 			}
 			ToastMessage(activity, "已退出登录");
 		} else {
@@ -404,7 +407,9 @@ public class UIHelper {
 	}
 
 	public static void ToastMessage(Context cont, String msg, boolean isTest) {
-		Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
+		//TODO  关闭调试toast
+		if(!isTest)
+			Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
 	}
 
 	public static void ToastMessage(Context cont, int msg) {

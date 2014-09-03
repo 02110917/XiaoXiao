@@ -3,6 +3,9 @@ package com.flying.xiao.service;
 import java.util.Date;
 import java.util.List;
 
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.util.StringUtils;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -11,16 +14,16 @@ import android.os.IBinder;
 import android.os.Message;
 
 import com.flying.xiao.app.AppContext;
+import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.common.URLs;
+import com.flying.xiao.constant.Constant;
 import com.flying.xiao.constant.Constant.WebsocketCode;
+import com.flying.xiao.control.NetControl;
 import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.ChatMessage;
-import com.flying.xiao.websocket.OfflineMessage;
-import com.flying.xiao.websocket.WFriend;
-import com.flying.xiao.websocket.WFriends;
+import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.websocket.WMessage;
-import com.flying.xiao.websocket.WOfflineMessages;
 import com.google.gson.Gson;
 
 import de.tavendo.autobahn.WebSocket;
@@ -35,19 +38,20 @@ public class WebSocketService extends Service
 	private DBHelper dbHelper;
 	private final IBinder binder = new MyBinder();
 
-//	private boolean isOnline = false;
-	private boolean threadHeartFlag=false ;
-	private boolean threadReconnectFalg=false ;
+	// private boolean isOnline = false;
+	private boolean threadHeartFlag = false;
+	private boolean threadReconnectFalg = false;
 	private boolean isSendtoHeart = false; // 心跳是否发送到达
-	private boolean isDestoryServer ; 
+	private boolean isDestoryServer;
 	private int heartReSendTime = 0; // 心跳重发次数
 
 	private static final int HANLER_RECONNECT = 1;
 	private static final int HANLER_SEND_HEART = 2;
 
-	private ReConnectThread reContentThread=null;
+	private ReConnectThread reContentThread = null;
 
-	private HeartThread hearttThread=null;
+	private HeartThread hearttThread = null;
+	private static boolean isXmppLogin = false;
 
 	@Override
 	public IBinder onBind(Intent intent)
@@ -63,6 +67,8 @@ public class WebSocketService extends Service
 		{
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
+			Intent intent = new Intent();
+			intent.setAction("com.flying.xiao.ChangeStateReceive");
 			switch (msg.what)
 			{
 			case HANLER_SEND_HEART:
@@ -77,6 +83,81 @@ public class WebSocketService extends Service
 			case HANLER_RECONNECT:
 				recontent();
 				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_LOGIN_SUCCESS: // xmpp登录成功
+				appContext.setXmppLogin(true);
+				isXmppLogin=true ;
+				UIHelper.ToastMessage(appContext, "xmpp登录成功", true);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_LOGIN_FAILED: // xmpp登录失败
+				appContext.setXmppLogin(false);
+				UIHelper.ToastMessage(appContext, "xmpp登录失败", true);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_MESSAGE: // 接收到消息
+				org.jivesoftware.smack.packet.Message xmsg = (org.jivesoftware.smack.packet.Message) msg.obj;
+				ChatMessage cm = ChatMessage.getInstance(xmsg, false, appContext);
+				dbHelper.insertMsg(cm);
+				UIHelper.ToastMessage(appContext, "xmpp接收到消息:" + cm.getBody(), true);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_OFF_LINE_MESSAGE: // 接收到离线消息
+				List<ChatMessage> msglist = (List<ChatMessage>) msg.obj;
+				if (msglist != null && msglist.size() > 0)
+				{
+					dbHelper.insertOfflineMessage(msglist);
+				}
+				UIHelper.ToastMessage(appContext, "xmpp接收到离线消息:", true);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_SUCCESS: // 消息发送成功
+				ChatMessage cmsg = (ChatMessage) msg.obj;
+				dbHelper.updateMsgSendTo(cmsg.getTime());
+				UIHelper.ToastMessage(appContext, "信息已送达...", true);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_FAILED: // 消息发送失败
+				ChatMessage cmsg1 = (ChatMessage) msg.obj;
+				dbHelper.updateMsgSendError(cmsg1.getTime());
+				UIHelper.ToastMessage(appContext, "信息发送失败...", true);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_ALL_FRIENDS: // 获取好友列表
+				List<XUserInfo> users = (List<XUserInfo>) msg.obj;
+				dbHelper.insertOrUpdateFriends(users);
+				UIHelper.ToastMessage(appContext, "获取好友列表", true);
+				Gson gson = new Gson();
+				NetControl.getShare(WebSocketService.this).getUserInfosByName(handler, gson.toJson(users));
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_FRIEND_STATE_CHANGE: // 好友状态改变
+				Presence prensence = (Presence) msg.obj;
+				dbHelper.updateUserOnlineOrOffLine(
+						StringUtils.parseName(prensence.getFrom()).replace("$", "@"), prensence.isAvailable());
+				UIHelper.ToastMessage(appContext, "好友状态改变:"+StringUtils.parseName(prensence.getFrom()).replace("$", "@"),true);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.HandlerMessageCode.GET_MY_USERS_SUCCESS:
+				List<XUserInfo> userinfos = (List<XUserInfo>) msg.obj;
+				dbHelper.insertFriends(userinfos);
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
+				sendBroadcast(intent);
+				break;
+			case Constant.HandlerMessageCode.GET_MY_USERS_FAILED:
+				UIHelper.ToastMessage(appContext, "更新好友列表出错");
+				break;
+			case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_FAILD: //xmpp add friend faild
+				UIHelper.ToastMessage(appContext, "添加好友失败,请重试...");
+				break ;
+			case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS: //
+				UIHelper.ToastMessage(appContext, "添加好友成功");
+				XmppControl.getShare(WebSocketService.this).getAllFriends(handler);
+				
+				break ;
 			default:
 				break;
 			}
@@ -88,23 +169,25 @@ public class WebSocketService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		System.out.println("WebSocketService服务开启......");
-//		System.out.println("WebSocketService IP:" + Util.getLocalIpAddress());
+		appContext = (AppContext) this.getApplication();
+		loginToXmpp();
+		// System.out.println("WebSocketService IP:" +
+		// Util.getLocalIpAddress());
 		dbHelper = DBHelper.getDbHelper(this);
-		isDestoryServer=false ;
-		if (!mConnection.isConnected())
-		{
-			appContext = (AppContext) this.getApplication();
-			threadHeartFlag=false ;
-			threadReconnectFalg=true ;
-			if (reContentThread == null || !reContentThread.isAlive())
-			{
-//				UIHelper.ToastMessage(WebSocketService.this, "启动线程..contentThread", true);
-				reContentThread = new ReConnectThread();
-				reContentThread.start();
-			}
-//			start();
-		}
+		isDestoryServer = false;
+		start();
 		return super.onStartCommand(intent, flags, startId);
+	}
+
+	public void loginToXmpp()
+	{
+		// 如果http登录但是xmpp未登陆
+		if (appContext.isLogin() && (!isXmppLogin))
+		{
+			// 登录到服务器 XMPP
+			XmppControl.getShare(this).login(appContext.getUserInfo().getUserName(),
+					appContext.getUserInfo().getUserPsd(), handler);
+		}
 	}
 
 	@Override
@@ -117,17 +200,16 @@ public class WebSocketService extends Service
 	@Override
 	public void onDestroy()
 	{
-		isDestoryServer=true;
+		isDestoryServer = true;
 		mConnection.disconnect();
-		threadHeartFlag=false ;
-		threadReconnectFalg=false ;
+		threadHeartFlag = false;
+		threadReconnectFalg = false;
 		UIHelper.ToastMessage(this, "Service destory ", true);
 		super.onDestroy();
 
 	}
 
 	public class MyBinder extends Binder
-
 	{
 
 		public WebSocketService getWebSocketServiceInstance()
@@ -136,36 +218,40 @@ public class WebSocketService extends Service
 		}
 	}
 
-	public void recontent(){
-		if (mConnection.isConnected())
-		{
-			mConnection.disconnect();
-//			Toast.makeText(WebSocketService.this, "mConnection 断开连接....", 1000).show();
-		}
-		reContentWebSocket();
-	}
+	 public void recontent(){
+	 if (mConnection.isConnected())
+	 {
+	 mConnection.disconnect();
+//	  Toast.makeText(WebSocketService.this, "mConnection 断开连接....",
+//	 1000).show();
+	 }
+	 reContentWebSocket();
+	 }
 	
-	public void reContentWebSocket()
-	{
-		threadHeartFlag=false ;
-//		threadReconnectFalg=false ;
-		mConnection = new WebSocketConnection();
-		start();
-//		Toast.makeText(WebSocketService.this, "WebSocket 重连....", 1000).show();
-	}
+	 public void reContentWebSocket()
+	 {
+	 threadHeartFlag=false ;
+	 // threadReconnectFalg=false ;
+	 mConnection = new WebSocketConnection();
+	 start();
+//	  Toast.makeText(WebSocketService.this, "WebSocket 重连....",
+//	 1000).show();
+	 }
 
 	private WebSocket mConnection = new WebSocketConnection();
 
 	private void start()
 	{
-
-		if (appContext.isLogin())
-		{
-			wsUri = URLs.WSURI + "?userId=" + appContext.getUserInfo().getId();
-		} else
-		{
-			wsUri = URLs.WSURI;
-		}
+		if (mConnection != null && mConnection.isConnected())
+			return;
+		// if (appContext.isLogin())
+		// {
+		// wsUri = URLs.WSURI + "?userId=" + appContext.getUserInfo().getId();
+		// } else
+		// {
+		// wsUri = URLs.WSURI;
+		// }
+		wsUri = URLs.WSURI;
 		try
 		{
 			mConnection.connect(wsUri, new WebSocketConnectionHandler()
@@ -173,13 +259,15 @@ public class WebSocketService extends Service
 				@Override
 				public void onOpen()
 				{
-//					UIHelper.ToastMessage(WebSocketService.this, "onOpen", true);
-					threadHeartFlag=true ;
-					threadReconnectFalg=false;
-					heartReSendTime=0 ;
+					// UIHelper.ToastMessage(WebSocketService.this, "onOpen",
+					// true);
+					threadHeartFlag = true;
+					threadReconnectFalg = false;
+					heartReSendTime = 0;
 					if (hearttThread == null || !hearttThread.isAlive())
 					{
-//						UIHelper.ToastMessage(WebSocketService.this, "启动线程..hearttThread", true);
+						// UIHelper.ToastMessage(WebSocketService.this,
+						// "启动线程..hearttThread", true);
 						hearttThread = new HeartThread();
 						hearttThread.start();
 					}
@@ -188,7 +276,8 @@ public class WebSocketService extends Service
 				@Override
 				public void onTextMessage(String payload)
 				{
-//					UIHelper.ToastMessage(WebSocketService.this, payload, true);
+					// UIHelper.ToastMessage(WebSocketService.this, payload,
+					// true);
 					System.out.println("WebSocketService:" + payload);
 					dealMessage(payload);
 					Intent intent = new Intent();
@@ -200,7 +289,8 @@ public class WebSocketService extends Service
 				@Override
 				public void onClose(int code, String reason)
 				{
-//					UIHelper.ToastMessage(WebSocketService.this, "onClose："+reason, true);
+					// UIHelper.ToastMessage(WebSocketService.this,
+					// "onClose："+reason, true);
 					dbHelper.updateUserOffLine(); // 断开连接 将好友在线状态置为false
 					Intent intent = new Intent();
 					WMessage msg = new WMessage();
@@ -209,8 +299,8 @@ public class WebSocketService extends Service
 					intent.setAction("com.flying.xiao.WebSocketMsgReceive");
 					intent.putExtra("message", msg.toJson());
 					sendBroadcast(intent);
-					threadHeartFlag=false ;
-					threadReconnectFalg=true ;
+					threadHeartFlag = false;
+					threadReconnectFalg = true;
 					if (reContentThread == null || !reContentThread.isAlive())
 					{
 						UIHelper.ToastMessage(WebSocketService.this, "启动线程..reContentThread", true);
@@ -241,61 +331,63 @@ public class WebSocketService extends Service
 			long receive = msg.getUserReceiveId();
 			switch (msg.getCode())
 			{
-			case WebsocketCode.WEBSOCKET_CODE_FRIEND_LIST:
-				WFriends friends = gson.fromJson(message, WFriends.class);
-				// listManager.getMyOnlineFriend().addAll(friends.getFriends());
-				dbHelper.updateUserOffLine();
-				if (friends == null || friends.getFriends() == null)
-					return;
-				for (WFriend wf : friends.getFriends())
-				{
-					dbHelper.updateUserOnlineOrOffLine(wf.getFriendUserId(), true);
-				}
-				break;
-			case WebsocketCode.WEBSOCKET_CODE_FRIEND_ONLINE:
-				dbHelper.updateUserOnlineOrOffLine(sendId, true);
-				// WFriend wf=new WFriend();
-				// wf.setFriendUserId(sendId);
-				// listManager.getMyOnlineFriend().add(wf);
-				// ListManager.getContentMangerShare().setMyFriendOnline(sendId);
-				break;
-			case WebsocketCode.WEBSOCKET_CODE_FRIEND_OFFLINE:
-				dbHelper.updateUserOnlineOrOffLine(sendId, false);
-				// listManager.removeOnlineFriendById(sendId);
-				// ListManager.getContentMangerShare().setMyFriendOffLine(sendId);
-				break;
-			case WebsocketCode.WEBSOCKET_SEND_MESSAGE_TEXT:
-				ChatMessage cm = ChatMessage.getInstance(msg, false, appContext);
-				dbHelper.insertMsg(cm);
-				WMessage wm = new WMessage();
-				wm.setCode(WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS);
-				wm.setMessage("发送到达");
-				wm.setMessageId(cm.getMessageId());
-				// wm.setMsg(cm.getMessageId()+"");
-				wm.setUserSendId(receive);
-				wm.setUserReceiveId(sendId);
-				sendMessage(wm);
-				break;
-			case WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS: // 信息已送达
-				dbHelper.updateMsgSendTo(msg.getMessageId());
-				UIHelper.ToastMessage(appContext, "信息已送达...", true);
-				break;
-			case WebsocketCode.WEBSOCKET_SEND_TO_SERVER: // 信息发送到服务器
-				dbHelper.updateMsgSendTo(msg.getMessageId());
-				UIHelper.ToastMessage(appContext, "信息已送达...服务器", true);
-				break;
-			case WebsocketCode.WEBSOCKET_OFFLINE_MESSAGE: // 离线消息
-				WOfflineMessages offlineMessage = gson.fromJson(message, WOfflineMessages.class);
-				if (offlineMessage != null)
-				{
-					List<OfflineMessage> list = offlineMessage.getOfflineMessages();
-					if (list != null && list.size() > 0)
-					{
-						dbHelper.insertOfflineMessage(list);
-					}
-				}
-
-				break;
+			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_LIST:
+			// WFriends friends = gson.fromJson(message, WFriends.class);
+			// // listManager.getMyOnlineFriend().addAll(friends.getFriends());
+			// dbHelper.updateUserOffLine();
+			// if (friends == null || friends.getFriends() == null)
+			// return;
+			// for (WFriend wf : friends.getFriends())
+			// {
+			// dbHelper.updateUserOnlineOrOffLine(wf.getFriendUserId(), true);
+			// }
+			// break;
+			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_ONLINE:
+			// dbHelper.updateUserOnlineOrOffLine(sendId, true);
+			// // WFriend wf=new WFriend();
+			// // wf.setFriendUserId(sendId);
+			// // listManager.getMyOnlineFriend().add(wf);
+			// // ListManager.getContentMangerShare().setMyFriendOnline(sendId);
+			// break;
+			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_OFFLINE:
+			// dbHelper.updateUserOnlineOrOffLine(sendId, false);
+			// // listManager.removeOnlineFriendById(sendId);
+			// //
+			// ListManager.getContentMangerShare().setMyFriendOffLine(sendId);
+			// break;
+			// case WebsocketCode.WEBSOCKET_SEND_MESSAGE_TEXT:
+			// ChatMessage cm = ChatMessage.getInstance(msg, false, appContext);
+			// dbHelper.insertMsg(cm);
+			// WMessage wm = new WMessage();
+			// wm.setCode(WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS);
+			// wm.setMessage("发送到达");
+			// wm.setMessageId(cm.getMessageId());
+			// // wm.setMsg(cm.getMessageId()+"");
+			// wm.setUserSendId(receive);
+			// wm.setUserReceiveId(sendId);
+			// sendMessage(wm);
+			// break;
+			// case WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS: // 信息已送达
+			// dbHelper.updateMsgSendTo(msg.getMessageId());
+			// UIHelper.ToastMessage(appContext, "信息已送达...", true);
+			// break;
+			// case WebsocketCode.WEBSOCKET_SEND_TO_SERVER: // 信息发送到服务器
+			// dbHelper.updateMsgSendTo(msg.getMessageId());
+			// UIHelper.ToastMessage(appContext, "信息已送达...服务器", true);
+			// break;
+			// case WebsocketCode.WEBSOCKET_OFFLINE_MESSAGE: // 离线消息
+			// WOfflineMessages offlineMessage = gson.fromJson(message,
+			// WOfflineMessages.class);
+			// if (offlineMessage != null)
+			// {
+			// List<OfflineMessage> list = offlineMessage.getOfflineMessages();
+			// if (list != null && list.size() > 0)
+			// {
+			// dbHelper.insertOfflineMessage(list);
+			// }
+			// }
+			//
+			// break;
 			case WebsocketCode.WEBSOCKET_SEND_HEART:
 				isSendtoHeart = true;
 				heartReSendTime = 0;
@@ -309,6 +401,11 @@ public class WebSocketService extends Service
 		}
 	}
 
+	/**
+	 * WebSocket发送消息
+	 * 
+	 * @param message
+	 */
 	public void sendMessage(WMessage message)
 	{
 		if (mConnection != null && mConnection.isConnected())
@@ -320,6 +417,28 @@ public class WebSocketService extends Service
 		}
 	}
 
+	/**
+	 * Xmpp发送消息
+	 * 
+	 * @param message
+	 */
+	public void sendMessage(ChatMessage message)
+	{
+		XmppControl.getShare(this).sendMessage(message, handler);
+	}
+	/**
+	 * xmpp添加好友
+	 * @param userName
+	 * @param nickName
+	 */
+	public void addFriend(String userName, String nickName){
+		XmppControl.getShare(this).addFriend(userName, nickName, handler);
+	}
+	
+	public void getAllFriends(){
+		XmppControl.getShare(this).getAllFriends(handler);
+	}
+	
 	public class HeartThread extends Thread
 	{
 
@@ -345,7 +464,7 @@ public class WebSocketService extends Service
 			}
 
 			threadHeartFlag = false; // 掉线 每隔5s一直请求重连
-			threadReconnectFalg=true ;
+			threadReconnectFalg = true;
 			if (reContentThread == null || !reContentThread.isAlive())
 			{
 				reContentThread = new ReConnectThread();
@@ -363,7 +482,7 @@ public class WebSocketService extends Service
 		public void run()
 		{
 			super.run();
-			while (threadReconnectFalg&&!isDestoryServer)
+			while (threadReconnectFalg && !isDestoryServer)
 			{
 				heartReSendTime = 0;
 				// isOnline=true;
@@ -379,4 +498,15 @@ public class WebSocketService extends Service
 		}
 
 	}
+
+	public static boolean isXmppLogin()
+	{
+		return isXmppLogin;
+	}
+
+	public static void setXmppLogin(boolean isXmppLogin)
+	{
+		WebSocketService.isXmppLogin = isXmppLogin;
+	}
+	
 }

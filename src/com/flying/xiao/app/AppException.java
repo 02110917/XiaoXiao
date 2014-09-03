@@ -41,6 +41,7 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 	public final static byte TYPE_IO	 	= 0x06;
 	public final static byte TYPE_RUN	 	= 0x07;
 	public final static byte USER_NOT_LOGIN	 	= 0x08;
+	public final static byte TYPE_JSON	 	= 0x09;
 	
 	private byte type;
 	private int code;
@@ -88,6 +89,9 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 			break;
 		case TYPE_XML:
 			Toast.makeText(ctx, R.string.xml_parser_failed, Toast.LENGTH_SHORT).show();
+			break;
+		case TYPE_JSON:
+			Toast.makeText(ctx, "获取数据出错", Toast.LENGTH_SHORT).show();
 			break;
 		case TYPE_IO:
 			Toast.makeText(ctx, R.string.io_exception_error, Toast.LENGTH_SHORT).show();
@@ -170,7 +174,9 @@ public class AppException extends Exception implements UncaughtExceptionHandler{
 	public static AppException xml(Exception e) {
 		return new AppException(TYPE_XML, 0, e);
 	}
-	
+	public static AppException json(Exception e) {
+		return new AppException(TYPE_JSON, 0, e);
+	}
 	public static AppException notLogin(Exception e) {
 		return new AppException(USER_NOT_LOGIN, 0, e);
 	}

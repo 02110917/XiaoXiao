@@ -43,6 +43,7 @@ public class AppContext extends Application
 	public static final int NETTYPE_CMNET = 0x03;
 
 	private boolean login = false; // µÇÂ¼×´Ì¬
+	private boolean isXmppLogin=false ;
 	private XUserInfo userInfo = null;
 
 	public  ListManager listManager ;
@@ -62,6 +63,7 @@ public class AppContext extends Application
 	{
 		super.onCreate();
 		// ×¢²áAppÒì³£±ÀÀ£´¦ÀíÆ÷
+		//TODO ======
 		 Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
 		this.dirPath=this.getFilesDir().getAbsolutePath();
 		this.headImagePath=dirPath + "/xiao_headimage.png";
@@ -282,6 +284,18 @@ public class AppContext extends Application
 		} 
 		if(info == null) info = new PackageInfo();
 		return info;
+	}
+
+
+	public boolean isXmppLogin()
+	{
+		return isXmppLogin;
+	}
+
+
+	public void setXmppLogin(boolean isXmppLogin)
+	{
+		this.isXmppLogin = isXmppLogin;
 	}
 	
 }

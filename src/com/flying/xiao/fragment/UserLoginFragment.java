@@ -22,6 +22,8 @@ import com.flying.xiao.R;
 import com.flying.xiao.UserLoginActivity;
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppException;
+import com.flying.xiao.asmack.XmppConnection;
+import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
@@ -61,7 +63,10 @@ public class UserLoginFragment extends Fragment
 //					intent.putExtra("LOGIN", true);
 //					startActivity(intent);
 					appContext.initLoginInfo();
-					context.getmWebSocketService().recontent();
+					
+					XmppControl.getShare(context).deleteAccount();
+					context.getmWebSocketService().setXmppLogin(false);
+					context.getmWebSocketService().loginToXmpp();
 					context.finish();
 				}
 			} else if (msg.what == Constant.HandlerMessageCode.LOGIN_FAILD)

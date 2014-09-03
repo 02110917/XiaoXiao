@@ -2,7 +2,7 @@ package com.flying.xiao.constant;
 
 public class Constant {
 	public static final int MAX_PAGE_COUNT = 15;
-
+	public static final String XMPP_SERVER="@115.29.79.84/Smack";
 	public static class ErrorCode {
 		public static final int USER_LOGIN_ERROR = 0X01;
 		public static final int PUB_COMMENT_ERROR = 0X02;
@@ -105,6 +105,12 @@ public class Constant {
 		
 		public static final int SEARCH_DATA_SUCCESS = 40;
 		public static final int SEARCH_DATA_FAIL = 41;
+		
+		/**
+		 * 根据用户名获取userinfo对象
+		 */
+		public static final int GET_MY_USERS_SUCCESS = 42;
+		public static final int GET_MY_USERS_FAILED = 43;
 	}
 
 	public static class WebsocketCode {
@@ -156,5 +162,23 @@ public class Constant {
 	public static class PictureType {
 		public static final int TYPE_NATIVE = 0;
 		public static final int TYPE_NET = 1;
+	}
+	
+	public static class XmppHandlerMsgCode{
+		public static final int HANDLER_CODE_LOGIN_SUCCESS=100; //登录成功
+		public static final int HANDLER_CODE_LOGIN_FAILED=101; //登录失败
+		public static final int HANDLER_CODE_GET_MESSAGE=102; //接收到消息
+		public static final int HANDLER_CODE_GET_OFF_LINE_MESSAGE=103; //接收到离线消息
+		public static final int HANDLER_CODE_SEND_MESSAGE_SUCCESS=104; //发送消息成功
+		public static final int HANDLER_CODE_SEND_MESSAGE_FAILED=105; //发送消息失败
+		public static final int HANDLER_CODE_GET_ALL_FRIENDS=106; //获取所有好友列表
+		public static final int HANDLER_FRIEND_STATE_CHANGE=107; //好友状态改变
+		public static final int HANDLER_ADD_PRIEND_SUCCESS=108; //添加好友成功
+		public static final int HANDLER_ADD_PRIEND_FAILD=109; //添加好友失败
+		
+	}
+	public static class BroadCastReceiveType{
+		public static final int BROAD_RECEIVE_CHANGE_FRIENDS_STATE=1;
+		public static final int BROAD_RECEIVE_CHANGE_CHAT_STATE=2;
 	}
 }

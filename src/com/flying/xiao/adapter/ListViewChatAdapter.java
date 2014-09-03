@@ -106,7 +106,7 @@ public class ListViewChatAdapter extends BaseAdapter
 		{ // 信息已送达
 			listItemView.progress.setVisibility(View.GONE);
 		}
-		if (faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
+		if (faceURL==null||faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.mini_avatar_shadow);
 		} else
@@ -121,10 +121,10 @@ public class ListViewChatAdapter extends BaseAdapter
 			@Override
 			public void onClick(View v)
 			{
-				UIHelper.showUserInfo(context, dbHelper.getUserInfoById(chatMessage.getUserSendId()));
+				UIHelper.showUserInfo(context, dbHelper.getUserInfoByUserName(chatMessage.getFrom()));
 			}
 		});
-		listItemView.message.setText(chatMessage.getMessage());
+		listItemView.message.setText(chatMessage.getBody());
 		listItemView.date.setText(StringUtils.friendly_time(StringUtils.dateToString(chatMessage.getTime())));
 		// listItemView.content.setText(comment.getPlInfo());
 		// listItemView.content.setTag(comment);// 设置隐藏参数(实体类)

@@ -20,3 +20,44 @@
  
  chat 数据表 还行要Id 
  
+ 
+ 
+ //==============XMPP
+ 
+ 好友 列表 插入 不能Replace  
+ 
+ Friend表弃用  xmpp登陆成功后获取好友列表 【username 和 state】  进入myfriend activity中时  获取具体的userinfo信息
+ 
+ 添加好友状态监听
+ final Roster roster = Client.getRoster();  
+          
+        roster.addRosterListener(  
+                new RosterListener() {  
+  
+                    @Override  
+                    public void entriesAdded(Collection<String> arg0) {  
+                        // TODO Auto-generated method stub  
+                        System.out.println("--------EE:"+"entriesAdded");  
+                    }  
+  
+                    @Override  
+                    public void entriesDeleted(Collection<String> arg0) {  
+                        // TODO Auto-generated method stub  
+                        System.out.println("--------EE:"+"entriesDeleted");  
+                    }  
+  
+                    @Override  
+                    public void entriesUpdated(Collection<String> arg0) {  
+                        // TODO Auto-generated method stub  
+                        System.out.println("--------EE:"+"entriesUpdated");  
+                    }  
+  
+                    @Override  
+                    public void presenceChanged(Presence arg0) {  
+                        // TODO Auto-generated method stub  
+                        System.out.println("--------EE:"+"presenceChanged");  
+                    }     
+                      
+                });  
+              
+ 

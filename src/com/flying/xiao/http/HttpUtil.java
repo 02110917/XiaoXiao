@@ -370,19 +370,19 @@ public class HttpUtil {
 		try {
 			String result = http_post(appContext, loginurl, params);
 			System.out.println("json---" + result);
-			String[] results = result.split("##");
+//			String[] results = result.split("##");
 			XUserInfo xUser = new XUserInfo();
-			xUser = (XUserInfo) xUser.jsonToBase(results[0]);
-			if (results.length == 2) {
-				String friendJson = results[1];
-				Gson gson = new Gson();
-				List<XUserInfo> userInfos = gson.fromJson(friendJson,
-						new TypeToken<List<XUserInfo>>()
-
-						{
-						}.getType());
-				DBHelper.getDbHelper(appContext).insertFriends(userInfos);
-			}
+			xUser = (XUserInfo) xUser.jsonToBase(result);
+//			if (results.length == 2) {
+//				String friendJson = results[1];
+//				Gson gson = new Gson();
+//				List<XUserInfo> userInfos = gson.fromJson(friendJson,
+//						new TypeToken<List<XUserInfo>>()
+//
+//						{
+//						}.getType());
+//				//DBHelper.getDbHelper(appContext).insertFriends(userInfos);
+//			}
 			return xUser;
 		} catch (Exception e) {
 			if (e instanceof AppException)
@@ -768,35 +768,55 @@ public class HttpUtil {
 		return userList;
 	}
 
-	public static List<XUserInfo> getMyFriends(AppContext appContext)
-			throws AppException {
+	public static List<XUserInfo> getUserInfosByName(AppContext appContext,String users) throws AppException{
 		List<XUserInfo> userList = null;
-		String result = "";
-		String url = URLs.URL_GET_MY_FRIENDS;
-		try {
-			result = http_get(appContext, url);
-			System.out.println("json---" + result);
-			Gson gson = new Gson();
-			try {
-				userList = gson.fromJson(result,
-						new TypeToken<List<XUserInfo>>() {
-						}.getType());
-			} catch (JsonSyntaxException e) {
-				e.printStackTrace();
-				Base base = gson.fromJson(result, Base.class);
-				if (base != null
-						&& base.getErrorCode() == Constant.ErrorCode.USER_NOT_LOGIN) {
-					throw AppException.notLogin(e);
-				}
-			}
-		} catch (AppException e) {
+		String url=URLs.URL_GETUSERINFOSBYNAME;
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("users", users);
+		String result=http_post(appContext, url, params);
+		Gson gson=new Gson();
+		try
+		{
+		userList=gson.fromJson(result,
+				new TypeToken<List<XUserInfo>>() {
+				}.getType());
+		}
+		catch(JsonSyntaxException e){
 			e.printStackTrace();
-			if (e instanceof AppException)
-				throw (AppException) e;
-			throw AppException.network(e);
+			throw AppException.json(e);
 		}
 		return userList;
 	}
+	
+//	public static List<XUserInfo> getMyFriends(AppContext appContext)
+//			throws AppException {
+//		List<XUserInfo> userList = null;
+//		String result = "";
+//		String url = URLs.URL_GET_MY_FRIENDS;
+//		try {
+//			result = http_get(appContext, url);
+//			System.out.println("json---" + result);
+//			Gson gson = new Gson();
+//			try {
+//				userList = gson.fromJson(result,
+//						new TypeToken<List<XUserInfo>>() {
+//						}.getType());
+//			} catch (JsonSyntaxException e) {
+//				e.printStackTrace();
+//				Base base = gson.fromJson(result, Base.class);
+//				if (base != null
+//						&& base.getErrorCode() == Constant.ErrorCode.USER_NOT_LOGIN) {
+//					throw AppException.notLogin(e);
+//				}
+//			}
+//		} catch (AppException e) {
+//			e.printStackTrace();
+//			if (e instanceof AppException)
+//				throw (AppException) e;
+//			throw AppException.network(e);
+//		}
+//		return userList;
+//	}
 
 	public static List<XDynamic> getMyDynamic(AppContext appContext, int page)
 			throws AppException {

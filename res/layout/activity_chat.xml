@@ -19,10 +19,13 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.0"
+            android:cacheColorHint="#00000000"
             android:clickable="false"
             android:divider="@null"
+            android:background="#EEE8AA"
             android:drawSelectorOnTop="false"
-            android:fadingEdgeLength="0.0sp" />
+            android:fadingEdgeLength="0.0sp"
+            android:listSelector="#00000000" />
     </LinearLayout>
 
     <LinearLayout

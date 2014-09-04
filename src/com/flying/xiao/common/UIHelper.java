@@ -51,6 +51,7 @@ import com.flying.xiao.R;
 import com.flying.xiao.SearchActivity;
 import com.flying.xiao.SettingActivity;
 import com.flying.xiao.UserInfoDetail;
+import com.flying.xiao.UserInfoManage;
 import com.flying.xiao.UserLoginActivity;
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppManager;
@@ -131,7 +132,16 @@ public class UIHelper {
 		context.startActivity(intent);
 	}
 
-	
+	/**
+	 * 显示账号管理页面
+	 * 
+	 * @param activity
+	 */
+	public static void showUserInfoManage(Context context) {
+		Intent intent = new Intent();
+		intent.setClass(context, UserInfoManage.class);
+		context.startActivity(intent);
+	}
 	/**
 	 * 显示个人资料
 	 * 

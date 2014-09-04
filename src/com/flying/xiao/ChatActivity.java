@@ -1,11 +1,8 @@
 package com.flying.xiao;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,16 +14,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.flying.xiao.adapter.ListViewChatAdapter;
-import com.flying.xiao.asmack.XmppConnection;
-import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.boardcastreceive.WebSocketMsgReceive;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
-import com.flying.xiao.constant.Constant.WebsocketCode;
 import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.ChatMessage;
 import com.flying.xiao.entity.XUserInfo;
-import com.flying.xiao.websocket.WMessage;
 
 /**
  * ¡ƒÃÏΩÁ√Ê
@@ -45,6 +38,8 @@ public class ChatActivity extends BaseActivity
 	
 	private WebSocketMsgReceive receive;
 	private IntentFilter filter;
+	
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

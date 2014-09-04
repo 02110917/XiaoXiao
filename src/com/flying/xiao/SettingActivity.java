@@ -39,7 +39,7 @@ public class SettingActivity extends BaseActivity
 		switch (v.getId())
 		{
 		case R.id.account_manager:// 账号管理
-			UIHelper.showAlertPassword(this);
+			UIHelper.showUserInfoManage(this);
 			break;
 		case R.id.person_info:// 我的资料
 			UIHelper.showMyInfo(this);

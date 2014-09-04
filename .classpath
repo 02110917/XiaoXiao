@@ -3,7 +3,7 @@
 	<classpathentry kind="lib" path="libs/httpcore-4.3.2.jar"/>
 	<classpathentry kind="lib" path="libs/httpmime-4.3.4.jar"/>
 	<classpathentry kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
-	<classpathentry kind="lib" path="libs/asmack.jar"/>
+	<classpathentry kind="lib" path="libs/asmack.jar" sourcepath="C:/Users/John/Desktop/校园分享社区项目/javadoc.zip"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="libs/svn2924_open_sdk.jar"/>

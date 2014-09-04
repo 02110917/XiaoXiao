@@ -268,6 +268,7 @@ public class DiaryDetail extends BaseActivity {
 			}
 			tv2.append("  ¾õµÃºÜÔÞ");
 			relies.addView(view2);
+			relies.setVisibility(View.VISIBLE);
 		}
 		if (con.isMeIsPraise()) {
 			praiseText.setText("ÒÑÔÞ");

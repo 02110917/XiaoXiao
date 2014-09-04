@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -26,11 +25,9 @@ import com.flying.xiao.app.AppContext;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.fragment.CommunityFragment;
-import com.flying.xiao.fragment.LifeFragment;
 import com.flying.xiao.fragment.MainDiary;
 import com.flying.xiao.fragment.MainFragment;
 import com.flying.xiao.fragment.MeFragment;
-import com.tencent.a.a.a;
 
 public class MainActivity extends BaseActivity
 {

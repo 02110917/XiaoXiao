@@ -1,0 +1,32 @@
+
+ 1.注册 修改信息 不换头像不能上传  java.io.FileNotFoundException: /mnt/sdcard/1737769e31bbee854869c73094e11c18.jpg: open failed: ENOENT (No such file or directory)
+ 
+ 2.修改成功后进入我的详情页面  userRealName 没变...   头像也没更换。 
+
+ 注册页面  输入用户名 用邮箱格式   
+ 									【完成】
+==========================================================================================================
+ 社区  加好友 
+拍照上传 只能上传一张图片
+
+
+//服务端
+ at org.hibernate.internal.SessionImpl.fireSave(SessionImpl.java:757)
+ at org.hibernate.internal.SessionImpl.save(SessionImpl.java:749)
+ at org.hibernate.internal.SessionImpl.save(SessionImpl.java:745)
+ at com.flying.xiao.dao.BaseHibernateDAO.save(BaseHibernateDAO.java:36)
+ at com.flying.xiao.servlet.PubDiary.parse(PubDiary.java:108)
+ at com.flying.xiao.servlet.UploadServlet.doPost(UploadServlet.java:65)
+ at com.flying.xiao.servlet.PubDiary.doPost(PubDiary.java:48)
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:646)
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:727)
+ 
+ Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: 将截断字符串或二进制
+数据。
+【image 表的 imageUrl字段】
+
+
+
+获取用户在线状态 有问题
+
+推送更新  消息推送...

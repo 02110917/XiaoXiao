@@ -107,7 +107,7 @@ public class ListViewCommunityAdapter extends BaseAdapter
 	 * ListView Item设置
 	 */
 	@Override
-	public View getView( final int position, View convertView, ViewGroup parent)
+	public View getView(  final int position, View convertView, ViewGroup parent)
 	{
 		// 自定义视图
 		final ListItemView listItemView;
@@ -178,41 +178,51 @@ public class ListViewCommunityAdapter extends BaseAdapter
 					UIHelper.ToastMessage(appContext, "添加好友失败,请重试...");
 //					listItemView.collection.setImageResource(R.drawable.head_favorite);
 					break ;
-				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS: //
-					UIHelper.ToastMessage(appContext, "添加好友成功");
-//					listItemView.collection.setImageResource(R.drawable.head_favorite_y);
-//					listItems.get(clickposition).setMeFriend(true);
-					DBHelper.getDbHelper(context).insertFriend(listItems.get(clickposition));
-					notifyDataSetChanged();
 				default:
 					break;
 				}
 			}};
 		
-		listItemView.collection.setOnClickListener(new MyCollectListener(userInfo,position));
+		listItemView.collection.setOnClickListener(new MyCollectListener(position));
 		return convertView;
 	}
-	private  int clickposition=0;
 	private class MyCollectListener implements OnClickListener{
-		private XUserInfo userInfo ;
-		public MyCollectListener(XUserInfo userInfo,int collectClickPosition){
-			this.userInfo=userInfo;
-			clickposition=collectClickPosition-1;
+		private int position ;
+		public MyCollectListener(int position){
+			this.position=position;
 		}
+		private Handler mHandler=new Handler(){
+
+			@Override
+			public void handleMessage(Message msg)
+			{
+				super.handleMessage(msg);
+				if(msg.what==Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS)
+				{
+					UIHelper.ToastMessage(appContext, "添加好友成功");
+	//				listItemView.collection.setImageResource(R.drawable.head_favorite_y);
+	//				listItems.get(clickposition).setMeFriend(true);
+					DBHelper.getDbHelper(context).insertFriend(listItems.get(position));
+					notifyDataSetChanged();
+				}
+			}};
 		@Override
 		public void onClick(View v)
 		{
 			if(!appContext.isLogin()){
 				handler.sendEmptyMessage(Constant.HandlerMessageCode.USER_NOT_LOGIN);
+				return ;
 			}
+			XUserInfo userInfo=listItems.get(position);
 			if(userInfo.isMeFriend()){
 				handler.sendEmptyMessage(Constant.HandlerMessageCode.ADD_FRIEND_IS_YOUR_FRIEND_ALERADY);
+				return ;
 			}
 //			if((Activity)context instanceof MainActivity||(Activity)context instanceof SearchActivity){
 //				((BaseActivity)context).getmWebSocketService().addFriend(userInfo.getUserName(), userInfo.getUserRealName());
 //			}
 			if(((BaseActivity)context).getmWebSocketService().isXmppLogin())
-				XmppControl.getShare(context).addFriend(userInfo.getUserName(), userInfo.getUserRealName(), handler);
+				XmppControl.getShare(context).addFriend(userInfo.getUserName(), userInfo.getUserRealName(), mHandler);
 //			NetControl.getShare(context).addFriend(userInfo.getId(), handler);
 		}
 		

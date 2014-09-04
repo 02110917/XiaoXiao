@@ -57,7 +57,7 @@
     <string name="account_password">密码</string>
     <string name="title_vcode">验证码</string>
     <string name="vcode_refresh">换一换</string>
-    <string name="account_hint_normal">用户名/邮箱</string>
+    <string name="account_hint_normal">请输入您注册的邮箱</string>
     <string name="account_login_loading">登录…</string>
     <string name="account_protocol">协议条款</string>
     <string name="account_login">登录</string>
@@ -78,7 +78,7 @@
     <string name="resend_code_second">在%d秒后点击重发激活码</string>
     <string name="user_server_agreement">用户服务协议</string>
     <string name="input_active_code">请输入6位激活码</string>
-    <string name="user_name_rule">仅支持中英文、数字和下划线</string>
+    <string name="user_name_rule">请输入邮箱您的常用邮箱</string>
     <string name="user_psw_rule">6–14位,字母区分大小写</string>
     <string name="change_vcode">换一张</string>
     <string name="psw_tip">密　码</string>

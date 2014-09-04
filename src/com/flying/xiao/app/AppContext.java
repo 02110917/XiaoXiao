@@ -25,6 +25,7 @@ import android.os.IBinder;
 import com.flying.xiao.BaseActivity;
 import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.UIHelper;
+import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.manager.ListManager;
 import com.flying.xiao.service.WebSocketService;
@@ -64,7 +65,7 @@ public class AppContext extends Application
 		super.onCreate();
 		// ◊¢≤·App“Ï≥£±¿¿£¥¶¿Ì∆˜
 		//TODO ======
-		 Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+		 //Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
 		this.dirPath=this.getFilesDir().getAbsolutePath();
 		this.headImagePath=dirPath + "/xiao_headimage.png";
 		this.userInfoPath=dirPath + "/xiao_userinfo";
@@ -108,6 +109,7 @@ public class AppContext extends Application
 	}
 	public void writeUserInfo(XUserInfo userInfo)
 	{
+		this.userInfo=userInfo;
 		if (userInfo == null || userInfo.getId() <= 0)
 		{
 			return;
@@ -297,5 +299,6 @@ public class AppContext extends Application
 	{
 		this.isXmppLogin = isXmppLogin;
 	}
+	
 	
 }

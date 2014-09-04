@@ -61,6 +61,7 @@ public class MyChatActivity extends BaseActivity implements PullDownListView.OnR
 				userInfo.setId(chat.getFriendUserId());
 				userInfo.setUserHeadImageUrl(chat.getImageUrl());
 				userInfo.setUserRealName(chat.getFriendName());
+				userInfo.setUserName(chat.getFriendUserName());
 				UIHelper.showChat(MyChatActivity.this, userInfo);
 			}
 		});

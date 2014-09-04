@@ -106,6 +106,7 @@ public class ChatActivity extends BaseActivity
 				mWebSocketService.sendMessage(chatMsg);
 //				XmppControl.getShare(ChatActivity.this).sendMessage(chatMsg, mHandler);
 				dbHelper.insertMsg(chatMsg);
+				mEtmsgInput.setText("");
 				mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount()-1);
 			}
 		});

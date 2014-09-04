@@ -45,6 +45,12 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		System.out.println(conType + "----onCreateView-----------");
 		appContext=(AppContext) getActivity().getApplication();
 		if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN) //获取全局数据
 			contentList=appContext.listManager.getContentListByType(conType);
@@ -56,12 +62,6 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 				isMyCollect=true ;
 			}
 		}
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		System.out.println(conType + "----onCreateView-----------");
 		View view = inflater.inflate(R.layout.main_fragment_news, null);
 		initView(view);
 		return view;
@@ -151,6 +151,12 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	public void setShowType(int showType)
 	{
 		this.showType = showType;
+	}
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
 	}
 
 	

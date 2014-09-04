@@ -38,6 +38,7 @@ import android.graphics.BitmapFactory;
 
 import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppException;
+import com.flying.xiao.common.StringUtils;
 import com.flying.xiao.common.URLs;
 import com.flying.xiao.constant.Constant;
 import com.flying.xiao.db.DBHelper;
@@ -901,7 +902,10 @@ public class HttpUtil {
 		// Map<String, File> files=new HashMap<String, File>();
 		// files.put("headImage", headImageFile);
 		List<String> fList = new ArrayList<String>();
-		fList.add(headImageFile);
+		if(!StringUtils.isEmpty(headImageFile))
+		{
+			fList.add(headImageFile);
+		}
 		String json = http_post(appContext, url, params, "headImage", fList);
 		try {
 			base = new Base();

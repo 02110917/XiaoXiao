@@ -6,8 +6,6 @@
 	<classpathentry kind="lib" path="libs/asmack.jar" sourcepath="C:/Users/John/Desktop/校园分享社区项目/javadoc.zip"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="libs/svn2924_open_sdk.jar"/>
-	<classpathentry kind="lib" path="libs/mta-sdk-1.6.2.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.2.4.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>

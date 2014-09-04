@@ -11,11 +11,20 @@ public class MyChat
 {
 	private long friendUserId ;
 	private String friendName ;
+	private String friendUserName ;
 	private String imageUrl ;
 	private Date time ;
 	private String lastMsg ;
 	private int newMsgCount ; //Î´¶ÁÏûÏ¢Êý
 	
+	public String getFriendUserName()
+	{
+		return friendUserName;
+	}
+	public void setFriendUserName(String friendUserName)
+	{
+		this.friendUserName = friendUserName;
+	}
 	public String getFriendName()
 	{
 		return friendName;

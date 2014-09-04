@@ -59,7 +59,9 @@ public class ListViewMainContentAdapter extends BaseAdapter
 	@Override
 	public int getCount()
 	{
-		return listItems.size();
+		if(listItems!=null)
+			return listItems.size();
+		return 0;
 	}
 
 	@Override

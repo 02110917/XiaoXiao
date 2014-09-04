@@ -175,6 +175,7 @@ public class Constant {
 		public static final int HANDLER_FRIEND_STATE_CHANGE=107; //好友状态改变
 		public static final int HANDLER_ADD_PRIEND_SUCCESS=108; //添加好友成功
 		public static final int HANDLER_ADD_PRIEND_FAILD=109; //添加好友失败
+		public static final int HANDLER_FRIEND_ADD=110; //有人添加你为好友
 		
 	}
 	public static class BroadCastReceiveType{

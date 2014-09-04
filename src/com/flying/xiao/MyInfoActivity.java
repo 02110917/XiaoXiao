@@ -140,6 +140,8 @@ public class MyInfoActivity extends BaseActivity
 				{
 					String headImageUrl="/XiaoServer/head_image/"+md5+".jpg";
 					userInfo.setUserHeadImageUrl(headImageUrl);
+				}else{
+					imageUrl="";
 				}
 				userInfo.setUserSex(mRadioBtnMan.isChecked());
 				userInfo.setUserGerenshuoming(mInfo.getText().toString());

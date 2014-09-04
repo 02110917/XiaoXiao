@@ -28,6 +28,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.util.StringUtils;
@@ -81,8 +82,9 @@ public class XmppConnection
 {
 	private int SERVER_PORT = 5222;
 	private String SERVER_HOST = "115.29.79.84";
+	private String SERVER_NAME = "115.29.79.84";
 	private XMPPConnection connection = null;
-	private String SERVER_NAME = "ubuntuserver4java";
+//	private String SERVER_NAME = "ubuntuserver4java";
 	private static XmppConnection xmppConnection = null;
 	private TaxiConnectionListener connectionListener;
 	private static AppContext appContxt;
@@ -129,13 +131,13 @@ public class XmppConnection
 		{
 			if (null == connection || !connection.isAuthenticated())
 			{
-				XMPPConnection.DEBUG_ENABLED = true;// 开启DEBUG模式
+				XMPPConnection.DEBUG_ENABLED = false;// 开启DEBUG模式
 				// 配置连接
 				ConnectionConfiguration config = new ConnectionConfiguration(SERVER_HOST, SERVER_PORT,
 						SERVER_NAME);
 				config.setReconnectionAllowed(true);// 断网重连
 				config.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-				config.setSendPresence(true); // 状态设为离线，目的为了取离线消息
+				config.setSendPresence(false); // 状态设为离线，目的为了取离线消息
 				config.setSASLAuthenticationEnabled(false); // 是否启用安全验证
 				config.setTruststorePath("/system/etc/security/cacerts.bks");
 				config.setTruststorePassword("changeit");
@@ -144,6 +146,7 @@ public class XmppConnection
 				connection.connect();// 连接到服务器
 				// 配置各种Provider，如果不配置，则会无法解析数据
 				configureConnection(ProviderManager.getInstance());
+
 				return true;
 			}
 		} catch (XMPPException xe)
@@ -185,26 +188,30 @@ public class XmppConnection
 		{
 			if (getConnection() == null)
 				return false;
+			if (getConnection().isAuthenticated())
+				return false;
 			getConnection().login(account.replace("@", "$"), password);
 			// 更改在线状态
-			Presence presence = new Presence(Presence.Type.available);
-			getConnection().sendPacket(presence);
+			// Presence presence = new Presence(Presence.Type.available);
+			// getConnection().sendPacket(presence);
 			// 添加连接监听
 			connectionListener = new TaxiConnectionListener(appContxt, handler);
 			getConnection().addConnectionListener(connectionListener);
 			getConnection().getRoster().addRosterListener(new MyRosterListener(handler)); // 监听好友状态
+			getHisMessage(handler); // 获取离线消息
+			getOnLine(handler); // 获取消息
+			getAllFriends(handler);// 获取好友列表
 			// 启动线程 获取状态
-			new Thread(new Runnable()
-			{
+//			new Thread(new Runnable()
+//			{
+//
+//				@Override
+//				public void run()
+//				{
+//
+//				}
+//			}).start();
 
-				@Override
-				public void run()
-				{
-					getOnLine(handler); // 获取消息
-					getHisMessage(handler); // 获取离线消息
-					getAllFriends(handler);// 获取好友列表
-				}
-			}).start();
 			return true;
 		} catch (XMPPException xe)
 		{
@@ -227,6 +234,16 @@ public class XmppConnection
 		public void entriesAdded(Collection<String> arg0)
 		{
 			System.out.println("MyRosterListener---entriesAdded");
+			List<XUserInfo> userInfos=new ArrayList<XUserInfo>();
+			for(String userName:arg0){
+				XUserInfo user = new XUserInfo();
+				user.setUserName(StringUtils.parseName(userName).replace("$", "@"));
+				userInfos.add(user);
+			}
+			android.os.Message msg = new android.os.Message();
+			msg.what = Constant.XmppHandlerMsgCode.HANDLER_FRIEND_ADD;
+			msg.obj = userInfos;
+			handler.sendMessage(msg);
 		}
 
 		@Override
@@ -244,7 +261,7 @@ public class XmppConnection
 		@Override
 		public void presenceChanged(Presence presence)
 		{
-			System.out.println("MyRosterListener---presenceChanged");
+			System.out.println("MyRosterListener---presenceChanged"+presence.getFrom()+"  "+presence.isAvailable());
 			String user = presence.getFrom();
 			Presence bestPresence = getConnection().getRoster().getPresence(user);
 			android.os.Message msg = new android.os.Message();
@@ -372,14 +389,21 @@ public class XmppConnection
 			return;
 		List<XUserInfo> users = new ArrayList<XUserInfo>();
 		Collection<RosterEntry> rosterEntry = getConnection().getRoster().getEntries();
-		Iterator<RosterEntry> i = rosterEntry.iterator();
-		while (i.hasNext())
+		try
 		{
-			RosterEntry entry = i.next();
+			Thread.sleep(1000);
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Iterator<RosterEntry> i = rosterEntry.iterator();
+		for(RosterEntry entry:rosterEntry){
 			Presence p = getConnection().getRoster().getPresence(entry.getUser());
 			XUserInfo user = new XUserInfo();
 			user.setUserName(StringUtils.parseName(entry.getUser()).replace("$", "@"));
 			user.setOnline(p.isAvailable());
+			System.out.println("state:"+p.isAvailable());
 			users.add(user);
 		}
 		android.os.Message msg = new android.os.Message();
@@ -388,6 +412,9 @@ public class XmppConnection
 		handler.sendMessage(msg);
 	}
 
+
+	
+	
 	/**
 	 * 添加一个分组
 	 * 
@@ -603,10 +630,14 @@ public class XmppConnection
 			return false;
 		try
 		{
-			//isAuthenticated()
-			//Returns true if currently authenticated by successfully calling the login method.
-			if(getConnection().isAuthenticated())
+			// isAuthenticated()
+			// Returns true if currently authenticated by successfully calling
+			// the login method.
+			if (getConnection().isAuthenticated())
+			{
+				setPresence(5);
 				getConnection().getAccountManager().deleteAccount();
+			}
 			return true;
 		} catch (XMPPException e)
 		{
@@ -651,21 +682,7 @@ public class XmppConnection
 		if (getConnection() == null)
 			return false;
 		Chat chat = getConnection().getChatManager().createChat(to.replace("@", "$") + Constant.XMPP_SERVER,
-				new MessageListener()
-				{
-
-					@Override
-					public void processMessage(Chat arg0, Message msg)
-					{
-						if (msg.getError() == null)
-						{
-							System.out.println("error==null");
-						} else
-						{
-							System.out.println("error!=null");
-						}
-					}
-				});
+				null);
 		try
 		{
 			chat.sendMessage(msg);
@@ -698,8 +715,7 @@ public class XmppConnection
 			while (it.hasNext())
 			{
 				Message message = it.next();
-				ChatMessage cmsg = new ChatMessage();
-				ChatMessage.getInstance(message, false, appContxt);
+				ChatMessage cmsg = ChatMessage.getInstance(message, false, appContxt);
 				msglist.add(cmsg);
 			}
 			android.os.Message msg = new android.os.Message();
@@ -711,6 +727,10 @@ public class XmppConnection
 		{
 			e.printStackTrace();
 		}
+		finally{
+			setPresence(0); // 更新在在线状态
+		}
+		
 	}
 
 	/**

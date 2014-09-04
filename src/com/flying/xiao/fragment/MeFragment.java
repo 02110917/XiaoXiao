@@ -109,11 +109,11 @@ public class MeFragment extends Fragment
 	}
 	
 	private void showMyinfo(){
-		if(userInfo!=null)
+		if(appContext.getUserInfo()!=null)
 		{
-			ImageManager2.from(getActivity()).displayImage(mPhoto,URLs.HOST+ userInfo.getUserHeadImageUrl(),  R.drawable.widget_dface);
-			mName.setText(userInfo.getUserRealName());
-			mInfo.setText(userInfo.getUserGerenshuoming());
+			ImageManager2.from(getActivity()).displayImage(mPhoto,URLs.HOST+ appContext.getUserInfo().getUserHeadImageUrl(),  R.drawable.widget_dface);
+			mName.setText(appContext.getUserInfo().getUserRealName());
+			mInfo.setText(appContext.getUserInfo().getUserGerenshuoming());
 		}
 	}
 	
@@ -174,5 +174,6 @@ public class MeFragment extends Fragment
 			}
 		}
 	};
+	
 
 }

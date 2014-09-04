@@ -1,5 +1,6 @@
 package com.flying.xiao.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -158,6 +159,15 @@ public class WebSocketService extends Service
 				XmppControl.getShare(WebSocketService.this).getAllFriends(handler);
 				
 				break ;
+			case Constant.XmppHandlerMsgCode.HANDLER_FRIEND_ADD://有人添加你为好友
+				List<XUserInfo> userNames = (List<XUserInfo>) msg.obj;
+				dbHelper.insertOrUpdateFriends(userNames);
+				UIHelper.ToastMessage(appContext, "获取好友列表", true);
+				Gson g = new Gson();
+				NetControl.getShare(WebSocketService.this).getUserInfosByName(handler, g.toJson(userNames));
+				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
+				sendBroadcast(intent);
+				break ;
 			default:
 				break;
 			}
@@ -173,7 +183,7 @@ public class WebSocketService extends Service
 		loginToXmpp();
 		// System.out.println("WebSocketService IP:" +
 		// Util.getLocalIpAddress());
-		dbHelper = DBHelper.getDbHelper(this);
+		dbHelper = DBHelper.getDbHelper(appContext);
 		isDestoryServer = false;
 		start();
 		return super.onStartCommand(intent, flags, startId);

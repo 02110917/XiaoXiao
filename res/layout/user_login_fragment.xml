@@ -62,6 +62,7 @@
                     android:padding="5.0dip"
                     android:singleLine="true"
                     android:textColor="#ff3b3b3b"
+                    android:inputType="textEmailAddress"
                     android:textSize="14.0sp" />
 
                 <Button

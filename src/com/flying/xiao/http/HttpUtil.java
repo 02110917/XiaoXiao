@@ -834,10 +834,15 @@ public class HttpUtil {
 						}.getType());
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
+				try
+				{
 				Base base = gson.fromJson(result, Base.class);
 				if (base != null
 						&& base.getErrorCode() == Constant.ErrorCode.USER_NOT_LOGIN) {
 					throw AppException.notLogin(e);
+				}
+				}catch(JsonSyntaxException ee){
+					throw AppException.network(ee);
 				}
 			}
 		} catch (AppException e) {
@@ -864,10 +869,15 @@ public class HttpUtil {
 						}.getType());
 			} catch (JsonSyntaxException e) {
 				e.printStackTrace();
+				try
+				{
 				Base base = gson.fromJson(result, Base.class);
 				if (base != null
 						&& base.getErrorCode() == Constant.ErrorCode.USER_NOT_LOGIN) {
 					throw AppException.notLogin(e);
+				}
+				}catch(JsonSyntaxException ee){
+					throw AppException.network(ee);
 				}
 			}
 		} catch (AppException e) {

@@ -1,5 +1,8 @@
 package com.flying.xiao.asmack;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -57,29 +60,70 @@ public class XmppControl
 	}
 	
 	public void sendMessage(final ChatMessage chatMessage,final Handler handler){
-		new Thread(new Runnable()
+		Timer timer=new Timer();
+		final SendMsgTherad thread=new SendMsgTherad(chatMessage, handler,timer);
+		thread.start();
+		TimerTask t=new TimerTask()
 		{
 			
 			@Override
 			public void run()
 			{
-				
-				int i=0;
-				while(!XmppConnection.getInstance(appContext).sendMsg(chatMessage.getTo(), chatMessage.getBody())&&i<5){
-					i++;
-				}
 				Message msg=new Message();
-				if(i==5){ //·¢ËÍÊ§°Ü
-					msg.what=Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_FAILED;
-				}else{
-					msg.what=Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_SUCCESS;
-				}
 				msg.obj=chatMessage;
+				msg.what=Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_FAILED;
 				handler.sendMessage(msg);
+				if(thread.isFalg()){
+					thread.setFalg(false);
+				}
+				
 			}
-		}).start();
+		};
+		timer.schedule(t, 5000);
+
 	}
-	
+	class SendMsgTherad extends Thread{
+		private ChatMessage chatMessage;
+		private Handler handler;
+		private Timer timer ;
+		private boolean falg=true;
+		public SendMsgTherad( ChatMessage chatMessage, Handler handler,Timer timer){
+			this.chatMessage=chatMessage;
+			this.handler=handler;
+			this.timer=timer ;
+		}
+		@Override
+		public void run()
+		{
+			
+			int i=0;
+			while(falg&&!XmppConnection.getInstance(appContext).sendMsg(chatMessage.getTo(), chatMessage.getBody())&&i<5){
+				i++;
+			}
+			Message msg=new Message();
+			if(i==5){ //·¢ËÍÊ§°Ü
+				msg.what=Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_FAILED;
+			}else{
+				msg.what=Constant.XmppHandlerMsgCode.HANDLER_CODE_SEND_MESSAGE_SUCCESS;
+			}
+			if(timer!=null){
+				timer.cancel();
+				timer=null;
+			}
+			falg=false ;
+			msg.obj=chatMessage;
+			handler.sendMessage(msg);
+		}
+		public void setFalg(boolean falg)
+		{
+			this.falg = falg;
+		}
+		public boolean isFalg()
+		{
+			return falg;
+		}
+		
+	}
 	/**
 	 * Ìí¼ÓºÃÓÑ
 	 * @param userName

@@ -74,17 +74,17 @@ public class CommunityFragmentTab extends Fragment implements PullDownListView.O
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		manager=ListManager.getContentMangerShare();
-		if(type==Constant.UserType.User_TYPE_BUSINESS)
-			userInfolist=manager.getBusinessList();
-		else if(type==Constant.UserType.User_TYPE_DEPARTMENT)
-			userInfolist=manager.getDepartmentList();
 		super.onCreate(savedInstanceState);
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		manager=ListManager.getContentMangerShare();
+		if(type==Constant.UserType.User_TYPE_BUSINESS)
+			userInfolist=manager.getBusinessList();
+		else if(type==Constant.UserType.User_TYPE_DEPARTMENT)
+			userInfolist=manager.getDepartmentList();
 		View v=inflater.inflate(R.layout.community_fragment, null);
 		initView(v);
 		initData();

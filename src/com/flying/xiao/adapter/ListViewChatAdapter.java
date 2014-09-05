@@ -90,7 +90,7 @@ public class ListViewChatAdapter extends BaseAdapter
 		// 自定义视图
 		ListItemView listItemView = null;
 		
-		if(convertView==null){
+//		if(convertView==null){
 	
 		// 获取list_item布局文件的视图
 		if (chatMessage.isTo())
@@ -106,22 +106,33 @@ public class ListViewChatAdapter extends BaseAdapter
 		listItemView.progress = (ProgressBar) convertView.findViewById(R.id.uploading_pb);
 		listItemView.messageSendFail = (ImageView) convertView.findViewById(R.id.msg_send_fail);
 		// 设置控件集到convertView
-		convertView.setTag(listItemView);
-		}else{
-			listItemView = (ListItemView) convertView.getTag();
-		}
+//		convertView.setTag(listItemView);
+//		}else{
+//			listItemView = (ListItemView) convertView.getTag();
+//		}
 
 		String faceURL = chatMessage.getUserImageHeadUrl();
 
-		if (chatMessage.isTo() && chatMessage.isSendTo() && listItemView.progress != null)
-		{ // 信息已送达
-			listItemView.progress.setVisibility(View.GONE);
-		}
-		if(chatMessage.isSendError()){
-			listItemView.progress.setVisibility(View.GONE);
-			listItemView.messageSendFail.setVisibility(View.VISIBLE);
-		}else{
-			listItemView.messageSendFail.setVisibility(View.GONE);
+		if(chatMessage.isTo())
+		{
+			//	err send  P  E
+			//	F	F	  V	 G
+			//	F	T	  G	 G
+			//	T	F	  G	 V
+			//	T	T	  G	 G
+			//只要isSendTo=true 	progress messageSendFail  都gone	
+			if ( chatMessage.isSendTo())
+			{ // 信息已送达
+				listItemView.progress.setVisibility(View.GONE);
+				listItemView.messageSendFail.setVisibility(View.GONE);
+			} 
+			else if(chatMessage.isSendError()&&!chatMessage.isSendTo()){
+				listItemView.progress.setVisibility(View.GONE);
+				listItemView.messageSendFail.setVisibility(View.VISIBLE);
+			}else{
+				listItemView.messageSendFail.setVisibility(View.GONE);
+				listItemView.progress.setVisibility(View.VISIBLE);
+			}
 		}
 		if (faceURL==null||faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
 		{

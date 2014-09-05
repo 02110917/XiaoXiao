@@ -33,7 +33,7 @@ public class MyFriends extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		dbHelper=DBHelper.getDbHelper(this);
-		appContext.listManager.setMyFriendOnline();
+//		appContext.listManager.setMyFriendOnline();
 //		myFriendList = appContext.listManager.getMyFriendList();
 		myFriendList=dbHelper.selectFriends();
 		setContentView(R.layout.activity_my_friends);

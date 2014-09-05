@@ -58,16 +58,16 @@ public class MainDiary extends Fragment implements PullDownListView.OnRefreshLis
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		appContext=(AppContext) getActivity().getApplication();
-		if(userInfo==null)
-			mDiaryList=appContext.listManager.getDiaryContentList();
-		else
-			mDiaryList=new ArrayList<XContent>();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		appContext=(AppContext) getActivity().getApplication();
+		if(userInfo==null)
+			mDiaryList=appContext.listManager.getDiaryContentList();
+		else
+			mDiaryList=new ArrayList<XContent>();
 		View view = inflater.inflate(R.layout.main_fragment_diary, null);
 		initView(view);
 		return view;

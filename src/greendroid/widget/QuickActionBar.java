@@ -44,109 +44,125 @@ import com.flying.xiao.R;
  * @author Benjamin Fellous
  * @author Cyril Mottier
  */
-public class QuickActionBar extends QuickActionWidget {
+public class QuickActionBar extends QuickActionWidget
+{
 
-    private HorizontalScrollView mScrollView;
-    private Animation mRackAnimation;
-    private ViewGroup mRack;
-    private ViewGroup mQuickActionItems;
+	private HorizontalScrollView mScrollView;
+	private Animation mRackAnimation;
+	private ViewGroup mRack;
+	private ViewGroup mQuickActionItems;
 
-    private List<QuickAction> mQuickActions;
+	private List<QuickAction> mQuickActions;
 
-    public QuickActionBar(Context context) {
-        super(context);
+	public QuickActionBar(Context context)
+	{
+		super(context);
 
-        mRackAnimation = AnimationUtils.loadAnimation(context, R.anim.gd_rack);
+		mRackAnimation = AnimationUtils.loadAnimation(context, R.anim.gd_rack);
 
-        mRackAnimation.setInterpolator(new Interpolator() {
+		mRackAnimation.setInterpolator(new Interpolator()
+		{
 
 			@Override
-			public float getInterpolation(float t) {
-                final float inner = (t * 1.55f) - 1.1f;
-                return 1.2f - inner * inner;
-            }
-        });
+			public float getInterpolation(float t)
+			{
+				final float inner = (t * 1.55f) - 1.1f;
+				return 1.2f - inner * inner;
+			}
+		});
 
-        setContentView(R.layout.gd_quick_action_bar);
+		setContentView(R.layout.gd_quick_action_bar);
 
-        final View v = getContentView();
-        mRack = (ViewGroup) v.findViewById(R.id.gdi_rack);
-        mQuickActionItems = (ViewGroup) v.findViewById(R.id.gdi_quick_action_items);
-        mScrollView = (HorizontalScrollView) v.findViewById(R.id.gdi_scroll);
-    }
+		final View v = getContentView();
+		mRack = (ViewGroup) v.findViewById(R.id.gdi_rack);
+		mQuickActionItems = (ViewGroup) v.findViewById(R.id.gdi_quick_action_items);
+		mScrollView = (HorizontalScrollView) v.findViewById(R.id.gdi_scroll);
+	}
 
-    @Override
-    public void show(View anchor) {
-        super.show(anchor);
-        mScrollView.scrollTo(0, 0);
-        mRack.startAnimation(mRackAnimation);
-    }
+	@Override
+	public void show(View anchor)
+	{
+		super.show(anchor);
+		mScrollView.scrollTo(0, 0);
+		mRack.startAnimation(mRackAnimation);
+	}
 
-    @Override
-    protected void onMeasureAndLayout(Rect anchorRect, View contentView) {
+	@Override
+	protected void onMeasureAndLayout(Rect anchorRect, View contentView)
+	{
 
-        contentView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        contentView.measure(MeasureSpec.makeMeasureSpec(getScreenWidth(), MeasureSpec.EXACTLY), LayoutParams.WRAP_CONTENT);
+		contentView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		contentView.measure(MeasureSpec.makeMeasureSpec(getScreenWidth(), MeasureSpec.EXACTLY),
+				LayoutParams.WRAP_CONTENT);
 
-        int rootHeight = contentView.getMeasuredHeight();
+		int rootHeight = contentView.getMeasuredHeight();
 
-        int offsetY = getArrowOffsetY();
-        int dyTop = anchorRect.top;
-        int dyBottom = getScreenHeight() - anchorRect.bottom;
+		int offsetY = getArrowOffsetY();
+		int dyTop = anchorRect.top;
+		int dyBottom = getScreenHeight() - anchorRect.bottom;
 
-        boolean onTop = (dyTop > dyBottom);
-        int popupY = (onTop) ? anchorRect.top - rootHeight + offsetY : anchorRect.bottom - offsetY;
+		boolean onTop = (dyTop > dyBottom);
+		int popupY = (onTop) ? anchorRect.top - rootHeight + offsetY : anchorRect.bottom - offsetY;
 
-        setWidgetSpecs(popupY, onTop);
-    }
+		setWidgetSpecs(popupY, onTop);
+	}
 
-    @Override
-    protected void populateQuickActions(List<QuickAction> quickActions) {
+	@Override
+	protected void populateQuickActions(List<QuickAction> quickActions)
+	{
 
-        mQuickActions = quickActions;
+		mQuickActions = quickActions;
 
-        final LayoutInflater inflater = LayoutInflater.from(getContext());
+		final LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        for (QuickAction action : quickActions) {
-            TextView view = (TextView) inflater.inflate(R.layout.gd_quick_action_bar_item, mQuickActionItems, false);
-            view.setText(action.mTitle);
+		for (QuickAction action : quickActions)
+		{
+			TextView view = (TextView) inflater.inflate(R.layout.gd_quick_action_bar_item, mQuickActionItems,
+					false);
+			view.setText(action.mTitle);
 
-            view.setCompoundDrawablesWithIntrinsicBounds(null, action.mDrawable, null, null);
-            view.setOnClickListener(mClickHandlerInternal);
-            mQuickActionItems.addView(view);
-            action.mView = new WeakReference<View>(view);
-        }
-    }
+			view.setCompoundDrawablesWithIntrinsicBounds(null, action.mDrawable, null, null);
+			view.setOnClickListener(mClickHandlerInternal);
+			mQuickActionItems.addView(view);
+			action.mView = new WeakReference<View>(view);
+		}
+	}
 
-    @Override
-    protected void onClearQuickActions() {
-        super.onClearQuickActions();
-        mQuickActionItems.removeAllViews();
-    }
+	@Override
+	protected void onClearQuickActions()
+	{
+		super.onClearQuickActions();
+		mQuickActionItems.removeAllViews();
+	}
 
-    private OnClickListener mClickHandlerInternal = new OnClickListener() {
+	private OnClickListener mClickHandlerInternal = new OnClickListener()
+	{
 
-        
 		@Override
-		public void onClick(View view) {
+		public void onClick(View view)
+		{
 
-            final OnQuickActionClickListener listener = getOnQuickActionClickListener();
+			final OnQuickActionClickListener listener = getOnQuickActionClickListener();
 
-            if (listener != null) {
-                final int itemCount = mQuickActions.size();
-                for (int i = 0; i < itemCount; i++) {
-                    if (view == mQuickActions.get(i).mView.get()) {
-                        listener.onQuickActionClicked(QuickActionBar.this, i);
-                        break;
-                    }
-                }
-            }
+			if (listener != null)
+			{
+				final int itemCount = mQuickActions.size();
+				for (int i = 0; i < itemCount; i++)
+				{
+					if (view == mQuickActions.get(i).mView.get())
+					{
+						listener.onQuickActionClicked(QuickActionBar.this, i);
+						break;
+					}
+				}
+			}
 
-            if (getDismissOnClick()) {
-                dismiss();
-            }
-        }
+			if (getDismissOnClick())
+			{
+				dismiss();
+			}
+		}
 
-    };
+	};
 
 }

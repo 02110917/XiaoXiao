@@ -1,9 +1,12 @@
 package com.flying.xiao.constant;
 
-public class Constant {
+public class Constant
+{
 	public static final int MAX_PAGE_COUNT = 15;
-	public static final String XMPP_SERVER="@115.29.79.84/Smack";
-	public static class ErrorCode {
+	public static final String XMPP_SERVER = "@115.29.79.84/Smack";
+
+	public static class ErrorCode
+	{
 		public static final int USER_LOGIN_ERROR = 0X01;
 		public static final int PUB_COMMENT_ERROR = 0X02;
 		public static final int PARAM_ERROR = 0X03;// 参数错误
@@ -23,7 +26,8 @@ public class Constant {
 
 	}
 
-	public static class ContentType {
+	public static class ContentType
+	{
 		public static final int CONTENT_TYPE_NEWS = 0x01; // 资讯
 		public static final int CONTENT_TYPE_LOST = 0x02; // 失物
 		public static final int CONTENT_TYPE_DIARY = 0x03; // 新鲜事
@@ -31,7 +35,8 @@ public class Constant {
 		public static final int CONTENT_TYPE_ASK = 0x05; // 问答
 	}
 
-	public static class WzType {
+	public static class WzType
+	{
 		public static final int WZTYPE_ZRWL = 1; // 助人为乐
 		public static final int WZTYPE_LT = 2; // 论坛
 		public static final int WZTYPE_RJ = 3; // 日记
@@ -43,17 +48,20 @@ public class Constant {
 
 	}
 
-	public static class WenzhangType {
+	public static class WenzhangType
+	{
 		// public static final int WENZHANG_TYPE_
 	}
 
-	public static class UserType {
+	public static class UserType
+	{
 		public static final int User_TYPE_PESONAL = 1; // 个人
 		public static final int User_TYPE_DEPARTMENT = 2; // 部门
 		public static final int User_TYPE_BUSINESS = 3; // 商家
 	}
 
-	public static class HandlerMessageCode {
+	public static class HandlerMessageCode
+	{
 
 		public static final int NET_THROW_EXCEPTION = -1;
 		public static final int LOGIN_FAILD = 0;
@@ -102,10 +110,10 @@ public class Constant {
 
 		public static final int GET_MY_MESSAGE_FAIL = 38;
 		public static final int GET_MY_MESSAGE_SUCCESS = 39;
-		
+
 		public static final int SEARCH_DATA_SUCCESS = 40;
 		public static final int SEARCH_DATA_FAIL = 41;
-		
+
 		/**
 		 * 根据用户名获取userinfo对象
 		 */
@@ -113,7 +121,8 @@ public class Constant {
 		public static final int GET_MY_USERS_FAILED = 43;
 	}
 
-	public static class WebsocketCode {
+	public static class WebsocketCode
+	{
 		public static final int WEBSOCKET_CODE_SUCCESS = 0;
 		public static final int WEBSOCKET_CODE_LOGIN_ERROR = 1;
 		public static final int WEBSOCKET_CODE_FRIEND_ONLINE = 2; // 好友上线
@@ -143,48 +152,54 @@ public class Constant {
 		 * 离线消息
 		 */
 		public static final int WEBSOCKET_OFFLINE_MESSAGE = 10;
-		
+
 		/**
 		 * 推送更新
 		 */
-		public static final int WEBSOCKET_PUSH_UPDATE=110;
+		public static final int WEBSOCKET_PUSH_UPDATE = 110;
 	}
 
-	public static class DynamicType {
+	public static class DynamicType
+	{
 		public static final int DYNAMIC_TYPE_PRAISE_ME = 0;// 赞了我
 		public static final int DYNAMIC_TYPE_CONTENT_COMMENT = 1; // content评论
 		public static final int DYNAMIC_TYPE_MESSAGE = 2; // 留言
 
 	}
 
-	public static class MainContentFragmentShowType {
-		public static final int TYPE_MAIN = 0; //全局
-		public static final int TYPE_MY_PUB = 1; //我发布的
-		public static final int TYPE_MY_COLLECT = 2; //我收藏的
+	public static class MainContentFragmentShowType
+	{
+		public static final int TYPE_MAIN = 0; // 全局
+		public static final int TYPE_MY_PUB = 1; // 我发布的
+		public static final int TYPE_MY_COLLECT = 2; // 我收藏的
 
 	}
 
-	public static class PictureType {
+	public static class PictureType
+	{
 		public static final int TYPE_NATIVE = 0;
 		public static final int TYPE_NET = 1;
 	}
-	
-	public static class XmppHandlerMsgCode{
-		public static final int HANDLER_CODE_LOGIN_SUCCESS=100; //登录成功
-		public static final int HANDLER_CODE_LOGIN_FAILED=101; //登录失败
-		public static final int HANDLER_CODE_GET_MESSAGE=102; //接收到消息
-		public static final int HANDLER_CODE_GET_OFF_LINE_MESSAGE=103; //接收到离线消息
-		public static final int HANDLER_CODE_SEND_MESSAGE_SUCCESS=104; //发送消息成功
-		public static final int HANDLER_CODE_SEND_MESSAGE_FAILED=105; //发送消息失败
-		public static final int HANDLER_CODE_GET_ALL_FRIENDS=106; //获取所有好友列表
-		public static final int HANDLER_FRIEND_STATE_CHANGE=107; //好友状态改变
-		public static final int HANDLER_ADD_PRIEND_SUCCESS=108; //添加好友成功
-		public static final int HANDLER_ADD_PRIEND_FAILD=109; //添加好友失败
-		public static final int HANDLER_FRIEND_ADD=110; //有人添加你为好友
-		
+
+	public static class XmppHandlerMsgCode
+	{
+		public static final int HANDLER_CODE_LOGIN_SUCCESS = 100; // 登录成功
+		public static final int HANDLER_CODE_LOGIN_FAILED = 101; // 登录失败
+		public static final int HANDLER_CODE_GET_MESSAGE = 102; // 接收到消息
+		public static final int HANDLER_CODE_GET_OFF_LINE_MESSAGE = 103; // 接收到离线消息
+		public static final int HANDLER_CODE_SEND_MESSAGE_SUCCESS = 104; // 发送消息成功
+		public static final int HANDLER_CODE_SEND_MESSAGE_FAILED = 105; // 发送消息失败
+		public static final int HANDLER_CODE_GET_ALL_FRIENDS = 106; // 获取所有好友列表
+		public static final int HANDLER_FRIEND_STATE_CHANGE = 107; // 好友状态改变
+		public static final int HANDLER_ADD_PRIEND_SUCCESS = 108; // 添加好友成功
+		public static final int HANDLER_ADD_PRIEND_FAILD = 109; // 添加好友失败
+		public static final int HANDLER_FRIEND_ADD = 110; // 有人添加你为好友
+
 	}
-	public static class BroadCastReceiveType{
-		public static final int BROAD_RECEIVE_CHANGE_FRIENDS_STATE=1;
-		public static final int BROAD_RECEIVE_CHANGE_CHAT_STATE=2;
+
+	public static class BroadCastReceiveType
+	{
+		public static final int BROAD_RECEIVE_CHANGE_FRIENDS_STATE = 1;
+		public static final int BROAD_RECEIVE_CHANGE_CHAT_STATE = 2;
 	}
 }

@@ -30,7 +30,8 @@ public class ListViewCommentAdapter extends BaseAdapter
 	private List<XComment> listItems;// 数据集合
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
-	private List<XComment> mainCommentList ;
+	private List<XComment> mainCommentList;
+
 	public List<XComment> getMainCommentList()
 	{
 		return mainCommentList;
@@ -53,8 +54,8 @@ public class ListViewCommentAdapter extends BaseAdapter
 	 * @param resource
 	 */
 	public ListViewCommentAdapter(Context context, List<XComment> data, int resource)
-	{	
-		mainCommentList=new ArrayList<XComment>();
+	{
+		mainCommentList = new ArrayList<XComment>();
 		this.context = context;
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
@@ -62,16 +63,21 @@ public class ListViewCommentAdapter extends BaseAdapter
 		splitData();
 	}
 
-	private void splitData(){
-		for(XComment com:listItems){
-			if(com.getReplyCommentId()==0){ //不是回复别人的 
-				mainCommentList.add(0,com);
+	private void splitData()
+	{
+		for (XComment com : listItems)
+		{
+			if (com.getReplyCommentId() == 0)
+			{ // 不是回复别人的
+				mainCommentList.add(0, com);
 			}
 		}
-		for(XComment mainCom:mainCommentList){
-			listItems.remove(mainCom); //剩余的是回复别人的评论
+		for (XComment mainCom : mainCommentList)
+		{
+			listItems.remove(mainCom); // 剩余的是回复别人的评论
 		}
 	}
+
 	@Override
 	public void notifyDataSetChanged()
 	{
@@ -125,19 +131,20 @@ public class ListViewCommentAdapter extends BaseAdapter
 
 		// 设置文字和图片
 		XComment comment = mainCommentList.get(position);
-		final XUserInfo userInfo=comment.getXuserInfo();
+		final XUserInfo userInfo = comment.getXuserInfo();
 		String faceURL = userInfo.getUserHeadImageUrl();
 		if (faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.widget_dface);
 		} else
 		{
-			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST+faceURL, R.drawable.widget_dface);
+			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST + faceURL,
+					R.drawable.widget_dface);
 		}
-		listItemView.face.setTag(URLs.HOST+faceURL);// 设置隐藏参数(实体类)
+		listItemView.face.setTag(URLs.HOST + faceURL);// 设置隐藏参数(实体类)
 		listItemView.face.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
@@ -148,17 +155,19 @@ public class ListViewCommentAdapter extends BaseAdapter
 		listItemView.date.setText(StringUtils.friendly_time(comment.getPlTime().toString()));
 		listItemView.content.setText(comment.getPlInfo());
 		listItemView.content.setTag(comment);// 设置隐藏参数(实体类)
-		
+
 		listItemView.relies.setVisibility(View.GONE);
 		listItemView.relies.removeAllViews();// 先清空
-		
-		List<XComment> replies=new ArrayList<XComment>();
-		for(XComment reply:listItems){
-			if(reply.getReplyCommentId()==comment.getPlId()){ //如果有回复自己的平路 加进来
+
+		List<XComment> replies = new ArrayList<XComment>();
+		for (XComment reply : listItems)
+		{
+			if (reply.getReplyCommentId() == comment.getPlId())
+			{ // 如果有回复自己的平路 加进来
 				replies.add(reply);
 			}
 		}
-		
+
 		if (replies.size() > 0)
 		{
 			// 评论数目
@@ -171,29 +180,31 @@ public class ListViewCommentAdapter extends BaseAdapter
 			{
 				View view2 = listContainer.inflate(R.layout.comment_reply, null);
 				TextView tv2 = (TextView) view2.findViewById(R.id.comment_reply_content);
-				tv2.setText(reply.getXuserInfo().getUserRealName() + "(" + StringUtils.friendly_time(reply.getPlTime().toString()) + ")："
-						+ reply.getPlInfo());
+				tv2.setText(reply.getXuserInfo().getUserRealName() + "("
+						+ StringUtils.friendly_time(reply.getPlTime().toString()) + ")：" + reply.getPlInfo());
 				listItemView.relies.addView(view2);
 			}
 			listItemView.relies.setVisibility(View.VISIBLE);
 		}
-//
-//		listItemView.refers.setVisibility(View.GONE);
-//		listItemView.refers.removeAllViews();// 先清空
-//		if (comment.getRefers().size() > 0)
-//		{
-//			// 引用内容
-//			for (Refer refer : comment.getRefers())
-//			{
-//				View view = listContainer.inflate(R.layout.comment_refer, null);
-//				TextView title = (TextView) view.findViewById(R.id.comment_refer_title);
-//				TextView body = (TextView) view.findViewById(R.id.comment_refer_body);
-//				title.setText(refer.refertitle);
-//				body.setText(refer.referbody);
-//				listItemView.refers.addView(view);
-//			}
-//			listItemView.refers.setVisibility(View.VISIBLE);
-//		}
+		//
+		// listItemView.refers.setVisibility(View.GONE);
+		// listItemView.refers.removeAllViews();// 先清空
+		// if (comment.getRefers().size() > 0)
+		// {
+		// // 引用内容
+		// for (Refer refer : comment.getRefers())
+		// {
+		// View view = listContainer.inflate(R.layout.comment_refer, null);
+		// TextView title = (TextView)
+		// view.findViewById(R.id.comment_refer_title);
+		// TextView body = (TextView)
+		// view.findViewById(R.id.comment_refer_body);
+		// title.setText(refer.refertitle);
+		// body.setText(refer.referbody);
+		// listItemView.refers.addView(view);
+		// }
+		// listItemView.refers.setVisibility(View.VISIBLE);
+		// }
 
 		return convertView;
 	}

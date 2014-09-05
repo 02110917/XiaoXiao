@@ -20,10 +20,11 @@ import android.widget.TextView;
 
 public class UserLoginActivity extends BaseActivity
 {
-	private Button mBtnLogin ;
-	private Button mBtnRegiest ;
+	private Button mBtnLogin;
+	private Button mBtnRegiest;
 	private ViewPager mvpChange;
-	private List<Fragment> mFragmentList ;
+	private List<Fragment> mFragmentList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -32,8 +33,6 @@ public class UserLoginActivity extends BaseActivity
 		initHeadView();
 		initView();
 	}
-	
-	
 
 	@Override
 	protected void initHeadView()
@@ -42,80 +41,90 @@ public class UserLoginActivity extends BaseActivity
 		mHeadRightView.setVisibility(View.GONE);
 	}
 
-	private void initView(){
-		boolean isLogin=getIntent().getExtras().getBoolean("isLogin");
-		mBtnLogin=(Button)findViewById(R.id.user_login);
-		mBtnRegiest=(Button)findViewById(R.id.user_regiest);
+	private void initView()
+	{
+		boolean isLogin = getIntent().getExtras().getBoolean("isLogin");
+		mBtnLogin = (Button) findViewById(R.id.user_login);
+		mBtnRegiest = (Button) findViewById(R.id.user_regiest);
 		mBtnLogin.setTag(0);
 		mBtnRegiest.setTag(1);
 		mBtnLogin.setOnClickListener(listener);
 		mBtnRegiest.setOnClickListener(listener);
-		mvpChange=(ViewPager)findViewById(R.id.viewpager);
-		mFragmentList=new ArrayList<Fragment>();
-		UserLoginFragment loginFragment=new UserLoginFragment();
-		UserRegisterFragment registerFragment=new UserRegisterFragment();
+		mvpChange = (ViewPager) findViewById(R.id.viewpager);
+		mFragmentList = new ArrayList<Fragment>();
+		UserLoginFragment loginFragment = new UserLoginFragment();
+		UserRegisterFragment registerFragment = new UserRegisterFragment();
 		mFragmentList.add(loginFragment);
 		mFragmentList.add(registerFragment);
-		MyFragmentPaperAdapter adapter=new MyFragmentPaperAdapter(getSupportFragmentManager(), mFragmentList);
+		MyFragmentPaperAdapter adapter = new MyFragmentPaperAdapter(getSupportFragmentManager(),
+				mFragmentList);
 		mvpChange.setAdapter(adapter);
-		if(isLogin){
+		if (isLogin)
+		{
 			changeTabBtnState(0);
 			mvpChange.setCurrentItem(0);
-		}else{
+		} else
+		{
 			changeTabBtnState(1);
 			mvpChange.setCurrentItem(1);
 		}
 		mvpChange.setOnPageChangeListener(new OnPageChangeListener()
 		{
-			
+
 			@Override
 			public void onPageSelected(int arg0)
 			{
 				changeTabBtnState(arg0);
 			}
-			
+
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2)
 			{
-				
+
 			}
-			
+
 			@Override
 			public void onPageScrollStateChanged(int arg0)
 			{
-				
+
 			}
 		});
 	}
-	private OnClickListener listener=new OnClickListener()
+
+	private OnClickListener listener = new OnClickListener()
 	{
-		
+
 		@Override
 		public void onClick(View v)
 		{
-			int tag=(Integer) v.getTag();
+			int tag = (Integer) v.getTag();
 			changeTabBtnState(tag);
 			mvpChange.setCurrentItem(tag);
 		}
 	};
-	
-	private void changeTabBtnState(int tag){
-		if(tag==0){
+
+	private void changeTabBtnState(int tag)
+	{
+		if (tag == 0)
+		{
 			mHeadTitle.setText("用户登陆");
-			mBtnLogin.setBackgroundResource(R.drawable.login_tab_pressed);	
+			mBtnLogin.setBackgroundResource(R.drawable.login_tab_pressed);
 			mBtnRegiest.setBackgroundResource(R.drawable.login_tab_normal);
-		}
-		else{
+		} else
+		{
 			mHeadTitle.setText("用户注册");
-			mBtnLogin.setBackgroundResource(R.drawable.login_tab_normal);	
+			mBtnLogin.setBackgroundResource(R.drawable.login_tab_normal);
 			mBtnRegiest.setBackgroundResource(R.drawable.login_tab_pressed);
 		}
 	}
+
 	public void delOnclick(View v)
 	{
-		((UserLoginFragment)(mFragmentList.get(0))).delOnclick(v);
+		((UserLoginFragment) (mFragmentList.get(0))).delOnclick(v);
 	}
-	public void showPsd(View v){
-		((UserRegisterFragment)(mFragmentList.get(1))).showPsdOnclick(v);
+
+	public void showPsd(View v)
+	{
+		((UserRegisterFragment) (mFragmentList.get(1))).showPsdOnclick(v);
 	}
 }

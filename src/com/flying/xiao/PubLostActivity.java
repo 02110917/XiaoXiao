@@ -50,17 +50,18 @@ public class PubLostActivity extends BaseActivity
 	private ArrayList<String> dataList;
 	private GridImageAdapter gridImageAdapter;
 	private ProgressDialog mProgress;
-	
+
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
-	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-	String userMd5="";
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+	String userMd5 = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_lost);
-		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
+		userMd5 = MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
@@ -90,7 +91,7 @@ public class PubLostActivity extends BaseActivity
 		gridView = (GridView) findViewById(R.id.pub_lost_grid);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
+		gridImageAdapter = new GridImageAdapter(this, dataList, gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler = new Handler()
@@ -163,8 +164,10 @@ public class PubLostActivity extends BaseActivity
 					gridImageAdapter.notifyDataSetChanged();
 				}
 			}
-		}else if(requestCode==1){
-			if(resultCode==RESULT_OK){
+		} else if (requestCode == 1)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				dataList.add(0, imageUrl);
 				gridImageAdapter.notifyDataSetChanged();
 			}
@@ -206,12 +209,12 @@ public class PubLostActivity extends BaseActivity
 			{
 				UIHelper.ToastMessage(PubLostActivity.this, "输入信息不能为空...", Toast.LENGTH_SHORT);
 				return;
-			}
-			else if(dataList.size()<=1){
+			} else if (dataList.size() <= 1)
+			{
 				UIHelper.ToastMessage(PubLostActivity.this, "请至少选择一张图片上传...", Toast.LENGTH_SHORT);
 				return;
 			}
-			RLost rLost=new RLost();
+			RLost rLost = new RLost();
 			rLost.setName(_name);
 			rLost.setPlace(_place);
 			rLost.setPhone(_phone);
@@ -225,8 +228,6 @@ public class PubLostActivity extends BaseActivity
 		}
 	};
 
-
-	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
@@ -257,10 +258,10 @@ public class PubLostActivity extends BaseActivity
 		}
 		return true;
 	}
-	
+
 	public Uri getImageUri()
 	{
-		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		imageUrl += (userMd5 + System.currentTimeMillis() + ".jpg");
 		return Uri.fromFile(new File(imageUrl));
 	}
 }

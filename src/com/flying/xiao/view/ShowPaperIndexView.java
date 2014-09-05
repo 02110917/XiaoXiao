@@ -16,6 +16,7 @@ public class ShowPaperIndexView extends View
 	private int allPage;
 	private int currectPage;
 	private Bitmap backBitmap;
+
 	public ShowPaperIndexView(Context context)
 	{
 		super(context);
@@ -39,17 +40,17 @@ public class ShowPaperIndexView extends View
 	protected void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		int width=this.getWidth();
-		int height=this.getHeight();
-//		backBitmap=Bitmap.createBitmap(backBitmap, 0, 0, width, height);
-		Paint p=new Paint();
+		int width = this.getWidth();
+		int height = this.getHeight();
+		// backBitmap=Bitmap.createBitmap(backBitmap, 0, 0, width, height);
+		Paint p = new Paint();
 		p.setAlpha(100);
 		canvas.drawBitmap(backBitmap, 0, 0, p);
 		p.setAlpha(0);
 		p.setColor(Color.RED);
-		canvas.drawText(currectPage+"", 0.3f*width, 0.5f*height, p);
+		canvas.drawText(currectPage + "", 0.3f * width, 0.5f * height, p);
 		p.setColor(Color.WHITE);
-		canvas.drawText("/"+allPage,  0.7f*width,0.5f*height, p);
+		canvas.drawText("/" + allPage, 0.7f * width, 0.5f * height, p);
 	}
 
 	public int getAllPage()
@@ -69,9 +70,8 @@ public class ShowPaperIndexView extends View
 
 	public void setCurrectPage(int currectPage)
 	{
-		invalidate(); 
+		invalidate();
 		this.currectPage = currectPage;
 	}
 
-	
 }

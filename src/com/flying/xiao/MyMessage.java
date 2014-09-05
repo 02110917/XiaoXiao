@@ -81,7 +81,7 @@ public class MyMessage extends BaseActivity implements PullDownListView.OnRefres
 		});
 		mListView.setOnTouchListener(new OnTouchListener()
 		{
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
 			{

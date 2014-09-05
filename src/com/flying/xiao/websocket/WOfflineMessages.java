@@ -4,7 +4,7 @@ import java.util.List;
 
 public class WOfflineMessages extends WBase
 {
-	private List<OfflineMessage> offlineMessages ;
+	private List<OfflineMessage> offlineMessages;
 
 	public List<OfflineMessage> getOfflineMessages()
 	{
@@ -15,5 +15,5 @@ public class WOfflineMessages extends WBase
 	{
 		this.offlineMessages = offlineMessages;
 	}
-	
+
 }

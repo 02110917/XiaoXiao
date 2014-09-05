@@ -7,28 +7,33 @@ import com.google.gson.JsonSyntaxException;
 public class WBase
 {
 	private int code;
-	private String message ;
+	private String message;
+
 	public int getCode()
 	{
 		return code;
 	}
+
 	public void setCode(int code)
 	{
 		this.code = code;
 	}
+
 	public String getMessage()
 	{
 		return message;
 	}
+
 	public void setMessage(String message)
 	{
 		this.message = message;
 	}
-	public String toJson() {
+
+	public String toJson()
+	{
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		return json;
 	}
 
-	
 }

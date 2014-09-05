@@ -25,7 +25,8 @@ public class ListViewMainContentAdapter extends BaseAdapter
 	private List<XContent> listItems;// 数据集合
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
-	private boolean isMarket ;
+	private boolean isMarket;
+
 	static class ListItemView
 	{ // 自定义控件集合
 		public ImageView face;
@@ -33,8 +34,8 @@ public class ListViewMainContentAdapter extends BaseAdapter
 		public TextView author;
 		public TextView date;
 		public TextView count;
-		public TextView summary ; //内容摘要
-		public TextView price ;
+		public TextView summary; // 内容摘要
+		public TextView price;
 	}
 
 	/**
@@ -50,16 +51,19 @@ public class ListViewMainContentAdapter extends BaseAdapter
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
 		this.listItems = data;
-		isMarket=false;
+		isMarket = false;
 	}
-	public ListViewMainContentAdapter(Context context, List<XContent> data, int resource,boolean isMarket){
+
+	public ListViewMainContentAdapter(Context context, List<XContent> data, int resource, boolean isMarket)
+	{
 		this(context, data, resource);
-		this.isMarket=isMarket;
+		this.isMarket = isMarket;
 	}
+
 	@Override
 	public int getCount()
 	{
-		if(listItems!=null)
+		if (listItems != null)
 			return listItems.size();
 		return 0;
 	}
@@ -89,7 +93,7 @@ public class ListViewMainContentAdapter extends BaseAdapter
 		{
 			// 获取list_item布局文件的视图
 			convertView = listContainer.inflate(this.itemViewResource, null);
-			
+
 			listItemView = new ListItemView();
 			// 获取控件对象
 			listItemView.face = (ImageView) convertView.findViewById(R.id.main_listitem_userface);
@@ -97,7 +101,7 @@ public class ListViewMainContentAdapter extends BaseAdapter
 			listItemView.author = (TextView) convertView.findViewById(R.id.main_listitem_author);
 			listItemView.date = (TextView) convertView.findViewById(R.id.main_listitem_date);
 			listItemView.summary = (TextView) convertView.findViewById(R.id.main_listitem_Summary);
-			if(isMarket)
+			if (isMarket)
 				listItemView.price = (TextView) convertView.findViewById(R.id.main_listitem_price);
 			else
 				listItemView.count = (TextView) convertView.findViewById(R.id.main_listitem_count);
@@ -110,59 +114,67 @@ public class ListViewMainContentAdapter extends BaseAdapter
 
 		// 设置文字和图片
 		final XContent con = listItems.get(position);
-		String faceURL = con.getConImageUrl()==null?"":con.getConImageUrl();
-		System.out.println("image url---"+faceURL);
+		String faceURL = con.getConImageUrl() == null ? "" : con.getConImageUrl();
+		System.out.println("image url---" + faceURL);
 		if (faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.widget_dface);
 		} else
 		{
-			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST+faceURL, R.drawable.widget_dface);
+			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST + faceURL,
+					R.drawable.widget_dface);
 		}
 		listItemView.face.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				UIHelper.showUserInfo(context, con.getUserInfo());
 			}
-		}); //设置点击进入用户详情
-		listItemView.face.setTag(URLs.HOST+faceURL);
+		}); // 设置点击进入用户详情
+		listItemView.face.setTag(URLs.HOST + faceURL);
 		listItemView.author.setText(con.getUserInfo().getUserRealName());
 		listItemView.title.setText(con.getConTitle());
-		if(con.getConTypeId()==Constant.ContentType.CONTENT_TYPE_LOST){
-			if(con.isLost()){
+		if (con.getConTypeId() == Constant.ContentType.CONTENT_TYPE_LOST)
+		{
+			if (con.isLost())
+			{
 				listItemView.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.lost, 0, 0, 0);
-			}else{
+			} else
+			{
 				listItemView.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.get, 0, 0, 0);
 			}
 		}
 		listItemView.title.setTag(con);// 设置隐藏参数(实体类)
-		
+
 		listItemView.date.setText(StringUtils.friendly_time(con.getConPubTime().toString()));
-		if(isMarket)
-			listItemView.price.setText(con.getPrice()+"元");
+		if (isMarket)
+			listItemView.price.setText(con.getPrice() + "元");
 		else
 			listItemView.count.setText(con.getConPls() + "回|" + con.getConHot() + "阅");
-		if(con.getConSummary()!=null&&(!con.getConSummary().equals(""))){
+		if (con.getConSummary() != null && (!con.getConSummary().equals("")))
+		{
 			listItemView.summary.setVisibility(View.VISIBLE);
 			listItemView.summary.setText(con.getConSummary());
-		}else{
+		} else
+		{
 			listItemView.summary.setVisibility(View.GONE);
 		}
 		return convertView;
 	}
 
-//	private View.OnClickListener faceClickListener = new View.OnClickListener()
-//	{
-//		
-//		@Override
-//		public void onClick(View v)
-//		{
-//			UIHelper.showMyHome(context, userInfo);
-////			Post post = (Post) v.getTag();
-////			UIHelper.showUserCenter(v.getContext(), post.getAuthorId(), post.getAuthor());
-//		}
-//	};
+	// private View.OnClickListener faceClickListener = new
+	// View.OnClickListener()
+	// {
+	//
+	// @Override
+	// public void onClick(View v)
+	// {
+	// UIHelper.showMyHome(context, userInfo);
+	// // Post post = (Post) v.getTag();
+	// // UIHelper.showUserCenter(v.getContext(), post.getAuthorId(),
+	// post.getAuthor());
+	// }
+	// };
 }

@@ -21,8 +21,10 @@ import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.common.URLs;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.util.ImageManager2;
+
 /**
  * 社区adapter
+ * 
  * @author zhangmin
  *
  */
@@ -33,12 +35,13 @@ public class ListViewMyFriendAdapter extends BaseAdapter
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
 	private Handler handler;
-	private AppContext appContext ;
+	private AppContext appContext;
+
 	static class ListItemView
 	{ // 自定义控件集合
 		public ImageView face;
-		public TextView name; 
-		public TextView summary ; //个人说明
+		public TextView name;
+		public TextView summary; // 个人说明
 	}
 
 	/**
@@ -54,8 +57,9 @@ public class ListViewMyFriendAdapter extends BaseAdapter
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
 		this.listItems = data;
-		appContext=(AppContext) ((Activity)context).getApplication();
+		appContext = (AppContext) ((Activity) context).getApplication();
 	}
+
 	@Override
 	public int getCount()
 	{
@@ -78,7 +82,7 @@ public class ListViewMyFriendAdapter extends BaseAdapter
 	 * ListView Item设置
 	 */
 	@Override
-	public View getView( int position, View convertView, ViewGroup parent)
+	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		// 自定义视图
 		final ListItemView listItemView;
@@ -87,7 +91,7 @@ public class ListViewMyFriendAdapter extends BaseAdapter
 		{
 			// 获取list_item布局文件的视图
 			convertView = listContainer.inflate(this.itemViewResource, null);
-			
+
 			listItemView = new ListItemView();
 			// 获取控件对象
 			listItemView.face = (ImageView) convertView.findViewById(R.id.my_friend_listitem_userface);
@@ -102,40 +106,39 @@ public class ListViewMyFriendAdapter extends BaseAdapter
 
 		// 设置文字和图片
 		final XUserInfo userInfo = listItems.get(position);
-		String faceURL="";
+		String faceURL = "";
 		faceURL = userInfo.getUserHeadImageUrl();
-		System.out.println("image url---"+faceURL);
-		if (faceURL==null||faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
+		System.out.println("image url---" + faceURL);
+		if (faceURL == null || faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.widget_dface);
 		} else
 		{
-			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST+faceURL, R.drawable.widget_dface);
+			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST + faceURL,
+					R.drawable.widget_dface);
 		}
 		listItemView.face.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				UIHelper.showUserInfo(context, userInfo);
 			}
-		}); //设置点击进入用户详情
-		listItemView.face.setTag(URLs.HOST+faceURL);
+		}); // 设置点击进入用户详情
+		listItemView.face.setTag(URLs.HOST + faceURL);
 		listItemView.name.setText(userInfo.getUserRealName());
-		if(!userInfo.isOnline())
+		if (!userInfo.isOnline())
 		{
-			listItemView.name.setText(userInfo.getUserRealName()+" 离线");
+			listItemView.name.setText(userInfo.getUserRealName() + " 离线");
 			listItemView.name.setTextColor(Color.RED);
-		}
-		else
+		} else
 		{
-			listItemView.name.setText(userInfo.getUserRealName()+" 在线");
+			listItemView.name.setText(userInfo.getUserRealName() + " 在线");
 			listItemView.name.setTextColor(Color.BLACK);
 		}
 		listItemView.summary.setText(userInfo.getUserGerenshuoming());
 		return convertView;
 	}
 
-	
 }

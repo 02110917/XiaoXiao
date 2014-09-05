@@ -119,7 +119,7 @@ public class RefreshingView extends View
 					f1 -= this.aXt - f1;
 				paramCanvas.translate(i / 2, f1);
 			}
-			
+
 			// break;
 			// label326: localA.aPO.setAlpha((int)(k * (1.0F + 0.95F *
 			// localA.aXB) * this.aXw));

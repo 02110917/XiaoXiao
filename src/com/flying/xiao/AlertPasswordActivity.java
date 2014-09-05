@@ -19,7 +19,8 @@ import com.flying.xiao.control.NetControl;
 import com.flying.xiao.entity.Base;
 import com.flying.xiao.http.HttpUtil;
 
-public class AlertPasswordActivity extends BaseActivity {
+public class AlertPasswordActivity extends BaseActivity
+{
 
 	private TextView mTvError;
 	private EditText oldPassword;
@@ -31,7 +32,8 @@ public class AlertPasswordActivity extends BaseActivity {
 	private Handler handler;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.alert_password);
 		appContext = (AppContext) getApplication();
@@ -40,14 +42,16 @@ public class AlertPasswordActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void initHeadView() {
+	protected void initHeadView()
+	{
 		// TODO Auto-generated method stub
 		super.initHeadView();
 		mHeadRightView.setVisibility(View.GONE);
 		mHeadTitle.setText("修改密码");
 	}
 
-	private void initView() {
+	private void initView()
+	{
 
 		mTvError = (TextView) findViewById(R.id.text_error);
 		oldPassword = (EditText) findViewById(R.id.edit_old_password);
@@ -55,56 +59,61 @@ public class AlertPasswordActivity extends BaseActivity {
 		confirmPassword = (EditText) findViewById(R.id.new_password_again);
 		mPbLogin = (ProgressBar) findViewById(R.id.progress_login);
 		mLinLayoutLogin = (LinearLayout) findViewById(R.id.layout_login);
-		mLinLayoutLogin.setOnClickListener(new OnClickListener() {
+		mLinLayoutLogin.setOnClickListener(new OnClickListener()
+		{
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				// TODO Auto-generated method stub
-				if (checkInput(oldPassword.getText().toString(), newPassword
-						.getText().toString(), confirmPassword.getText()
-						.toString())) {
+				if (checkInput(oldPassword.getText().toString(), newPassword.getText().toString(),
+						confirmPassword.getText().toString()))
+				{
 					mPbLogin.setVisibility(View.VISIBLE);
-					NetControl.getShare(AlertPasswordActivity.this)
-							.alertPassword(
-									oldPassword.getText().toString(),
-									newPassword.getText().toString(),
-									String.valueOf(appContext.getUserInfo()
-											.getId()), handler);
+					NetControl.getShare(AlertPasswordActivity.this).alertPassword(
+							oldPassword.getText().toString(), newPassword.getText().toString(),
+							String.valueOf(appContext.getUserInfo().getId()), handler);
 
 				}
 			}
 		});
-		handler = new Handler() {
+		handler = new Handler()
+		{
 
 			@Override
-			public void handleMessage(Message msg) {
+			public void handleMessage(Message msg)
+			{
 				super.handleMessage(msg);
 				mPbLogin.setVisibility(View.GONE);
-				if (msg.what == Constant.HandlerMessageCode.LOGIN_SUCCESS) {
+				if (msg.what == Constant.HandlerMessageCode.LOGIN_SUCCESS)
+				{
 					Base base = (Base) msg.obj;
-					if (base != null) {
+					if (base != null)
+					{
 						// 清空原先cookie
 						HttpUtil.cleanCookie();
 						// 提示登陆成功
-						UIHelper.ToastMessage(AlertPasswordActivity.this,
-								R.string.msg_alertps_success);
+						UIHelper.ToastMessage(AlertPasswordActivity.this, R.string.msg_alertps_success);
 						AlertPasswordActivity.this.finish();
 					}
-				} else if (msg.what == Constant.ErrorCode.USER_NOT_LOGIN) {
+				} else if (msg.what == Constant.ErrorCode.USER_NOT_LOGIN)
+				{
 					UIHelper.showLoginDialog(AlertPasswordActivity.this);
-				} else if (msg.what == Constant.HandlerMessageCode.LOGIN_FAILD) {
-					UIHelper.ToastMessage(AlertPasswordActivity.this,
-							getString(R.string.msg_alertps_fail));
-				} else if (msg.what == Constant.HandlerMessageCode.NET_THROW_EXCEPTION) {
-					((AppException) msg.obj)
-							.makeToast(AlertPasswordActivity.this);
+				} else if (msg.what == Constant.HandlerMessageCode.LOGIN_FAILD)
+				{
+					UIHelper.ToastMessage(AlertPasswordActivity.this, getString(R.string.msg_alertps_fail));
+				} else if (msg.what == Constant.HandlerMessageCode.NET_THROW_EXCEPTION)
+				{
+					((AppException) msg.obj).makeToast(AlertPasswordActivity.this);
 				}
 			}
 		};
 	}
 
-	public void delOnclick(View v) {
-		switch (v.getId()) {
+	public void delOnclick(View v)
+	{
+		switch (v.getId())
+		{
 		case R.id.button_old_password_del:
 			oldPassword.getText().clear();
 			break;
@@ -121,14 +130,15 @@ public class AlertPasswordActivity extends BaseActivity {
 
 	}
 
-	private boolean checkInput(String oldPassword, String newPassword,
-			String newPasswordConfirm) {
-		if (StringUtils.isEmpty(oldPassword)
-				|| StringUtils.isEmpty(newPasswordConfirm)) {
+	private boolean checkInput(String oldPassword, String newPassword, String newPasswordConfirm)
+	{
+		if (StringUtils.isEmpty(oldPassword) || StringUtils.isEmpty(newPasswordConfirm))
+		{
 			mTvError.setVisibility(View.VISIBLE);
 			mTvError.setText("密码|新密码输入不能为空!");
 			return false;
-		} else if (!newPassword.equals(newPasswordConfirm)) {
+		} else if (!newPassword.equals(newPasswordConfirm))
+		{
 			mTvError.setVisibility(View.VISIBLE);
 			mTvError.setText("两次输入新密码不相同，请重新输入!");
 			return false;

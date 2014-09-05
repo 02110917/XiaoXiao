@@ -29,7 +29,8 @@ import com.flying.xiao.http.HttpUtil;
  * 图片加载类
  * 
  */
-public class ImageManager2 {
+public class ImageManager2
+{
 
 	private static ImageManager2 imageManager;
 	public LruCache<String, Bitmap> mMemoryCache;
@@ -65,21 +66,25 @@ public class ImageManager2 {
 	 * @param context
 	 * @return
 	 */
-	public static ImageManager2 from(Context context) {
+	public static ImageManager2 from(Context context)
+	{
 
 		// 如果不在ui线程中，则抛出异常
-		if (Looper.myLooper() != Looper.getMainLooper()) {
+		if (Looper.myLooper() != Looper.getMainLooper())
+		{
 			throw new RuntimeException("Cannot instantiate outside UI thread.");
 		}
 
-		if (myapp == null) {
+		if (myapp == null)
+		{
 			myapp = (AppContext) context.getApplicationContext();
 		}
 
-		if (imageManager == null) {
+		if (imageManager == null)
+		{
 			imageManager = new ImageManager2(myapp);
 		}
-		
+
 		return imageManager;
 	}
 
@@ -88,23 +93,25 @@ public class ImageManager2 {
 	 * 
 	 * @param context
 	 */
-	private ImageManager2(Context context) {
-		int memClass = ((ActivityManager) context
-				.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+	private ImageManager2(Context context)
+	{
+		int memClass = ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE))
+				.getMemoryClass();
 		memClass = memClass > 32 ? 32 : memClass;
 		// 使用可用内存的1/8作为图片缓存
 		final int cacheSize = 1024 * 1024 * memClass / 8;
 
-		mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+		mMemoryCache = new LruCache<String, Bitmap>(cacheSize)
+		{
 
-			protected int sizeOf(String key, Bitmap bitmap) {
+			protected int sizeOf(String key, Bitmap bitmap)
+			{
 				return bitmap.getRowBytes() * bitmap.getHeight();
 			}
 
 		};
 
-		File cacheDir = DiskLruCache
-				.getDiskCacheDir(context, DISK_CACHE_SUBDIR);
+		File cacheDir = DiskLruCache.getDiskCacheDir(context, DISK_CACHE_SUBDIR);
 		mDiskCache = DiskLruCache.openCache(context, cacheDir, DISK_CACHE_SIZE);
 
 	}
@@ -112,7 +119,8 @@ public class ImageManager2 {
 	/**
 	 * 存放图片信息
 	 */
-	class ImageRef {
+	class ImageRef
+	{
 
 		/** 图片对应ImageView控件 */
 		ImageView imageView;
@@ -133,15 +141,16 @@ public class ImageManager2 {
 		 * @param resId
 		 * @param filePath
 		 */
-		ImageRef(ImageView imageView, String url, String filePath, int resId) {
+		ImageRef(ImageView imageView, String url, String filePath, int resId)
+		{
 			this.imageView = imageView;
 			this.url = url;
 			this.filePath = filePath;
 			this.resId = resId;
 		}
 
-		ImageRef(ImageView imageView, String url, String filePath, int resId,
-				int width, int height) {
+		ImageRef(ImageView imageView, String url, String filePath, int resId, int width, int height)
+		{
 			this.imageView = imageView;
 			this.url = url;
 			this.filePath = filePath;
@@ -159,22 +168,27 @@ public class ImageManager2 {
 	 * @param url
 	 * @param resId
 	 */
-	public void displayImage(ImageView imageView, String url, int resId) {
-		if (imageView == null) {
+	public void displayImage(ImageView imageView, String url, int resId)
+	{
+		if (imageView == null)
+		{
 			return;
 		}
-		if (imageView.getTag() != null
-				&& imageView.getTag().toString().equals(url)) {
+		if (imageView.getTag() != null && imageView.getTag().toString().equals(url))
+		{
 			return;
 		}
-		if (resId >= 0) {
-			if (imageView.getBackground() == null) {
+		if (resId >= 0)
+		{
+			if (imageView.getBackground() == null)
+			{
 				imageView.setBackgroundResource(resId);
 			}
 			imageView.setImageDrawable(null);
 
 		}
-		if (url == null || url.equals("")) {
+		if (url == null || url.equals(""))
+		{
 			return;
 		}
 
@@ -183,14 +197,16 @@ public class ImageManager2 {
 
 		// 读取map缓存
 		Bitmap bitmap = mMemoryCache.get(url);
-		if (bitmap != null) {
+		if (bitmap != null)
+		{
 			setImageBitmap(imageView, bitmap, false);
 			return;
 		}
 
 		// 生成文件名
 		String filePath = urlToFilePath(url);
-		if (filePath == null) {
+		if (filePath == null)
+		{
 			return;
 		}
 
@@ -200,26 +216,35 @@ public class ImageManager2 {
 	/**
 	 * 显示图片固定大小图片的缩略图，一般用于显示列表的图片，可以大大减小内存使用
 	 * 
-	 * @param imageView 加载图片的控件
-	 * @param url 加载地址
-	 * @param resId 默认图片
-	 * @param width 指定宽度
-	 * @param height 指定高度
+	 * @param imageView
+	 *            加载图片的控件
+	 * @param url
+	 *            加载地址
+	 * @param resId
+	 *            默认图片
+	 * @param width
+	 *            指定宽度
+	 * @param height
+	 *            指定高度
 	 */
-	public void displayImage(ImageView imageView, String url, int resId,
-			int width, int height) {
-		if (imageView == null) {
+	public void displayImage(ImageView imageView, String url, int resId, int width, int height)
+	{
+		if (imageView == null)
+		{
 			return;
 		}
-		if (resId >= 0) {
+		if (resId >= 0)
+		{
 
-			if (imageView.getBackground() == null) {
+			if (imageView.getBackground() == null)
+			{
 				imageView.setBackgroundResource(resId);
 			}
 			imageView.setImageDrawable(null);
 
 		}
-		if (url == null || url.equals("")) {
+		if (url == null || url.equals(""))
+		{
 			return;
 		}
 
@@ -227,14 +252,16 @@ public class ImageManager2 {
 		imageView.setTag(url);
 		// 读取map缓存
 		Bitmap bitmap = mMemoryCache.get(url + width + height);
-		if (bitmap != null) {
+		if (bitmap != null)
+		{
 			setImageBitmap(imageView, bitmap, false);
 			return;
 		}
 
 		// 生成文件名
 		String filePath = urlToFilePath(url);
-		if (filePath == null) {
+		if (filePath == null)
+		{
 			return;
 		}
 
@@ -246,12 +273,15 @@ public class ImageManager2 {
 	 * 
 	 * @param imageRef
 	 */
-	public void queueImage(ImageRef imageRef) {
+	public void queueImage(ImageRef imageRef)
+	{
 
 		// 删除已有ImageView
 		Iterator<ImageRef> iterator = mImageQueue.iterator();
-		while (iterator.hasNext()) {
-			if (iterator.next().imageView == imageRef.imageView) {
+		while (iterator.hasNext())
+		{
+			if (iterator.next().imageView == imageRef.imageView)
+			{
 				iterator.remove();
 			}
 		}
@@ -264,21 +294,22 @@ public class ImageManager2 {
 	/**
 	 * 发送请求
 	 */
-	private void sendRequest() {
+	private void sendRequest()
+	{
 
 		// 开启图片加载线程
-		if (mImageLoaderHandler == null) {
+		if (mImageLoaderHandler == null)
+		{
 			HandlerThread imageLoader = new HandlerThread("image_loader");
 			imageLoader.start();
-			mImageLoaderHandler = new ImageLoaderHandler(
-					imageLoader.getLooper());
+			mImageLoaderHandler = new ImageLoaderHandler(imageLoader.getLooper());
 		}
 
 		// 发送请求
-		if (mImageLoaderIdle && mImageQueue.size() > 0) {
+		if (mImageLoaderIdle && mImageQueue.size() > 0)
+		{
 			ImageRef imageRef = mImageQueue.pop();
-			Message message = mImageLoaderHandler.obtainMessage(MSG_REQUEST,
-					imageRef);
+			Message message = mImageLoaderHandler.obtainMessage(MSG_REQUEST, imageRef);
 			mImageLoaderHandler.sendMessage(message);
 			mImageLoaderIdle = false;
 			mRequestQueue.add(imageRef);
@@ -288,29 +319,35 @@ public class ImageManager2 {
 	/**
 	 * 图片加载线程
 	 */
-	class ImageLoaderHandler extends Handler {
+	class ImageLoaderHandler extends Handler
+	{
 
-		public ImageLoaderHandler(Looper looper) {
+		public ImageLoaderHandler(Looper looper)
+		{
 			super(looper);
 		}
 
-		public void handleMessage(Message msg) {
+		public void handleMessage(Message msg)
+		{
 			if (msg == null)
 				return;
 
-			switch (msg.what) {
+			switch (msg.what)
+			{
 
 			case MSG_REQUEST: // 收到请求
 				Bitmap bitmap = null;
 				Bitmap tBitmap = null;
-				if (msg.obj != null && msg.obj instanceof ImageRef) {
+				if (msg.obj != null && msg.obj instanceof ImageRef)
+				{
 
 					ImageRef imageRef = (ImageRef) msg.obj;
 					String url = imageRef.url;
 					if (url == null)
 						return;
 					// 如果本地url即读取sd相册图片，则直接读取，不用经过DiskCache
-					if (url.toLowerCase().contains("mnt")||url.toLowerCase().contains("sdcard")) {
+					if (url.toLowerCase().contains("mnt") || url.toLowerCase().contains("sdcard"))
+					{
 
 						tBitmap = null;
 						BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -321,89 +358,97 @@ public class ImageManager2 {
 						opt.inSampleSize = bitmapSize / (1000 * 2000);
 						opt.inJustDecodeBounds = false;
 						tBitmap = BitmapFactory.decodeFile(url, opt);
-						if (imageRef.width != 0 && imageRef.height != 0) {
-							bitmap = ThumbnailUtils.extractThumbnail(tBitmap,
-									imageRef.width, imageRef.height,
-									ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+						if (imageRef.width != 0 && imageRef.height != 0)
+						{
+							bitmap = ThumbnailUtils.extractThumbnail(tBitmap, imageRef.width,
+									imageRef.height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
 							isFromNet = true;
-						} else {
+						} else
+						{
 							bitmap = tBitmap;
 							tBitmap = null;
 						}
 
 					} else
 						bitmap = mDiskCache.get(url);
-						
-					if (bitmap != null) {
+
+					if (bitmap != null)
+					{
 						// ToolUtil.log("从disk缓存读取");
 						// 写入map缓存
-						if (imageRef.width != 0 && imageRef.height != 0) {
-							if (mMemoryCache.get(url + imageRef.width
-									+ imageRef.height) == null)
-								mMemoryCache.put(url + imageRef.width
-										+ imageRef.height, bitmap);
-						} else {
+						if (imageRef.width != 0 && imageRef.height != 0)
+						{
+							if (mMemoryCache.get(url + imageRef.width + imageRef.height) == null)
+								mMemoryCache.put(url + imageRef.width + imageRef.height, bitmap);
+						} else
+						{
 							if (mMemoryCache.get(url) == null)
 								mMemoryCache.put(url, bitmap);
 						}
 
-					} else {
-						try {
-							byte[] data = HttpUtil.loadByteArrayFromNetwork(myapp,url);
+					} else
+					{
+						try
+						{
+							byte[] data = HttpUtil.loadByteArrayFromNetwork(myapp, url);
 
-							if (data != null) {
+							if (data != null)
+							{
 
 								BitmapFactory.Options opt = new BitmapFactory.Options();
 								opt.inSampleSize = 1;
 
 								opt.inJustDecodeBounds = true;
-								BitmapFactory.decodeByteArray(data, 0,
-										data.length, opt);
-								int bitmapSize = opt.outHeight * opt.outWidth
-										* 4;// pixels*3 if it's RGB and pixels*4
-											// if it's ARGB
+								BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+								int bitmapSize = opt.outHeight * opt.outWidth * 4;// pixels*3
+																					// if
+																					// it's
+																					// RGB
+																					// and
+																					// pixels*4
+																					// if
+																					// it's
+																					// ARGB
 								if (bitmapSize > 1000 * 1200)
 									opt.inSampleSize = 2;
 								opt.inJustDecodeBounds = false;
-								tBitmap = BitmapFactory.decodeByteArray(data,
-										0, data.length, opt);
-								if (imageRef.width != 0 && imageRef.height != 0) {
-									bitmap = ThumbnailUtils
-											.extractThumbnail(
-													tBitmap,
-													imageRef.width,
-													imageRef.height,
-													ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
-								} else {
+								tBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opt);
+								if (imageRef.width != 0 && imageRef.height != 0)
+								{
+									bitmap = ThumbnailUtils.extractThumbnail(tBitmap, imageRef.width,
+											imageRef.height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+								} else
+								{
 									bitmap = tBitmap;
 									tBitmap = null;
 								}
 
-								if (bitmap != null && url != null) {
+								if (bitmap != null && url != null)
+								{
 									// 写入SD卡
-									if (imageRef.width != 0
-											&& imageRef.height != 0) {
-										mDiskCache.put(url + imageRef.width
-												+ imageRef.height, bitmap);
-										mMemoryCache.put(url + imageRef.width
-												+ imageRef.height, bitmap);
-									} else {
+									if (imageRef.width != 0 && imageRef.height != 0)
+									{
+										mDiskCache.put(url + imageRef.width + imageRef.height, bitmap);
+										mMemoryCache.put(url + imageRef.width + imageRef.height, bitmap);
+									} else
+									{
 										mDiskCache.put(url, bitmap);
 										mMemoryCache.put(url, bitmap);
 									}
 									isFromNet = true;
 								}
 							}
-						} catch (OutOfMemoryError e) {
+						} catch (OutOfMemoryError e)
+						{
 						}
 
 					}
 
 				}
 
-				if (mImageManagerHandler != null) {
-					Message message = mImageManagerHandler.obtainMessage(
-							MSG_REPLY, bitmap);
+				if (mImageManagerHandler != null)
+				{
+					Message message = mImageManagerHandler.obtainMessage(MSG_REPLY, bitmap);
 					mImageManagerHandler.sendMessage(message);
 				}
 				break;
@@ -417,34 +462,39 @@ public class ImageManager2 {
 	}
 
 	/** UI线程消息处理器 */
-	private Handler mImageManagerHandler = new Handler() {
+	private Handler mImageManagerHandler = new Handler()
+	{
 
 		@Override
-		public void handleMessage(Message msg) {
-			if (msg != null) {
-				switch (msg.what) {
+		public void handleMessage(Message msg)
+		{
+			if (msg != null)
+			{
+				switch (msg.what)
+				{
 
 				case MSG_REPLY: // 收到应答
 
-					do {
+					do
+					{
 						ImageRef imageRef = mRequestQueue.remove();
 
 						if (imageRef == null)
 							break;
 
-						if (imageRef.imageView == null
-								|| imageRef.imageView.getTag() == null
+						if (imageRef.imageView == null || imageRef.imageView.getTag() == null
 								|| imageRef.url == null)
 							break;
 
-						if (!(msg.obj instanceof Bitmap) || msg.obj == null) {
+						if (!(msg.obj instanceof Bitmap) || msg.obj == null)
+						{
 							break;
 						}
 						Bitmap bitmap = (Bitmap) msg.obj;
 
 						// 非同一ImageView
-						if (!(imageRef.url).equals((String) imageRef.imageView
-								.getTag())) {
+						if (!(imageRef.url).equals((String) imageRef.imageView.getTag()))
+						{
 							break;
 						}
 
@@ -460,7 +510,8 @@ public class ImageManager2 {
 			mImageLoaderIdle = true;
 
 			// 若服务未关闭，则发送下一个请求。
-			if (mImageLoaderHandler != null) {
+			if (mImageLoaderHandler != null)
+			{
 				sendRequest();
 			}
 		}
@@ -470,36 +521,40 @@ public class ImageManager2 {
 	 * 添加图片显示渐现动画
 	 * 
 	 */
-	private void setImageBitmap(ImageView imageView, Bitmap bitmap,
-			boolean isTran) {
-		if (isTran) {
-			final TransitionDrawable td = new TransitionDrawable(
-					new Drawable[] {
-							new ColorDrawable(android.R.color.transparent),
-							new BitmapDrawable(bitmap) });
+	private void setImageBitmap(ImageView imageView, Bitmap bitmap, boolean isTran)
+	{
+		if (isTran)
+		{
+			final TransitionDrawable td = new TransitionDrawable(new Drawable[]
+			{ new ColorDrawable(android.R.color.transparent), new BitmapDrawable(bitmap) });
 			td.setCrossFadeEnabled(true);
 			imageView.setImageDrawable(td);
 			td.startTransition(300);
-		} else {
+		} else
+		{
 			imageView.setImageBitmap(bitmap);
 		}
 	}
 
-	public void clearCache(String url){
+	public void clearCache(String url)
+	{
 		mMemoryCache.remove(url);
 		mDiskCache.remove(url);
 	}
+
 	/**
 	 * 根据url生成缓存文件完整路径名
 	 * 
 	 * @param url
 	 * @return
 	 */
-	public String urlToFilePath(String url) {
+	public String urlToFilePath(String url)
+	{
 
 		// 扩展名位置
 		int index = url.lastIndexOf('.');
-		if (index == -1) {
+		if (index == -1)
+		{
 			return null;
 		}
 
@@ -508,7 +563,7 @@ public class ImageManager2 {
 		// 图片存取路径
 		filePath.append(myapp.getCacheDir().toString()).append('/');
 
-		// 图片文件名 
+		// 图片文件名
 		filePath.append(MD5.Md5(url)).append(url.substring(index));
 
 		return filePath.toString();
@@ -517,7 +572,8 @@ public class ImageManager2 {
 	/**
 	 * Activity#onStop后，ListView不会有残余请求。
 	 */
-	public void stop() {
+	public void stop()
+	{
 
 		// 清空请求队列
 		mImageQueue.clear();

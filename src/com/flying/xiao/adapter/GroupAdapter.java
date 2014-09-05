@@ -20,99 +20,106 @@ import com.flying.xiao.util.NativeImageLoader.NativeImageCallBack;
 import com.flying.xiao.view.MyImageView;
 import com.flying.xiao.view.MyImageView.OnMeasureListener;
 
-public class GroupAdapter extends BaseAdapter{
+public class GroupAdapter extends BaseAdapter
+{
 	private List<ImageBean> list;
-	private Point mPoint = new Point(0, 0);//用来封装ImageView的宽和高的对象
+	private Point mPoint = new Point(0, 0);// 用来封装ImageView的宽和高的对象
 	private GridView mGridView;
 	protected LayoutInflater mInflater;
-	
+
 	@Override
-	public int getCount() {
+	public int getCount()
+	{
 		return list.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public Object getItem(int position)
+	{
 		return list.get(position);
 	}
 
-
 	@Override
-	public long getItemId(int position) {
+	public long getItemId(int position)
+	{
 		return position;
 	}
-	
-	public GroupAdapter(Context context, List<ImageBean> list, GridView mGridView){
+
+	public GroupAdapter(Context context, List<ImageBean> list, GridView mGridView)
+	{
 		this.list = list;
 		this.mGridView = mGridView;
 		mInflater = LayoutInflater.from(context);
 	}
-	
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
 		final ViewHolder viewHolder;
 		ImageBean mImageBean = list.get(position);
 		String path = mImageBean.getTopImagePath();
-		if(convertView == null){
+		if (convertView == null)
+		{
 			viewHolder = new ViewHolder();
 			convertView = mInflater.inflate(R.layout.grid_group_item, null);
 			viewHolder.mImageView = (MyImageView) convertView.findViewById(R.id.group_image);
 			viewHolder.mTextViewTitle = (TextView) convertView.findViewById(R.id.group_title);
 			viewHolder.mTextViewCounts = (TextView) convertView.findViewById(R.id.group_count);
-			
-			//用来监听ImageView的宽和高
-			viewHolder.mImageView.setOnMeasureListener(new OnMeasureListener() {
-				
+
+			// 用来监听ImageView的宽和高
+			viewHolder.mImageView.setOnMeasureListener(new OnMeasureListener()
+			{
+
 				@Override
-				public void onMeasureSize(int width, int height) {
+				public void onMeasureSize(int width, int height)
+				{
 					mPoint.set(width, height);
 				}
 			});
-			
+
 			convertView.setTag(viewHolder);
-		}else{
+		} else
+		{
 			viewHolder = (ViewHolder) convertView.getTag();
 			viewHolder.mImageView.setImageResource(R.drawable.friends_sends_pictures_no);
 		}
-		
+
 		viewHolder.mTextViewTitle.setText(mImageBean.getFolderName());
 		viewHolder.mTextViewCounts.setText(Integer.toString(mImageBean.getImageCounts()));
-		//给ImageView设置路径Tag,这是异步加载图片的小技巧
+		// 给ImageView设置路径Tag,这是异步加载图片的小技巧
 		viewHolder.mImageView.setTag(path);
-		
-		
-		//利用NativeImageLoader类加载本地图片
-		Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint,viewHolder.mImageView, new NativeImageCallBack() {
-			
-			@Override
-			public void onImageLoader(Bitmap bitmap, String path,ImageView imageView) {
-				if(bitmap != null && imageView != null){
-					imageView.setImageBitmap(bitmap);
-				}
-			}
-		});
-		
-		if(bitmap != null){
+
+		// 利用NativeImageLoader类加载本地图片
+		Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint, viewHolder.mImageView,
+				new NativeImageCallBack()
+				{
+
+					@Override
+					public void onImageLoader(Bitmap bitmap, String path, ImageView imageView)
+					{
+						if (bitmap != null && imageView != null)
+						{
+							imageView.setImageBitmap(bitmap);
+						}
+					}
+				});
+
+		if (bitmap != null)
+		{
 			viewHolder.mImageView.setImageBitmap(bitmap);
-		}else{
+		} else
+		{
 			viewHolder.mImageView.setImageResource(R.drawable.friends_sends_pictures_no);
 		}
-		
-		
+
 		return convertView;
 	}
-	
-	
-	
-	public static class ViewHolder{
+
+	public static class ViewHolder
+	{
 		public MyImageView mImageView;
 		public TextView mTextViewTitle;
 		public TextView mTextViewCounts;
 	}
 
-
-
-
-	
 }

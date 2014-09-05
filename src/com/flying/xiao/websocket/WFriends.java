@@ -4,7 +4,7 @@ import java.util.List;
 
 public class WFriends extends WBase
 {
-	private List<WFriend> friends ;
+	private List<WFriend> friends;
 
 	public List<WFriend> getFriends()
 	{

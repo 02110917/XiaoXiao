@@ -33,7 +33,8 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
 	private View pubcommentLin;
-	private IReply reply ;
+	private IReply reply;
+
 	static class ListItemView
 	{ // 自定义控件集合
 		public ImageView userface;
@@ -55,14 +56,15 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 	 * @param resource
 	 * @param pubcommentLin
 	 */
-	public ListViewMyDynamicAdapter(Context context, View pubcommentLin, List<XDynamic> data, int resource,IReply reply)
+	public ListViewMyDynamicAdapter(Context context, View pubcommentLin, List<XDynamic> data, int resource,
+			IReply reply)
 	{
 		this.context = context;
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
 		this.listItems = data;
 		this.pubcommentLin = pubcommentLin;
-		this.reply=reply;
+		this.reply = reply;
 	}
 
 	public int getCount()
@@ -102,9 +104,11 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 			listItemView.content = (TextView) convertView.findViewById(R.id.my_dynamic_listitem_content);
 			listItemView.date = (TextView) convertView.findViewById(R.id.my_dynamic_listitem_date);
 			listItemView.btncomment = (TextView) convertView.findViewById(R.id.my_dynamic_listitem_comment);
-			listItemView.content_textview = (TextView) convertView.findViewById(R.id.my_dynamic_listitem_content_textview);
+			listItemView.content_textview = (TextView) convertView
+					.findViewById(R.id.my_dynamic_listitem_content_textview);
 			listItemView.dynamicType = (TextView) convertView.findViewById(R.id.my_dynamic_listitem_type);
-			listItemView.content_lin = (LinearLayout) convertView.findViewById(R.id.my_dynamic_listitem_content_lin);
+			listItemView.content_lin = (LinearLayout) convertView
+					.findViewById(R.id.my_dynamic_listitem_content_lin);
 			// 设置控件集到convertView
 			convertView.setTag(listItemView);
 		} else
@@ -117,7 +121,6 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 		listItemView.username.setText(dynamic.getUserInfo().getUserRealName());
 		listItemView.username.setTag(dynamic);// 设置隐藏参数(实体类)
 
-
 		listItemView.date.setText(StringUtils.friendly_time(dynamic.getTime().toString()));
 		String faceURL = dynamic.getUserInfo().getUserHeadImageUrl();
 		if (faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
@@ -128,41 +131,43 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 			ImageManager2.from(context).displayImage(listItemView.userface, URLs.HOST + faceURL,
 					R.drawable.widget_dface);
 		}
-		XContent content=dynamic.getContent();
+		XContent content = dynamic.getContent();
 		switch (dynamic.getType())
 		{
 		case Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME:
 			listItemView.content_lin.setVisibility(View.VISIBLE);
 			listItemView.content.setVisibility(View.GONE);
-			listItemView.content_textview.setText(content.getUserInfo().getUserRealName()+" :" +content.getConTitle());
+			listItemView.content_textview.setText(content.getUserInfo().getUserRealName() + " :"
+					+ content.getConTitle());
 			listItemView.dynamicType.setText("赞了我");
 			break;
 		case Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT:
 			listItemView.content_lin.setVisibility(View.VISIBLE);
 			listItemView.content.setVisibility(View.VISIBLE);
-			
-			listItemView.content_textview.setText(content.getUserInfo().getUserRealName()+" :" +content.getConTitle());
+
+			listItemView.content_textview.setText(content.getUserInfo().getUserRealName() + " :"
+					+ content.getConTitle());
 			listItemView.content.setText(dynamic.getMsg());
 			listItemView.dynamicType.setText("给我回复");
-			break ;
+			break;
 		case Constant.DynamicType.DYNAMIC_TYPE_MESSAGE:
 			listItemView.content.setVisibility(View.VISIBLE);
 			listItemView.content_lin.setVisibility(View.GONE);
 			listItemView.content.setText(dynamic.getMsg());
 			listItemView.dynamicType.setText("给我留言");
-			break ;
+			break;
 		default:
 			break;
 		}
-		
+
 		listItemView.userface.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				UIHelper.showUserInfo(context, dynamic.getUserInfo());
-				
+
 			}
 		});
 		listItemView.userface.setTag(URLs.HOST + faceURL);
@@ -197,7 +202,8 @@ public class ListViewMyDynamicAdapter extends BaseAdapter
 		return convertView;
 	}
 
-	public interface IReply{
+	public interface IReply
+	{
 		public void reply(int id);
 	}
 }

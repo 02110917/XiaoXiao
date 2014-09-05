@@ -22,18 +22,19 @@ public class MyChatActivity extends BaseActivity implements PullDownListView.OnR
 
 	private List<MyChat> myChatList;
 	private ListViewMyChatAdapter adapter;
-	
+
 	private PullDownListView mPullDownListview;
 	private ListView mListView;
-	private DBHelper dbHelper ;
+	private DBHelper dbHelper;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_chat);
-		dbHelper=DBHelper.getDbHelper(this);
-		myChatList=dbHelper.getMyChats();
+		dbHelper = DBHelper.getDbHelper(this);
+		myChatList = dbHelper.getMyChats();
 		initHeadView();
 		initView();
 	}
@@ -45,6 +46,7 @@ public class MyChatActivity extends BaseActivity implements PullDownListView.OnR
 		super.initHeadView();
 		mHeadTitle.setText("ÎÒµÄÁÄÌì");
 	}
+
 	private void initView()
 	{
 		mPullDownListview = (PullDownListView) findViewById(R.id.my_chat_listview);
@@ -56,8 +58,8 @@ public class MyChatActivity extends BaseActivity implements PullDownListView.OnR
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				MyChat chat=myChatList.get(position-1);
-				XUserInfo userInfo=new XUserInfo();
+				MyChat chat = myChatList.get(position - 1);
+				XUserInfo userInfo = new XUserInfo();
 				userInfo.setId(chat.getFriendUserId());
 				userInfo.setUserHeadImageUrl(chat.getImageUrl());
 				userInfo.setUserRealName(chat.getFriendName());
@@ -65,33 +67,35 @@ public class MyChatActivity extends BaseActivity implements PullDownListView.OnR
 				UIHelper.showChat(MyChatActivity.this, userInfo);
 			}
 		});
-		mHandler=new Handler(){
+		mHandler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
 			{
 				super.handleMessage(msg);
 				mPullDownListview.onRefreshComplete();
-				
-			}};
+
+			}
+		};
 		adapter = new ListViewMyChatAdapter(this, myChatList, R.layout.activity_my_chat_list_item);
 		mListView.setAdapter(adapter);
-		
+
 	}
-	private void notifyDataSetChanged(){
+
+	private void notifyDataSetChanged()
+	{
 		myChatList.clear();
 		myChatList.addAll(dbHelper.getMyChats());
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
 		notifyDataSetChanged();
 	}
-
-	
 
 	@Override
 	public void onRefresh()

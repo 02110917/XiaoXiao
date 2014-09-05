@@ -32,28 +32,28 @@ import com.flying.xiao.util.MD5;
 public class PubDiaryActivity extends BaseActivity
 {
 
-	private EditText mEtInput ;
+	private EditText mEtInput;
 	private GridView gridView;
-	private ArrayList<String> dataList ;
+	private ArrayList<String> dataList;
 	private GridImageAdapter gridImageAdapter;
 	private ProgressDialog mProgress;
-	 
+
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
-	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-	String userMd5="";
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+	String userMd5 = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_diary);
-		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
+		userMd5 = MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
 	}
-	
-	
+
 	@Override
 	protected void initHeadView()
 	{
@@ -65,16 +65,17 @@ public class PubDiaryActivity extends BaseActivity
 		mHeadRightBtn.setOnClickListener(listener);
 	}
 
-
-	private void initView() {
-		mEtInput=(EditText) findViewById(R.id.diary_input);
+	private void initView()
+	{
+		mEtInput = (EditText) findViewById(R.id.diary_input);
 		gridView = (GridView) findViewById(R.id.myGrid);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
+		gridImageAdapter = new GridImageAdapter(this, dataList, gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
-		mHandler=new Handler(){
+		mHandler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
@@ -97,22 +98,26 @@ public class PubDiaryActivity extends BaseActivity
 					if (mProgress != null)
 						mProgress.dismiss();
 					finish();
-					break ;
+					break;
 				default:
 					break;
 				}
-			}};
+			}
+		};
 	}
-	
-	private void initListener() {
 
-		gridView.setOnItemClickListener(new GridView.OnItemClickListener() {
+	private void initListener()
+	{
+
+		gridView.setOnItemClickListener(new GridView.OnItemClickListener()
+		{
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
 
-				if (position == dataList.size() - 1) {
+				if (position == dataList.size() - 1)
+				{
 
 					view.performLongClick();
 
@@ -124,34 +129,43 @@ public class PubDiaryActivity extends BaseActivity
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		if (requestCode == 0) {
-			if (resultCode == RESULT_OK) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+
+		if (requestCode == 0)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				Bundle bundle = data.getExtras();
-				ArrayList<String> tDataList = (ArrayList<String>)bundle.getSerializable("dataList");
-				if (tDataList != null) {
+				ArrayList<String> tDataList = (ArrayList<String>) bundle.getSerializable("dataList");
+				if (tDataList != null)
+				{
 					tDataList.add("camera_default");
 					dataList.clear();
 					dataList.addAll(tDataList);
 					gridImageAdapter.notifyDataSetChanged();
 				}
 			}
-		}else if(requestCode==1){
-			if(resultCode==RESULT_OK){
+		} else if (requestCode == 1)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				dataList.add(0, imageUrl);
 				gridImageAdapter.notifyDataSetChanged();
 			}
 		}
-		
+
 	}
 
-	private ArrayList<String> getIntentArrayList(ArrayList<String> dataList) {
+	private ArrayList<String> getIntentArrayList(ArrayList<String> dataList)
+	{
 
 		ArrayList<String> tDataList = new ArrayList<String>();
 
-		for (String s : dataList) {
-			if (!s.contains("default")) {
+		for (String s : dataList)
+		{
+			if (!s.contains("default"))
+			{
 				tDataList.add(s);
 			}
 		}
@@ -159,23 +173,26 @@ public class PubDiaryActivity extends BaseActivity
 		return tDataList;
 
 	}
-	
-	private OnClickListener listener=new OnClickListener()
+
+	private OnClickListener listener = new OnClickListener()
 	{
-		
+
 		@Override
 		public void onClick(View v)
 		{
-			String _content=mEtInput.getText().toString().trim();
-			if(StringUtils.isEmpty(_content)){
+			String _content = mEtInput.getText().toString().trim();
+			if (StringUtils.isEmpty(_content))
+			{
 				UIHelper.ToastMessage(PubDiaryActivity.this, "输入信息不能为空...", Toast.LENGTH_SHORT);
-				return ;
+				return;
 			}
 			dataList.remove("camera_default");
-			mProgress = ProgressDialog.show(v.getContext(), null, "保存中···",true,true);
-			NetControl.getShare(PubDiaryActivity.this).pubDiaryOrLost(_content, dataList, mHandler,Constant.ContentType.CONTENT_TYPE_DIARY);
+			mProgress = ProgressDialog.show(v.getContext(), null, "保存中···", true, true);
+			NetControl.getShare(PubDiaryActivity.this).pubDiaryOrLost(_content, dataList, mHandler,
+					Constant.ContentType.CONTENT_TYPE_DIARY);
 		}
 	};
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
@@ -206,10 +223,10 @@ public class PubDiaryActivity extends BaseActivity
 		}
 		return true;
 	}
-	
+
 	public Uri getImageUri()
 	{
-		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		imageUrl += (userMd5 + System.currentTimeMillis() + ".jpg");
 		return Uri.fromFile(new File(imageUrl));
 	}
 }

@@ -37,23 +37,23 @@ public class MeFragment extends Fragment
 
 	private XUserInfo userInfo;
 	private ImageView mPhoto;
-	private TextView mName ;
-	private TextView mInfo ; //个人说明
-	
-	//grid btn
-	private LinearLayout mLinFriendDynamic ;//好友动态
-	private LinearLayout mLinFriends ;//好友
-	private LinearLayout mLinCollect ;//我的收藏
-	private LinearLayout mLinMessage ;//留言
-	private LinearLayout mLinChat ;//聊天
-	private LinearLayout mLinPub ;//我发布的
-	
+	private TextView mName;
+	private TextView mInfo; // 个人说明
+
+	// grid btn
+	private LinearLayout mLinFriendDynamic;// 好友动态
+	private LinearLayout mLinFriends;// 好友
+	private LinearLayout mLinCollect;// 我的收藏
+	private LinearLayout mLinMessage;// 留言
+	private LinearLayout mLinChat;// 聊天
+	private LinearLayout mLinPub;// 我发布的
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		appContext = (AppContext) getActivity().getApplication();
-		userInfo=appContext.getUserInfo() ;
+		userInfo = appContext.getUserInfo();
 	}
 
 	@Override
@@ -67,56 +67,56 @@ public class MeFragment extends Fragment
 
 	private void initView(View v)
 	{
-		mNotLoginView=(LinearLayout) v.findViewById(R.id.not_login_view);
-		mScrollView=(ScrollView) v.findViewById(R.id.scrollView1);
+		mNotLoginView = (LinearLayout) v.findViewById(R.id.not_login_view);
+		mScrollView = (ScrollView) v.findViewById(R.id.scrollView1);
 		changeView();
 		mBtnLogin = (Button) v.findViewById(R.id.login_btn);
 		mBtnRegiste = (Button) v.findViewById(R.id.reg_btn);
 		mBtnLogin.setOnClickListener(listener);
 		mBtnRegiste.setOnClickListener(listener);
 
-		mPhoto=(ImageView)v.findViewById(R.id.imageView2);
-		mName=(TextView)v.findViewById(R.id.user_name);
-		mInfo=(TextView)v.findViewById(R.id.user_info);
+		mPhoto = (ImageView) v.findViewById(R.id.imageView2);
+		mName = (TextView) v.findViewById(R.id.user_name);
+		mInfo = (TextView) v.findViewById(R.id.user_info);
 		showMyinfo();
 		mPhoto.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
 				UIHelper.showMyInfo(getActivity());
 			}
 		});
-		
-		//grid 
-		
-		mLinFriendDynamic=(LinearLayout)v.findViewById(R.id.button_dt);
-		mLinFriends=(LinearLayout)v.findViewById(R.id.button_myfriend);
-		mLinCollect=(LinearLayout)v.findViewById(R.id.button_my_collect);
-		mLinMessage=(LinearLayout)v.findViewById(R.id.button_my_ly);
-		mLinPub=(LinearLayout)v.findViewById(R.id.button_my_pub);
-		mLinChat=(LinearLayout)v.findViewById(R.id.button_my_message);
+
+		// grid
+
+		mLinFriendDynamic = (LinearLayout) v.findViewById(R.id.button_dt);
+		mLinFriends = (LinearLayout) v.findViewById(R.id.button_myfriend);
+		mLinCollect = (LinearLayout) v.findViewById(R.id.button_my_collect);
+		mLinMessage = (LinearLayout) v.findViewById(R.id.button_my_ly);
+		mLinPub = (LinearLayout) v.findViewById(R.id.button_my_pub);
+		mLinChat = (LinearLayout) v.findViewById(R.id.button_my_message);
 		mLinFriendDynamic.setOnClickListener(listener);
 		mLinFriends.setOnClickListener(listener);
 		mLinCollect.setOnClickListener(listener);
 		mLinMessage.setOnClickListener(listener);
 		mLinPub.setOnClickListener(listener);
 		mLinChat.setOnClickListener(listener);
-		
-		
-		
+
 	}
-	
-	private void showMyinfo(){
-		if(appContext.getUserInfo()!=null)
+
+	private void showMyinfo()
+	{
+		if (appContext.getUserInfo() != null)
 		{
-			ImageManager2.from(getActivity()).displayImage(mPhoto,URLs.HOST+ appContext.getUserInfo().getUserHeadImageUrl(),  R.drawable.widget_dface);
+			ImageManager2.from(getActivity()).displayImage(mPhoto,
+					URLs.HOST + appContext.getUserInfo().getUserHeadImageUrl(), R.drawable.widget_dface);
 			mName.setText(appContext.getUserInfo().getUserRealName());
 			mInfo.setText(appContext.getUserInfo().getUserGerenshuoming());
 		}
 	}
-	
+
 	@Override
 	public void onResume()
 	{
@@ -125,7 +125,8 @@ public class MeFragment extends Fragment
 		showMyinfo();
 	}
 
-	private void changeView(){
+	private void changeView()
+	{
 		if (appContext.isLogin())
 		{
 			mNotLoginView.setVisibility(View.GONE);
@@ -136,6 +137,7 @@ public class MeFragment extends Fragment
 			mScrollView.setVisibility(View.GONE);
 		}
 	}
+
 	private OnClickListener listener = new OnClickListener()
 	{
 
@@ -152,28 +154,27 @@ public class MeFragment extends Fragment
 				break;
 			case R.id.button_dt:
 				UIHelper.showMyDynamic(getActivity());
-				break ;
+				break;
 			case R.id.button_myfriend:
 				UIHelper.showMyFriends(getActivity());
-				break ;
+				break;
 			case R.id.button_my_collect:
-				UIHelper.showMyCollect(getActivity(),Constant.MainContentFragmentShowType.TYPE_MY_COLLECT);
-				break ;
-			case R.id.button_my_message: //xiaoxi 
+				UIHelper.showMyCollect(getActivity(), Constant.MainContentFragmentShowType.TYPE_MY_COLLECT);
+				break;
+			case R.id.button_my_message: // xiaoxi
 				UIHelper.showMyChat(getActivity());
-				break ;
+				break;
 			case R.id.button_my_ly:
 				UIHelper.showMyMessage(getActivity());
-				break ;
+				break;
 			case R.id.button_my_pub:
-				UIHelper.showMyCollect(getActivity(),Constant.MainContentFragmentShowType.TYPE_MY_PUB);
-				break ;
-			
+				UIHelper.showMyCollect(getActivity(), Constant.MainContentFragmentShowType.TYPE_MY_PUB);
+				break;
+
 			default:
 				break;
 			}
 		}
 	};
-	
 
 }

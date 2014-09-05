@@ -38,13 +38,14 @@ public class UserRegisterFragment extends Fragment
 	private EditText mEtUserName;
 	private EditText mEtUserPsd;
 	private EditText mEtPhone;
-	private EditText mEtName; //名称
-	private Spinner mUserType ;
+	private EditText mEtName; // 名称
+	private Spinner mUserType;
 	private LinearLayout mLinLayoutLogin;
 	private ProgressBar mPbLogin;
 	private UserLoginActivity context;
 	private AppContext appContext;
-	private String[] userTypes=new String[]{"个人","部门","商家"};
+	private String[] userTypes = new String[]
+	{ "个人", "部门", "商家" };
 	private Handler handler = new Handler()
 	{
 
@@ -73,7 +74,7 @@ public class UserRegisterFragment extends Fragment
 			} else if (msg.what == Constant.HandlerMessageCode.REGISTER_FAILD)
 			{
 				UIHelper.ToastMessage(context, "注册失败!");
-			}else if (msg.what == Constant.HandlerMessageCode.REGISTER_FAILD_USERNAME_HAVED)
+			} else if (msg.what == Constant.HandlerMessageCode.REGISTER_FAILD_USERNAME_HAVED)
 			{
 				mTvError.setVisibility(View.VISIBLE);
 				mTvError.setText("用户名已存在!!");
@@ -83,6 +84,7 @@ public class UserRegisterFragment extends Fragment
 			}
 		}
 	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -95,16 +97,17 @@ public class UserRegisterFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v=inflater.inflate(R.layout.user_regiest_fragment, null);
+		View v = inflater.inflate(R.layout.user_regiest_fragment, null);
 		initView(v);
 		return v;
 	}
-	
+
 	private void initView(View v)
 	{
 		mTvError = (TextView) v.findViewById(R.id.text_error);
-		mUserType=(Spinner)v.findViewById(R.id.user_type);
-		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, userTypes);
+		mUserType = (Spinner) v.findViewById(R.id.user_type);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				android.R.layout.simple_spinner_dropdown_item, userTypes);
 		mUserType.setAdapter(adapter);
 		mEtUserName = (EditText) v.findViewById(R.id.edit_user_name);
 		mEtUserPsd = (EditText) v.findViewById(R.id.edit_psw);
@@ -120,16 +123,16 @@ public class UserRegisterFragment extends Fragment
 			{
 				String uName = mEtUserName.getText().toString().trim();
 				String uPsd = mEtUserPsd.getText().toString().trim();
-				String uPhone=mEtPhone.getText().toString().trim();
-				String uRealname=mEtName.getText().toString().trim();
-				if (checkInput(uName, uPsd,uPhone,uRealname))
+				String uPhone = mEtPhone.getText().toString().trim();
+				String uRealname = mEtName.getText().toString().trim();
+				if (checkInput(uName, uPsd, uPhone, uRealname))
 				{
 					mPbLogin.setVisibility(View.VISIBLE);
-					XUserInfo userInfo=new XUserInfo();
+					XUserInfo userInfo = new XUserInfo();
 					userInfo.setUserName(uName);
 					userInfo.setUserPsd(uPsd);
 					userInfo.setUserPhone(uPhone);
-					userInfo.setUserTypeId(mUserType.getSelectedItemPosition()+1);
+					userInfo.setUserTypeId(mUserType.getSelectedItemPosition() + 1);
 					userInfo.setUserRealName(uRealname);
 					userInfo.setUserFuns(0);
 					userInfo.setUserGerenshuoming("");
@@ -140,10 +143,11 @@ public class UserRegisterFragment extends Fragment
 			}
 		});
 	}
-	
-	private boolean checkInput(String uName, String uPsd,String uPhone,String uRealName)
+
+	private boolean checkInput(String uName, String uPsd, String uPhone, String uRealName)
 	{
-		if (StringUtils.isEmpty(uName) || StringUtils.isEmpty(uPsd)||StringUtils.isEmpty(uPhone)||StringUtils.isEmpty(uRealName))
+		if (StringUtils.isEmpty(uName) || StringUtils.isEmpty(uPsd) || StringUtils.isEmpty(uPhone)
+				|| StringUtils.isEmpty(uRealName))
 		{
 			mTvError.setVisibility(View.VISIBLE);
 			mTvError.setText("输入不能为空!");
@@ -153,10 +157,11 @@ public class UserRegisterFragment extends Fragment
 			mTvError.setVisibility(View.VISIBLE);
 			mTvError.setText("邮箱格式不正确!");
 			return false;
-		}else if(!StringUtils.isPhone(uPhone)){
+		} else if (!StringUtils.isPhone(uPhone))
+		{
 			mTvError.setVisibility(View.VISIBLE);
 			mTvError.setText("手机号格式不正确");
-			return false;	
+			return false;
 		}
 		mTvError.setVisibility(View.INVISIBLE);
 		mTvError.setText("");
@@ -164,14 +169,13 @@ public class UserRegisterFragment extends Fragment
 	}
 
 	public void showPsdOnclick(View v)
-	{	
-		Button btn=(Button) v ;
-		if(mEtUserPsd.getInputType()==0x81)
+	{
+		Button btn = (Button) v;
+		if (mEtUserPsd.getInputType() == 0x81)
 		{
 			mEtUserPsd.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
 			btn.setText("隐藏");
-		}
-		else
+		} else
 		{
 			mEtUserPsd.setInputType(0x81);
 			btn.setText("显示");

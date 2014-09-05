@@ -84,7 +84,7 @@ public class XmppConnection
 	private String SERVER_HOST = "115.29.79.84";
 	private String SERVER_NAME = "115.29.79.84";
 	private XMPPConnection connection = null;
-//	private String SERVER_NAME = "ubuntuserver4java";
+	// private String SERVER_NAME = "ubuntuserver4java";
 	private static XmppConnection xmppConnection = null;
 	private TaxiConnectionListener connectionListener;
 	private static AppContext appContxt;
@@ -202,22 +202,22 @@ public class XmppConnection
 			getOnLine(handler); // 获取消息
 			getAllFriends(handler);// 获取好友列表
 			// 启动线程 获取状态
-//			new Thread(new Runnable()
-//			{
-//
-//				@Override
-//				public void run()
-//				{
-//
-//				}
-//			}).start();
+			// new Thread(new Runnable()
+			// {
+			//
+			// @Override
+			// public void run()
+			// {
+			//
+			// }
+			// }).start();
 
 			return true;
 		} catch (XMPPException xe)
 		{
 			xe.printStackTrace();
-		}
-		catch (IllegalStateException e) {
+		} catch (IllegalStateException e)
+		{
 			e.printStackTrace();
 		}
 		return false;
@@ -237,8 +237,9 @@ public class XmppConnection
 		public void entriesAdded(Collection<String> arg0)
 		{
 			System.out.println("MyRosterListener---entriesAdded");
-			List<XUserInfo> userInfos=new ArrayList<XUserInfo>();
-			for(String userName:arg0){
+			List<XUserInfo> userInfos = new ArrayList<XUserInfo>();
+			for (String userName : arg0)
+			{
 				XUserInfo user = new XUserInfo();
 				user.setUserName(StringUtils.parseName(userName).replace("$", "@"));
 				userInfos.add(user);
@@ -264,7 +265,8 @@ public class XmppConnection
 		@Override
 		public void presenceChanged(Presence presence)
 		{
-			System.out.println("MyRosterListener---presenceChanged"+presence.getFrom()+"  "+presence.isAvailable());
+			System.out.println("MyRosterListener---presenceChanged" + presence.getFrom() + "  "
+					+ presence.isAvailable());
 			String user = presence.getFrom();
 			Presence bestPresence = getConnection().getRoster().getPresence(user);
 			android.os.Message msg = new android.os.Message();
@@ -401,12 +403,13 @@ public class XmppConnection
 			e.printStackTrace();
 		}
 		Iterator<RosterEntry> i = rosterEntry.iterator();
-		for(RosterEntry entry:rosterEntry){
+		for (RosterEntry entry : rosterEntry)
+		{
 			Presence p = getConnection().getRoster().getPresence(entry.getUser());
 			XUserInfo user = new XUserInfo();
 			user.setUserName(StringUtils.parseName(entry.getUser()).replace("$", "@"));
 			user.setOnline(p.isAvailable());
-			System.out.println("state:"+p.isAvailable());
+			System.out.println("state:" + p.isAvailable());
 			users.add(user);
 		}
 		android.os.Message msg = new android.os.Message();
@@ -415,9 +418,6 @@ public class XmppConnection
 		handler.sendMessage(msg);
 	}
 
-
-	
-	
 	/**
 	 * 添加一个分组
 	 * 
@@ -729,11 +729,11 @@ public class XmppConnection
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-		}
-		finally{
+		} finally
+		{
 			setPresence(0); // 更新在在线状态
 		}
-		
+
 	}
 
 	/**

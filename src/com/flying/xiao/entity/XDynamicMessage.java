@@ -6,12 +6,13 @@ import com.flying.xiao.constant.Constant;
 
 public class XDynamicMessage extends XDynamic
 {
-	private List<XMessage> messages ;
+	private List<XMessage> messages;
 
-	public XDynamicMessage(){
+	public XDynamicMessage()
+	{
 		setType(Constant.DynamicType.DYNAMIC_TYPE_MESSAGE);
 	}
-	
+
 	public List<XMessage> getMessages()
 	{
 		return messages;
@@ -21,5 +22,5 @@ public class XDynamicMessage extends XDynamic
 	{
 		this.messages = messages;
 	}
-	
+
 }

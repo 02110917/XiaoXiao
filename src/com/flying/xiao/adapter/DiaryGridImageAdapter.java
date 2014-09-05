@@ -23,69 +23,84 @@ import com.flying.xiao.util.NativeImageLoader.NativeImageCallBack;
 import com.flying.xiao.view.MyImageView;
 import com.flying.xiao.view.MyImageView.OnMeasureListener;
 
-public class DiaryGridImageAdapter extends BaseAdapter {
+public class DiaryGridImageAdapter extends BaseAdapter
+{
 
 	private Context mContext;
 	private ArrayList<String> dataList;
 	private DisplayMetrics dm;
-	public DiaryGridImageAdapter(Context c, ArrayList<String> dataList) {
+
+	public DiaryGridImageAdapter(Context c, ArrayList<String> dataList)
+	{
 
 		mContext = c;
 		this.dataList = dataList;
 		dm = new DisplayMetrics();
-		((Activity) mContext).getWindowManager().getDefaultDisplay()
-				.getMetrics(dm);
+		((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 	}
 
 	@Override
-	public int getCount() {
+	public int getCount()
+	{
 		return dataList.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public Object getItem(int position)
+	{
 		return dataList.get(position);
 	}
 
 	@Override
-	public long getItemId(int position) {
+	public long getItemId(int position)
+	{
 		return 0;
 	}
-	private Point mPoint = new Point(0, 0);//用来封装ImageView的宽和高的对象
+
+	private Point mPoint = new Point(0, 0);// 用来封装ImageView的宽和高的对象
+
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
 		MyImageView imageView;
-		if (convertView == null) {
+		if (convertView == null)
+		{
 			imageView = new MyImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT, dipToPx(65)));
+			imageView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.MATCH_PARENT,
+					dipToPx(65)));
 			imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY); 
-            imageView.setOnMeasureListener(new OnMeasureListener() {
-    			
-    			@Override
-    			public void onMeasureSize(int width, int height) {
-    				mPoint.set(width, height);
-    			}
-    		});
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setOnMeasureListener(new OnMeasureListener()
+			{
+
+				@Override
+				public void onMeasureSize(int width, int height)
+				{
+					mPoint.set(width, height);
+				}
+			});
 		} else
 		{
 			imageView = (MyImageView) convertView;
 		}
-		
-		String path="";
-		if (dataList != null  )
+
+		String path = "";
+		if (dataList != null)
 		{
 			path = dataList.get(position);
 			imageView.setTag(path);
 		}
-//		imageView.setImageResource(R.drawable.friends_sends_pictures_no);
-//		AsyncImageLoader.displayImage((AppContext)mContext.getApplicationContext(), path, imageView, R.drawable.friends_sends_pictures_no);
-		ImageManager2.from(mContext).displayImage(imageView, path,R.drawable.friends_sends_pictures_no,100,100);
+		// imageView.setImageResource(R.drawable.friends_sends_pictures_no);
+		// AsyncImageLoader.displayImage((AppContext)mContext.getApplicationContext(),
+		// path, imageView, R.drawable.friends_sends_pictures_no);
+		ImageManager2.from(mContext).displayImage(imageView, path, R.drawable.friends_sends_pictures_no, 100,
+				100);
 		return imageView;
 	}
-	
-	public int dipToPx(int dip) {
+
+	public int dipToPx(int dip)
+	{
 		return (int) (dip * dm.density + 0.5f);
 	}
 

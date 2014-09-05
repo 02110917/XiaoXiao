@@ -66,13 +66,11 @@ public class UserInfoDetail extends BaseActivity
 		initData();
 	}
 
-
 	private void initView()
 	{
 
-	
-		userInfo=(XUserInfo) getIntent().getSerializableExtra("userinfo");
-		if(userInfo==null)
+		userInfo = (XUserInfo) getIntent().getSerializableExtra("userinfo");
+		if (userInfo == null)
 		{
 			int index = getIntent().getIntExtra("index", 0);
 			int userType = getIntent().getIntExtra("userType", 1);
@@ -155,7 +153,8 @@ public class UserInfoDetail extends BaseActivity
 			mFragmentList.add(diary);
 			mFragmentList.add(detail1);
 			mFragmentList.add(detail2);
-		}else{
+		} else
+		{
 			mBtnBmjs.setVisibility(View.GONE);
 			mBtnGg.setVisibility(View.GONE);
 			mBtnDt.setTag(0);
@@ -238,11 +237,14 @@ public class UserInfoDetail extends BaseActivity
 					mAddfriend.setText("已关注");
 					userInfo.setMeFriend(true);
 					break;
-				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_FAILD: //xmpp add friend faild
+				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_FAILD: // xmpp
+																			// add
+																			// friend
+																			// faild
 					UIHelper.ToastMessage(appContext, "添加好友失败,请重试...");
-					break ;
+					break;
 				case Constant.XmppHandlerMsgCode.HANDLER_ADD_PRIEND_SUCCESS: //
-//					UIHelper.ToastMessage(appContext, "添加好友成功");
+					// UIHelper.ToastMessage(appContext, "添加好友成功");
 					DBHelper.getDbHelper(UserInfoDetail.this).insertFriend(userInfo);
 					mAddfriend.setText("已关注");
 					userInfo.setMeFriend(true);
@@ -273,9 +275,11 @@ public class UserInfoDetail extends BaseActivity
 				{
 					mHandler.sendEmptyMessage(Constant.HandlerMessageCode.ADD_FRIEND_IS_YOUR_FRIEND_ALERADY);
 				}
-				if(getmWebSocketService().isXmppLogin())
-					XmppControl.getShare(UserInfoDetail.this).addFriend(userInfo.getUserName(), userInfo.getUserRealName(), mHandler);
-//				NetControl.getShare(UserInfoDetail.this).addFriend(userInfo.getId(), mHandler);
+				if (getmWebSocketService().isXmppLogin())
+					XmppControl.getShare(UserInfoDetail.this).addFriend(userInfo.getUserName(),
+							userInfo.getUserRealName(), mHandler);
+				// NetControl.getShare(UserInfoDetail.this).addFriend(userInfo.getId(),
+				// mHandler);
 				break;
 			case R.id.department_detail_gg:
 			case R.id.department_detail_bmjs:
@@ -307,16 +311,16 @@ public class UserInfoDetail extends BaseActivity
 				break;
 			case R.id.more_ly:
 				UIHelper.showMessagePub(UserInfoDetail.this, userInfo.getId());
-				break ;
+				break;
 			case R.id.more_sx:
 				UIHelper.showChat(UserInfoDetail.this, userInfo);
-				break ;
+				break;
 			case R.id.more_dx:
 				UIHelper.showSendMsg(UserInfoDetail.this, userInfo.getUserPhone());
-				break ;
+				break;
 			case R.id.more_dh:
 				UIHelper.showCallPhone(UserInfoDetail.this, userInfo.getUserPhone());
-				break ;
+				break;
 			default:
 				break;
 			}
@@ -334,10 +338,10 @@ public class UserInfoDetail extends BaseActivity
 		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 		mPopupWindow.setOutsideTouchable(true);
 		mPopupWindow.setFocusable(true);
-		TextView tvLy=(TextView)view.findViewById(R.id.more_ly);
-		TextView tvSx=(TextView)view.findViewById(R.id.more_sx);
-		TextView tvDx=(TextView)view.findViewById(R.id.more_dx);
-		TextView tvDh=(TextView)view.findViewById(R.id.more_dh);
+		TextView tvLy = (TextView) view.findViewById(R.id.more_ly);
+		TextView tvSx = (TextView) view.findViewById(R.id.more_sx);
+		TextView tvDx = (TextView) view.findViewById(R.id.more_dx);
+		TextView tvDh = (TextView) view.findViewById(R.id.more_dh);
 		tvLy.setOnClickListener(clickListener);
 		tvSx.setOnClickListener(clickListener);
 		tvDx.setOnClickListener(clickListener);

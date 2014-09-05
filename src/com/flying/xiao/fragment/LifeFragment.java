@@ -20,6 +20,4 @@ public class LifeFragment extends Fragment
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
-	
-
 }

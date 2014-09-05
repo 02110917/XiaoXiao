@@ -48,15 +48,16 @@ public class PubContentActivity extends BaseActivity
 
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
-	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-	String userMd5="";
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+	String userMd5 = "";
+
 	// private int wzType;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_content);
-		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
+		userMd5 = MD5.Md5(appContext.getUserInfo().getUserName());
 		type = getIntent().getIntExtra("type", 0);
 		// wzType=getIntent().getIntExtra("wztype", 0);
 		this.initHeadView();
@@ -87,12 +88,12 @@ public class PubContentActivity extends BaseActivity
 		mEtInfo = (EditText) findViewById(R.id.pub_content_info);
 		gridView = (GridView) findViewById(R.id.pub_content_grid);
 		mSpinner = (Spinner) findViewById(R.id.pub_content_type);
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
-				getResources().getStringArray(R.array.content_type_array));
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getResources()
+				.getStringArray(R.array.content_type_array));
 		mSpinner.setAdapter(adapter);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
+		gridImageAdapter = new GridImageAdapter(this, dataList, gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler = new Handler()
@@ -167,8 +168,10 @@ public class PubContentActivity extends BaseActivity
 					gridImageAdapter.notifyDataSetChanged();
 				}
 			}
-		}else if(requestCode==1){
-			if(resultCode==RESULT_OK){
+		} else if (requestCode == 1)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				dataList.add(0, imageUrl);
 				gridImageAdapter.notifyDataSetChanged();
 			}
@@ -254,6 +257,7 @@ public class PubContentActivity extends BaseActivity
 	{
 		this.type = type;
 	}
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
@@ -284,10 +288,10 @@ public class PubContentActivity extends BaseActivity
 		}
 		return true;
 	}
-	
+
 	public Uri getImageUri()
 	{
-		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		imageUrl += (userMd5 + System.currentTimeMillis() + ".jpg");
 		return Uri.fromFile(new File(imageUrl));
 	}
 }

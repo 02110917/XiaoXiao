@@ -56,7 +56,7 @@ public class MyInfoActivity extends BaseActivity
 	private RadioButton mRadioBtnWoMen;
 	private RelativeLayout mRlInfo;
 	private XUserInfo userInfo;
-	 private ProgressDialog mProgress;
+	private ProgressDialog mProgress;
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
 
@@ -65,12 +65,10 @@ public class MyInfoActivity extends BaseActivity
 	public static final int CROP_PICTURE = 3; // 图像裁剪
 
 	private String md5;
-	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
 
-	private boolean headImageIsChange=false ;
-	
-	
-	
+	private boolean headImageIsChange = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -78,23 +76,25 @@ public class MyInfoActivity extends BaseActivity
 		setContentView(R.layout.my_info_activity);
 		this.initHeadView();
 		userInfo = appContext.getUserInfo();
-		md5=MD5.Md5(userInfo.getUserName());
-		imageUrl+= md5+ ".jpg";
+		md5 = MD5.Md5(userInfo.getUserName());
+		imageUrl += md5 + ".jpg";
 		initView();
 	}
-	
-    @Override
+
+	@Override
 	protected void initHeadView()
 	{
 		super.initHeadView();
 		mHeadRightBtn.setVisibility(View.VISIBLE);
-    	mHeadRightBtn.setText("保存");
-    	mHeadTitle.setText("我的资料");
-    	mHeadRightView.setVisibility(View.GONE);
+		mHeadRightBtn.setText("保存");
+		mHeadTitle.setText("我的资料");
+		mHeadRightView.setVisibility(View.GONE);
 	}
+
 	private void initView()
 	{
-		mHandler=new Handler(){
+		mHandler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
@@ -117,37 +117,41 @@ public class MyInfoActivity extends BaseActivity
 					if (mProgress != null)
 						mProgress.dismiss();
 					appContext.writeUserInfo(userInfo);
-					ImageManager2.from(MyInfoActivity.this).clearCache(URLs.HOST+userInfo.getUserHeadImageUrl());
+					ImageManager2.from(MyInfoActivity.this).clearCache(
+							URLs.HOST + userInfo.getUserHeadImageUrl());
 					finish();
-					break ;
+					break;
 				default:
 					break;
 				}
 			}
-			
+
 		};
 		mHeadRightBtn.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				if(StringUtils.isEmpty(mInfo.getText().toString()) ){
-					Toast.makeText(MyInfoActivity.this, "请填写个人说明...", 1000).show();
-					return ;
-				}
-				if(headImageIsChange)
+				if (StringUtils.isEmpty(mInfo.getText().toString()))
 				{
-					String headImageUrl="/XiaoServer/head_image/"+md5+".jpg";
+					Toast.makeText(MyInfoActivity.this, "请填写个人说明...", 1000).show();
+					return;
+				}
+				if (headImageIsChange)
+				{
+					String headImageUrl = "/XiaoServer/head_image/" + md5 + ".jpg";
 					userInfo.setUserHeadImageUrl(headImageUrl);
-				}else{
-					imageUrl="";
+				} else
+				{
+					imageUrl = "";
 				}
 				userInfo.setUserSex(mRadioBtnMan.isChecked());
 				userInfo.setUserGerenshuoming(mInfo.getText().toString());
 				userInfo.setUserInfoDetail(mDetailInfo.getText().toString());
-				mProgress = ProgressDialog.show(v.getContext(), null, "保存中···",true,true); 	
-				NetControl.getShare(MyInfoActivity.this).changeUserInfo(userInfo.toJson(), imageUrl, mHandler);
+				mProgress = ProgressDialog.show(v.getContext(), null, "保存中···", true, true);
+				NetControl.getShare(MyInfoActivity.this)
+						.changeUserInfo(userInfo.toJson(), imageUrl, mHandler);
 			}
 		});
 		mPhoto = (ImageView) findViewById(R.id.photo);
@@ -173,20 +177,23 @@ public class MyInfoActivity extends BaseActivity
 				mRadioBtnMan.setChecked(false);
 				mRadioBtnWoMen.setChecked(true);
 			}
-		}else{
+		} else
+		{
 			mRadioBtnMan.setChecked(true);
 			mRadioBtnWoMen.setChecked(false);
 		}
 		if (userInfo.getUserGerenshuoming() != null)
 		{
 			mInfo.getText().append(userInfo.getUserGerenshuoming());
+		} else
+		{
+			mInfo.setHint("请输入您的个人说明");
 		}
-		else{
-			mInfo.setHint("请输入您的个人说明");	
-		}
-		if(userInfo.getUserInfoDetail()!=null){
+		if (userInfo.getUserInfoDetail() != null)
+		{
 			mDetailInfo.setText(userInfo.getUserInfoDetail());
-		}else{
+		} else
+		{
 			mDetailInfo.setHint("请输入您的详细信息,比如部门、商家介绍。");
 		}
 	}
@@ -244,11 +251,11 @@ public class MyInfoActivity extends BaseActivity
 				photo = (Bitmap) extra.getParcelable("data");
 				if (photo != null)
 				{
-					FileOutputStream baos=null;
+					FileOutputStream baos = null;
 					try
 					{
 						baos = new FileOutputStream(new File(imageUrl));
-						
+
 					} catch (FileNotFoundException e)
 					{
 						e.printStackTrace();
@@ -261,7 +268,8 @@ public class MyInfoActivity extends BaseActivity
 					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}finally{
+					} finally
+					{
 						try
 						{
 							baos.close();
@@ -272,7 +280,7 @@ public class MyInfoActivity extends BaseActivity
 						}
 					}
 					mPhoto.setImageBitmap(photo);
-					headImageIsChange=true ;
+					headImageIsChange = true;
 				}
 			}
 		}

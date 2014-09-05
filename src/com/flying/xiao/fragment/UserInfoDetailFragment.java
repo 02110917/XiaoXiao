@@ -24,22 +24,23 @@ import com.flying.xiao.entity.XUserInfo;
 
 public class UserInfoDetailFragment extends Fragment
 {
-	private int type ;
-	private XUserInfo userInfo ;
-	private List<XContent> contentList ;
-	private ListView mLv ;
-	private ListViewMainContentAdapter adapter ;
+	private int type;
+	private XUserInfo userInfo;
+	private List<XContent> contentList;
+	private ListView mLv;
+	private ListViewMainContentAdapter adapter;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		contentList=new ArrayList<XContent>();
+		contentList = new ArrayList<XContent>();
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View v=inflater.inflate(R.layout.department_detail_fragment, null) ;
+		View v = inflater.inflate(R.layout.department_detail_fragment, null);
 		initView(v);
 		initData();
 		return v;
@@ -47,7 +48,8 @@ public class UserInfoDetailFragment extends Fragment
 
 	private void initData()
 	{
-		Handler handler=new Handler(){
+		Handler handler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
@@ -56,35 +58,44 @@ public class UserInfoDetailFragment extends Fragment
 				switch (msg.what)
 				{
 				case Constant.HandlerMessageCode.DEPARTMENT_DETAIL_LOAD_DATA_FAIL:
-					
+
 					break;
 				case Constant.HandlerMessageCode.DEPARTMENT_DETAIL_LOAD_DATA_SUCCESS:
-					if(type==msg.arg1){
-						List<XContent> list=(List<XContent>) msg.obj;
+					if (type == msg.arg1)
+					{
+						List<XContent> list = (List<XContent>) msg.obj;
 						contentList.clear();
 						contentList.addAll(list);
 						adapter.notifyDataSetChanged();
 					}
-					break ;
-					
+					break;
+
 				default:
 					break;
 				}
-			}}; 
-			if(type==Constant.WzType.WZTYPE_WP){
-				NetControl.getShare(getActivity()).getMarketData(type, userInfo.getId(), 0, handler);
-			}else{
-				NetControl.getShare(getActivity()).getWzData(type, userInfo.getId(), 0,handler);
 			}
-		
+		};
+		if (type == Constant.WzType.WZTYPE_WP)
+		{
+			NetControl.getShare(getActivity()).getMarketData(type, userInfo.getId(), 0, handler);
+		} else
+		{
+			NetControl.getShare(getActivity()).getWzData(type, userInfo.getId(), 0, handler);
+		}
+
 	}
 
-	private void initView(View v){
-		mLv=(ListView) v.findViewById(R.id.department_detail_fragment_listview);
-		if(type==Constant.WzType.WZTYPE_WP){
-			adapter=new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_market_listitem,true);
-		}else{
-			adapter=new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_news_listitem);	
+	private void initView(View v)
+	{
+		mLv = (ListView) v.findViewById(R.id.department_detail_fragment_listview);
+		if (type == Constant.WzType.WZTYPE_WP)
+		{
+			adapter = new ListViewMainContentAdapter(getActivity(), contentList,
+					R.layout.main_fragment_market_listitem, true);
+		} else
+		{
+			adapter = new ListViewMainContentAdapter(getActivity(), contentList,
+					R.layout.main_fragment_news_listitem);
 		}
 		mLv.setAdapter(adapter);
 		mLv.setOnItemClickListener(new OnItemClickListener()
@@ -93,15 +104,20 @@ public class UserInfoDetailFragment extends Fragment
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				if(type==Constant.WzType.WZTYPE_WP){
-					UIHelper.showContentInfo(getActivity(),contentList.get(position),Constant.ContentType.CONTENT_TYPE_MARKET);
-				}else{
-					UIHelper.showContentInfo(getActivity(),contentList.get(position),Constant.ContentType.CONTENT_TYPE_NEWS);
+				if (type == Constant.WzType.WZTYPE_WP)
+				{
+					UIHelper.showContentInfo(getActivity(), contentList.get(position),
+							Constant.ContentType.CONTENT_TYPE_MARKET);
+				} else
+				{
+					UIHelper.showContentInfo(getActivity(), contentList.get(position),
+							Constant.ContentType.CONTENT_TYPE_NEWS);
 				}
 			}
-			
+
 		});
 	}
+
 	public void setType(int type)
 	{
 		this.type = type;

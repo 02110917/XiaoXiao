@@ -49,7 +49,7 @@ public class BaseActivity extends FragmentActivity
 
 	protected WebSocketService mWebSocketService;
 	private ChangeStateReceive receive;
-	private WebSocketMsgReceive msgReceive ;
+	private WebSocketMsgReceive msgReceive;
 	private IntentFilter filter;
 	private IntentFilter msgFilter;
 	protected ServiceConnection serviceConnection = new ServiceConnection()
@@ -138,7 +138,8 @@ public class BaseActivity extends FragmentActivity
 	private boolean activityShoultBindService()
 	{
 		return this instanceof MainActivity || this instanceof UserLoginActivity
-				|| this instanceof ChatActivity || this instanceof SearchActivity||this instanceof MyFriends|| this instanceof UserInfoDetail;
+				|| this instanceof ChatActivity || this instanceof SearchActivity
+				|| this instanceof MyFriends || this instanceof UserInfoDetail;
 	}
 
 	public boolean isAllowFullScreen()
@@ -233,11 +234,11 @@ public class BaseActivity extends FragmentActivity
 			filter.addAction("com.flying.xiao.ChangeStateReceive");
 			registerReceiver(receive, filter);
 		}
-		msgReceive=new WebSocketMsgReceive();
-		msgFilter=new IntentFilter();
+		msgReceive = new WebSocketMsgReceive();
+		msgFilter = new IntentFilter();
 		msgFilter.addAction("com.flying.xiao.WebSocketMsgReceive");
 		registerReceiver(msgReceive, msgFilter);
-		
+
 	}
 
 	@Override

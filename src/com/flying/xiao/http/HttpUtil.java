@@ -506,6 +506,41 @@ public class HttpUtil
 	}
 
 	/**
+	 * 反馈
+	 * 
+	 * @param appContext
+	 * @param email
+	 * @param phone
+	 * @param name
+	 * @param userId
+	 * @return Base
+	 * @throws AppException
+	 */
+	public static Base suggest(AppContext appContext, String email, String phone, String name, String userId)
+			throws AppException
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("email", email);
+		params.put("phone", phone);
+		params.put("name", name);
+		params.put("userId", userId);
+		String suggesturl = URLs.URL_SUGGEST;
+		Base base = new Base();
+		try
+		{
+			String result = http_post(appContext, suggesturl, params);
+			System.out.println("json---" + result);
+			base = base.jsonToBase(result);
+			return base;
+		} catch (Exception e)
+		{
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
+
+	/**
 	 * 获取内容列表
 	 * 
 	 * @param appContext
@@ -1165,34 +1200,33 @@ public class HttpUtil
 
 			file.createNewFile();
 		}
-			/*
-			 * 向SD卡中写入文件,用Handle传递线程
-			 */
-			Message message = new Message();
+		/*
+		 * 向SD卡中写入文件,用Handle传递线程
+		 */
+		Message message = new Message();
 
-			outputStream = new FileOutputStream(file);
-			byte[] buffer = new byte[512];
-			fileLength = connection.getContentLength();
-			message.what = 0;
-			message.obj=fileLength;
-			handler.sendMessage(message);
-			int readLength;
-			while ((readLength=inputStream.read(buffer))!=-1)
-			{
-				outputStream.write(buffer);
-				downedFileLength += readLength;
-				// Log.i("-------->", downedFileLength+"");
-				Message message1 = new Message();
-				message1.what = 1;
-				message1.obj=downedFileLength;
-				handler.sendMessage(message1);
-			}
-			Message message2 = new Message();
-			message2.what = 2;
-			message2.obj=savePathString;
-			handler.sendMessage(message2);
-
+		outputStream = new FileOutputStream(file);
+		byte[] buffer = new byte[512];
+		fileLength = connection.getContentLength();
+		message.what = 0;
+		message.obj = fileLength;
+		handler.sendMessage(message);
+		int readLength;
+		while ((readLength = inputStream.read(buffer)) != -1)
+		{
+			outputStream.write(buffer);
+			downedFileLength += readLength;
+			// Log.i("-------->", downedFileLength+"");
+			Message message1 = new Message();
+			message1.what = 1;
+			message1.obj = downedFileLength;
+			handler.sendMessage(message1);
 		}
+		Message message2 = new Message();
+		message2.what = 2;
+		message2.obj = savePathString;
+		handler.sendMessage(message2);
 
+	}
 
 }

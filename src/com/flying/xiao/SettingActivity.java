@@ -8,8 +8,8 @@ import com.flying.xiao.common.UIHelper;
 
 public class SettingActivity extends BaseActivity
 {
-	//设置Onclick就不用找出来了
-	//private LinearLayout accountManage;
+	// 设置Onclick就不用找出来了
+	// private LinearLayout accountManage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,7 +31,7 @@ public class SettingActivity extends BaseActivity
 
 	private void initView()
 	{
-		//accountManage = (LinearLayout)findViewById(R.id.account_manager);
+		// accountManage = (LinearLayout)findViewById(R.id.account_manager);
 	}
 
 	public void settingClick(View v)
@@ -51,7 +51,7 @@ public class SettingActivity extends BaseActivity
 
 			break;
 		case R.id.position_paper:// 意见反馈
-
+			UIHelper.showSuggestion(this);
 			break;
 		case R.id.clear_cash:// 清除缓存
 

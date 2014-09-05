@@ -26,16 +26,15 @@ public class MyFriends extends BaseActivity
 	private List<XUserInfo> myFriendList;
 	private ListViewMyFriendAdapter adapter;
 	private DBHelper dbHelper;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		dbHelper=DBHelper.getDbHelper(this);
-//		appContext.listManager.setMyFriendOnline();
-//		myFriendList = appContext.listManager.getMyFriendList();
-		myFriendList=dbHelper.selectFriends();
+		dbHelper = DBHelper.getDbHelper(this);
+		// appContext.listManager.setMyFriendOnline();
+		// myFriendList = appContext.listManager.getMyFriendList();
+		myFriendList = dbHelper.selectFriends();
 		setContentView(R.layout.activity_my_friends);
 		initHeadView();
 		initView();
@@ -88,12 +87,12 @@ public class MyFriends extends BaseActivity
 					break;
 				case Constant.HandlerMessageCode.GET_MY_FRIENDS_SUCCESS:
 					List<XUserInfo> list = (List<XUserInfo>) msg.obj;
-//					dbHelper.insertFriends(list);
+					// dbHelper.insertFriends(list);
 					myFriendList.clear();
 					myFriendList.addAll(dbHelper.selectFriends());
-//					myFriendList.clear();
-//					myFriendList.addAll(list);
-//					appContext.listManager.setMyFriendOnline();
+					// myFriendList.clear();
+					// myFriendList.addAll(list);
+					// appContext.listManager.setMyFriendOnline();
 					adapter.notifyDataSetChanged();
 					break;
 
@@ -102,21 +101,19 @@ public class MyFriends extends BaseActivity
 				}
 			}
 		};
-//		getmWebSocketService().getAllFriends();//获取所有好友列表
-//		NetControl.getShare(this).getMyFriends(mHandler);
+		// getmWebSocketService().getAllFriends();//获取所有好友列表
+		// NetControl.getShare(this).getMyFriends(mHandler);
 
 	}
-
 
 	public void changeFriendState()
 	{
 		System.out.println("----changeFriendState");
-//		appContext.listManager.setMyFriendOnline();
+		// appContext.listManager.setMyFriendOnline();
 		myFriendList.clear();
 		myFriendList.addAll(dbHelper.selectFriends());
 		adapter.notifyDataSetChanged();
 	}
-	
 
 	@Override
 	protected void onResume()
@@ -125,5 +122,5 @@ public class MyFriends extends BaseActivity
 		super.onResume();
 		changeFriendState();
 	}
-	
+
 }

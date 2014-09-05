@@ -40,7 +40,7 @@ import com.flying.xiao.widget.BadgeView;
 /**
  * 内容详情
  */
-public class ContentDetail extends BaseActivity 
+public class ContentDetail extends BaseActivity
 {
 
 	private ImageView mFavorite; // 收藏
@@ -87,6 +87,7 @@ public class ContentDetail extends BaseActivity
 	private InputMethodManager imm;
 
 	private String _commentStr;// 评论内容
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -97,7 +98,7 @@ public class ContentDetail extends BaseActivity
 		this.initData();
 
 	}
-	
+
 	@Override
 	protected void initHeadView()
 	{
@@ -111,18 +112,18 @@ public class ContentDetail extends BaseActivity
 	private void initView()
 	{
 		conType = getIntent().getIntExtra("conType", 0);
-		if(getIntent().getSerializableExtra("contentObject")!=null){
-			con=(XContent) getIntent().getSerializableExtra("contentObject");
-		}
-		else
+		if (getIntent().getSerializableExtra("contentObject") != null)
 		{
-			int index=getIntent().getIntExtra("content", 0);
-			if(conType==Constant.ContentType.CONTENT_TYPE_NEWS)
+			con = (XContent) getIntent().getSerializableExtra("contentObject");
+		} else
+		{
+			int index = getIntent().getIntExtra("content", 0);
+			if (conType == Constant.ContentType.CONTENT_TYPE_NEWS)
 				con = appContext.listManager.getNewsContentList().get(index);
-			else if(conType==Constant.ContentType.CONTENT_TYPE_ASK)
+			else if (conType == Constant.ContentType.CONTENT_TYPE_ASK)
 				con = appContext.listManager.getAskContentList().get(index);
 		}
-		
+
 		mViewSwitcher = (ViewSwitcher) findViewById(R.id.content_detail_viewswitcher);
 		mScrollView = (ScrollView) findViewById(R.id.content_detail_scrollview);
 
@@ -226,16 +227,17 @@ public class ContentDetail extends BaseActivity
 					XContentDetail xconDetail = (XContentDetail) msg.obj;
 					headButtonSwitch(DATA_LOAD_COMPLETE);
 					lvCommentData.clear();
-					if(xconDetail.getComments()!=null)
+					if (xconDetail.getComments() != null)
 						lvCommentData.addAll(xconDetail.getComments());
-					if(con.isMeCollecte()){
+					if (con.isMeCollecte())
+					{
 						mFavorite.setImageResource(R.drawable.widget_bar_favorite_y);
 					}
 					mTitle.setText(con.getConTitle());
 					mAuthor.setText(con.getUserInfo().getUserRealName());
 					mPubDate.setText(StringUtils.friendly_time(con.getConPubTime().toString()));
 					mCommentCount.setText(String.valueOf(con.getConPls()));
-					con.setConHot(con.getConHot()+1);
+					con.setConHot(con.getConHot() + 1);
 					// 加载评论视图&数据
 					initCommentView();
 					//
@@ -258,7 +260,7 @@ public class ContentDetail extends BaseActivity
 
 					String body = UIHelper.WEB_STYLE + xconDetail.getContentInfo()
 							+ "<div style=\"margin-bottom: 80px\" />";
-					body = body.replaceAll("src=\"/XiaoServer/", "src=\""+URLs.HOST+"/XiaoServer/");
+					body = body.replaceAll("src=\"/XiaoServer/", "src=\"" + URLs.HOST + "/XiaoServer/");
 					body = body.replaceAll("(<img[^>]*?)\\s+width\\s*=\\s*\\S+", "$1");
 					body = body.replaceAll("(<img[^>]*?)\\s+height\\s*=\\s*\\S+", "$1");
 					//
@@ -299,26 +301,26 @@ public class ContentDetail extends BaseActivity
 					int count = lvCommentAdapter.getMainCommentList().size();
 					bv_comment.setText(count + "");
 					bv_comment.show();
-					con.setConPls(con.getConPls()+1);
-					mCommentCount.setText(con.getConPls()+"");
+					con.setConPls(con.getConPls() + 1);
+					mCommentCount.setText(con.getConPls() + "");
 					break;
 				case Constant.HandlerMessageCode.COLLECTION_OPERATE_FAIL:
 					UIHelper.ToastMessage(ContentDetail.this, "操作失败...");
-					break ;
+					break;
 				case Constant.HandlerMessageCode.COLLECTION_OPERATE_SUCCESS:
 					con.setMeCollecte(!con.isMeCollecte());
-					if(con.isMeCollecte())
+					if (con.isMeCollecte())
 						mFavorite.setImageResource(R.drawable.widget_bar_favorite_y);
 					else
 						mFavorite.setImageResource(R.drawable.widget_bar_favorite);
-					break ;
+					break;
 				default:
 					break;
 				}
 
 			}
 		};
-		NetControl.getShare(this).getContentDetail(conType, con.getId(),mHandler);
+		NetControl.getShare(this).getContentDetail(conType, con.getId(), mHandler);
 		headButtonSwitch(DATA_LOAD_ING);
 	}
 
@@ -378,7 +380,7 @@ public class ContentDetail extends BaseActivity
 		@Override
 		public void onClick(View v)
 		{
-			NetControl.getShare(ContentDetail.this).getContentDetail(conType, con.getId(),mHandler);
+			NetControl.getShare(ContentDetail.this).getContentDetail(conType, con.getId(), mHandler);
 			headButtonSwitch(DATA_LOAD_ING);
 		}
 	};
@@ -434,7 +436,7 @@ public class ContentDetail extends BaseActivity
 		@Override
 		public void onClick(View v)
 		{
-			NetControl.getShare(ContentDetail.this).collectOperate(con.getId(), con.isMeCollecte(),mHandler);
+			NetControl.getShare(ContentDetail.this).collectOperate(con.getId(), con.isMeCollecte(), mHandler);
 		}
 	};
 
@@ -456,10 +458,13 @@ public class ContentDetail extends BaseActivity
 
 				XComment com = lvCommentAdapter.getMainCommentList().get(position);
 				// 跳转--回复评论界面
-				if(appContext.isLogin()){
+				if (appContext.isLogin())
+				{
 					UIHelper.showCommentReply(ContentDetail.this, com.getPlId(), con.getId(), appContext
-							.getUserInfo().getId(), appContext.getUserInfo().getUserRealName(), com.getPlInfo());
-				}else{
+							.getUserInfo().getId(), appContext.getUserInfo().getUserRealName(), com
+							.getPlInfo());
+				} else
+				{
 					UIHelper.ToastMessage(ContentDetail.this, "您还未登陆,请先登录...");
 					UIHelper.showLoginDialog(ContentDetail.this);
 				}
@@ -510,7 +515,7 @@ public class ContentDetail extends BaseActivity
 				return;
 			}
 			NetControl.getShare(ContentDetail.this).pubComment(appContext.getUserInfo().getId(), con.getId(),
-					_commentStr, 0,mHandler);
+					_commentStr, 0, mHandler);
 			mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
 
 		}

@@ -31,29 +31,32 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	private PullDownListView mPullDownListview;
 	private ListView mListView;
 	private ListViewMainContentAdapter mAdapter;
-	private List<XContent> contentList ;
+	private List<XContent> contentList;
 	private Handler mHandler;
-	private AppContext appContext ;
-//	private boolean isGetMyData=false ;// 是否是获取登陆用户的相关信息
+	private AppContext appContext;
+	// private boolean isGetMyData=false ;// 是否是获取登陆用户的相关信息
 	private int showType;
-	private long userId=-1 ;
+	private long userId = -1;
 	private int mCurPage = 0;
 	private int conType;
-	
-	private boolean isMyCollect=false;
+
+	private boolean isMyCollect = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		appContext=(AppContext) getActivity().getApplication();
-		if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN) //获取全局数据
-			contentList=appContext.listManager.getContentListByType(conType);
-		else // 获取登陆用户数据
+		appContext = (AppContext) getActivity().getApplication();
+		if (showType == Constant.MainContentFragmentShowType.TYPE_MAIN) // 获取全局数据
+			contentList = appContext.listManager.getContentListByType(conType);
+		else
+		// 获取登陆用户数据
 		{
-			contentList=new ArrayList<XContent>(); 
-			userId=appContext.getUserInfo().getId();
-			if(showType==Constant.MainContentFragmentShowType.TYPE_MY_COLLECT){
-				isMyCollect=true ;
+			contentList = new ArrayList<XContent>();
+			userId = appContext.getUserInfo().getId();
+			if (showType == Constant.MainContentFragmentShowType.TYPE_MY_COLLECT)
+			{
+				isMyCollect = true;
 			}
 		}
 		mHandler = new Handler()
@@ -72,15 +75,16 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 					break;
 
 				case Constant.HandlerMessageCode.MAIN_LOAD_DATA_SUCCESS:
-					if(msg.arg1==conType){
+					if (msg.arg1 == conType)
+					{
 						mPullDownListview.onRefreshComplete();
 						mPullDownListview.onLoadMoreComplete();
-						if(mCurPage==0) //如果是刷新获得重新加载  则清楚之前的数据
+						if (mCurPage == 0) // 如果是刷新获得重新加载 则清楚之前的数据
 							contentList.clear();
-						List<XContent> list=(List<XContent>) msg.obj;
-						if(list.size()==Constant.MAX_PAGE_COUNT)
+						List<XContent> list = (List<XContent>) msg.obj;
+						if (list.size() == Constant.MAX_PAGE_COUNT)
 							mPullDownListview.setMore(true);
-						else if(list.size()<Constant.MAX_PAGE_COUNT)
+						else if (list.size() < Constant.MAX_PAGE_COUNT)
 							mPullDownListview.setMore(false);
 						contentList.addAll(list);
 						mAdapter.notifyDataSetChanged();
@@ -92,14 +96,14 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 			}
 		};
 
-		NetControl.getShare(getActivity()).getContentData(conType,userId, 0,isMyCollect, mHandler);
+		NetControl.getShare(getActivity()).getContentData(conType, userId, 0, isMyCollect, mHandler);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		System.out.println(conType + "----onCreateView-----------");
-		
+
 		View view = inflater.inflate(R.layout.main_fragment_news, null);
 		initView(view);
 		return view;
@@ -109,27 +113,30 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	{
 		mPullDownListview = (PullDownListView) v.findViewById(R.id.main_fragment_list_view_news);
 		mListView = mPullDownListview.mListView;
-		
-		if(conType==Constant.ContentType.CONTENT_TYPE_MARKET)
-			mAdapter= new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_market_listitem,true);
+
+		if (conType == Constant.ContentType.CONTENT_TYPE_MARKET)
+			mAdapter = new ListViewMainContentAdapter(getActivity(), contentList,
+					R.layout.main_fragment_market_listitem, true);
 		else
-			mAdapter = new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_news_listitem);
+			mAdapter = new ListViewMainContentAdapter(getActivity(), contentList,
+					R.layout.main_fragment_news_listitem);
 		mListView.setAdapter(mAdapter);
 		mPullDownListview.setRefreshListioner(this);
-		
+
 		mListView.setOnItemClickListener(new OnItemClickListener()
 		{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN)
-					UIHelper.showContentInfo(getActivity(),position-1,conType);
+				if (showType == Constant.MainContentFragmentShowType.TYPE_MAIN)
+					UIHelper.showContentInfo(getActivity(), position - 1, conType);
 				else
-					UIHelper.showContentInfo(getActivity(),contentList.get(position-1) ,conType);
+					UIHelper.showContentInfo(getActivity(), contentList.get(position - 1), conType);
 			}
 		});
 	}
+
 	public void setConType(int conType)
 	{
 		this.conType = conType;
@@ -138,15 +145,15 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	@Override
 	public void onRefresh()
 	{
-		mCurPage=0;
-		NetControl.getShare(getActivity()).getContentData(conType,userId, 0,isMyCollect, mHandler);
+		mCurPage = 0;
+		NetControl.getShare(getActivity()).getContentData(conType, userId, 0, isMyCollect, mHandler);
 	}
 
 	@Override
 	public void onLoadMore()
 	{
 		mCurPage++;
-		NetControl.getShare(getActivity()).getContentData(conType,userId, mCurPage,isMyCollect, mHandler);
+		NetControl.getShare(getActivity()).getContentData(conType, userId, mCurPage, isMyCollect, mHandler);
 	}
 
 	public void setShowType(int showType)
@@ -158,17 +165,18 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	public void onResume()
 	{
 		super.onResume();
-		if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN) //获取全局数据
-			contentList=appContext.listManager.getContentListByType(conType);
-		else // 获取登陆用户数据
+		if (showType == Constant.MainContentFragmentShowType.TYPE_MAIN) // 获取全局数据
+			contentList = appContext.listManager.getContentListByType(conType);
+		else
+		// 获取登陆用户数据
 		{
-			contentList=new ArrayList<XContent>(); 
-			userId=appContext.getUserInfo().getId();
-			if(showType==Constant.MainContentFragmentShowType.TYPE_MY_COLLECT){
-				isMyCollect=true ;
+			contentList = new ArrayList<XContent>();
+			userId = appContext.getUserInfo().getId();
+			if (showType == Constant.MainContentFragmentShowType.TYPE_MY_COLLECT)
+			{
+				isMyCollect = true;
 			}
 		}
 	}
 
-	
 }

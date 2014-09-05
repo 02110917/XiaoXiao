@@ -36,16 +36,17 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 
 	private List<XDynamic> myDynamicList;
 	private ListViewMyDynamicAdapter adapter;
-	
+
 	private PullDownListView mPullDownListview;
 	private ListView mListView;
-	public LinearLayout pubCommentEditLin ;
-	public LinearLayout pubCommentOutSiteLine ;
-	public Button btnPubComment ;
-	public EditText etEditComment ;
+	public LinearLayout pubCommentEditLin;
+	public LinearLayout pubCommentOutSiteLine;
+	public Button btnPubComment;
+	public EditText etEditComment;
 	private ProgressDialog mProgress;
-	private int replyId=0;
-	private int page =0;
+	private int replyId = 0;
+	private int page = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -76,24 +77,26 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				XDynamic dynamic=myDynamicList.get(position-1);
-				if(dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME||dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT){
-					XContent content=dynamic.getContent();
-//					content.setId(dynamic.getContentId());
-//					content.setConTitle(dynamic.getContentTitle());
+				XDynamic dynamic = myDynamicList.get(position - 1);
+				if (dynamic.getType() == Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME
+						|| dynamic.getType() == Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT)
+				{
+					XContent content = dynamic.getContent();
+					// content.setId(dynamic.getContentId());
+					// content.setConTitle(dynamic.getContentTitle());
 					UIHelper.showContentInfo(MyDynamic.this, content, content.getConTypeId());
 				}
 			}
 		});
-		pubCommentEditLin=(LinearLayout)findViewById(R.id.diary_footer);
-		pubCommentOutSiteLine=(LinearLayout)findViewById(R.id.my_dynamic_lin_outsite);
+		pubCommentEditLin = (LinearLayout) findViewById(R.id.diary_footer);
+		pubCommentOutSiteLine = (LinearLayout) findViewById(R.id.my_dynamic_lin_outsite);
 		pubCommentOutSiteLine.setOnTouchListener(listener);
 		mListView.setOnTouchListener(listener);
-		btnPubComment=(Button)findViewById(R.id.diary_foot_pubcomment);
-		etEditComment=(EditText)findViewById(R.id.diary_foot_editer);
+		btnPubComment = (Button) findViewById(R.id.diary_foot_pubcomment);
+		etEditComment = (EditText) findViewById(R.id.diary_foot_editer);
 		btnPubComment.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
@@ -109,29 +112,36 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 					UIHelper.showLoginDialog(MyDynamic.this);
 					return;
 				}
-				XDynamic dynamic=myDynamicList.get(replyId);
+				XDynamic dynamic = myDynamicList.get(replyId);
 				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
-				if(dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT||dynamic.getType()==Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME){
-					XContent content=dynamic.getContent();
-					NetControl.getShare(MyDynamic.this).pubComment(appContext.getUserInfo().getId(), content.getId(),
-							_commentStr, dynamic.getCommentId(),mHandler);
-				}else{
-					XMessage message=dynamic.getMessage();
-					NetControl.getShare(MyDynamic.this).pubMessage(appContext.getUserInfo().getId(), _commentStr,
-							message.getMsgId(),message.getMsgReplyMain()==null?message.getMsgId():message.getMsgReplyMain().getMsgId(),
-							mHandler);
+				if (dynamic.getType() == Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT
+						|| dynamic.getType() == Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME)
+				{
+					XContent content = dynamic.getContent();
+					NetControl.getShare(MyDynamic.this).pubComment(appContext.getUserInfo().getId(),
+							content.getId(), _commentStr, dynamic.getCommentId(), mHandler);
+				} else
+				{
+					XMessage message = dynamic.getMessage();
+					NetControl.getShare(MyDynamic.this).pubMessage(
+							appContext.getUserInfo().getId(),
+							_commentStr,
+							message.getMsgId(),
+							message.getMsgReplyMain() == null ? message.getMsgId() : message
+									.getMsgReplyMain().getMsgId(), mHandler);
 				}
 			}
 		});
-		adapter = new ListViewMyDynamicAdapter(this,pubCommentEditLin, myDynamicList, R.layout.activity_my_dynamic_listitem,new IReply()
-		{
-			
-			@Override
-			public void reply(int id)
-			{
-				replyId=id;
-			}
-		});
+		adapter = new ListViewMyDynamicAdapter(this, pubCommentEditLin, myDynamicList,
+				R.layout.activity_my_dynamic_listitem, new IReply()
+				{
+
+					@Override
+					public void reply(int id)
+					{
+						replyId = id;
+					}
+				});
 		mListView.setAdapter(adapter);
 	}
 
@@ -156,20 +166,20 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 					break;
 				case Constant.HandlerMessageCode.GET_MY_DYNAMIC_FAIL:
 					UIHelper.ToastMessage(MyDynamic.this, "获取数据出错...");
-					break ;
+					break;
 				case Constant.HandlerMessageCode.GET_MY_DYNAMIC_SUCCESS:
-					List<XDynamic> list=(List<XDynamic>) msg.obj;
-					if(page==0)
+					List<XDynamic> list = (List<XDynamic>) msg.obj;
+					if (page == 0)
 						myDynamicList.clear();
-					
-					if(list.size()==Constant.MAX_PAGE_COUNT)
+
+					if (list.size() == Constant.MAX_PAGE_COUNT)
 						mPullDownListview.setMore(true);
-					else if(list.size()<Constant.MAX_PAGE_COUNT)
+					else if (list.size() < Constant.MAX_PAGE_COUNT)
 						mPullDownListview.setMore(false);
-					
+
 					myDynamicList.addAll(list);
 					adapter.notifyDataSetChanged();
-					break ;
+					break;
 				case Constant.HandlerMessageCode.PUB_MESSAGE_ERROR: // 发布评论失败
 					UIHelper.ToastMessage(MyDynamic.this, R.string.pub_comment_error);
 					break;
@@ -181,37 +191,38 @@ public class MyDynamic extends BaseActivity implements PullDownListView.OnRefres
 					break;
 				case Constant.HandlerMessageCode.PUB_COMMENT_ERROR:
 					UIHelper.ToastMessage(MyDynamic.this, "操作失败...");
-					break ;
+					break;
 				default:
 					break;
 				}
 			}
 		};
-		NetControl.getShare(this).getMyDynamic(mHandler,page);
+		NetControl.getShare(this).getMyDynamic(mHandler, page);
 
 	}
 
 	@Override
 	public void onRefresh()
 	{
-		page=0;
-		NetControl.getShare(this).getMyDynamic(mHandler,page);
+		page = 0;
+		NetControl.getShare(this).getMyDynamic(mHandler, page);
 	}
 
 	@Override
 	public void onLoadMore()
 	{
 		page++;
-		NetControl.getShare(this).getMyDynamic(mHandler,page);
+		NetControl.getShare(this).getMyDynamic(mHandler, page);
 	}
-private OnTouchListener listener =new OnTouchListener()
-{
-	
-	@Override
-	public boolean onTouch(View v, MotionEvent event)
+
+	private OnTouchListener listener = new OnTouchListener()
 	{
-		pubCommentEditLin.setVisibility(View.GONE);
-		return false;
-	}
-};
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event)
+		{
+			pubCommentEditLin.setVisibility(View.GONE);
+			return false;
+		}
+	};
 }

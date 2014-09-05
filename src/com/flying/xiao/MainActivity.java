@@ -41,18 +41,20 @@ public class MainActivity extends BaseActivity
 	private Fragment communityFragment; // 社区
 	private Fragment meFragment;
 	private RadioGroup mRadioGroup;
-	private RadioButton mRBtnMain ;
+	private RadioButton mRBtnMain;
 	public List<Fragment> fragments = new ArrayList<Fragment>();
 	private ImageView fbSetting;
 	private ImageView mainHeadLogo;
 	private TextView mainHeadTitle;
 	private ImageButton mRightBtn;
 	private QuickActionWidget mGrid;// 快捷栏控件
-	
+
 	private AppContext appContext;// 全局Context
 	private String[] titles = new String[]
 	{ "首页", "广场", "社区", "个人" };
-	private int[]headImages=new int[]{R.drawable.main,R.drawable.square,R.drawable.community,R.drawable.personal};
+	private int[] headImages = new int[]
+	{ R.drawable.main, R.drawable.square, R.drawable.community, R.drawable.personal };
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -65,10 +67,9 @@ public class MainActivity extends BaseActivity
 		initFootBar();
 		initQuickActionGrid();
 		initMain();
-		
+
 	}
 
-	
 	@Override
 	protected void onResume()
 	{
@@ -76,7 +77,6 @@ public class MainActivity extends BaseActivity
 		super.onResume();
 	}
 
-	
 	@Override
 	protected void onDestroy()
 	{
@@ -85,16 +85,15 @@ public class MainActivity extends BaseActivity
 		System.out.println("MainActivity:----onDestroy");
 	}
 
-
 	/**
 	 * 初始化底部栏
 	 */
 	private void initFootBar()
 	{
-		mainHeadLogo=(ImageView)findViewById(R.id.main_head_logo);
-		mRBtnMain=(RadioButton)findViewById(R.id.footbar_main);
+		mainHeadLogo = (ImageView) findViewById(R.id.main_head_logo);
+		mRBtnMain = (RadioButton) findViewById(R.id.footbar_main);
 		mRBtnMain.setChecked(true);
-		
+
 		fbSetting = (ImageView) findViewById(R.id.main_footbar_pub);
 		fbSetting.setOnClickListener(new View.OnClickListener()
 		{
@@ -102,9 +101,10 @@ public class MainActivity extends BaseActivity
 			public void onClick(View v)
 			{
 				// 展示快捷栏&判断是否登录&是否加载文章图片
-//				UIHelper.showSettingLoginOrLogout(MainActivity.this, mGrid.getQuickAction(0));
+				// UIHelper.showSettingLoginOrLogout(MainActivity.this,
+				// mGrid.getQuickAction(0));
 				mGrid.show(v);
-				
+
 			}
 		});
 	}
@@ -132,9 +132,11 @@ public class MainActivity extends BaseActivity
 			{
 				mainHeadTitle.setText(titles[index]);
 				mainHeadLogo.setImageResource(headImages[index]);
-				if(index==3){
+				if (index == 3)
+				{
 					mRightBtn.setBackgroundResource(R.drawable.widget_bar_set);
-				}else{
+				} else
+				{
 					mRightBtn.setBackgroundResource(R.drawable.frame_icon_search);
 				}
 			}
@@ -152,7 +154,7 @@ public class MainActivity extends BaseActivity
 				case R.id.footbar_life:
 				case R.id.footbar_community:
 					UIHelper.showSearchActivity(MainActivity.this);
-					break ;
+					break;
 				case R.id.footbar_me:
 					UIHelper.showSetting(MainActivity.this);
 					break;
@@ -163,8 +165,6 @@ public class MainActivity extends BaseActivity
 		});
 	}
 
-
-	
 	/**
 	 * 初始化快捷栏
 	 */
@@ -188,37 +188,38 @@ public class MainActivity extends BaseActivity
 		{
 			switch (position)
 			{
-//			case QUICKACTION_LOGIN_OR_LOGOUT:// 用户登录-注销
-//				UIHelper.loginOrLogout(MainActivity.this);
-//				if(fragments.get(3).isAdded())
-//					fragments.get(3).onResume();
-//				break;
-			 case QUICKACTION_PUB_DIARY:// 我的资料
-				 if(appContext.isLogin())
-					 UIHelper.showPubDiary(MainActivity.this);
-				 else
-					 UIHelper.showLoginDialog(MainActivity.this);
-			 break;
-			 case QUICKACTION_PUB_LOST:// 开源软件
-				 if(appContext.isLogin())
-					 UIHelper.showPubLost(MainActivity.this);
-				 else
-					 UIHelper.showLoginDialog(MainActivity.this);
-			 break;
-			 case QUICKACTION_PUB_MARKET:// 搜索
-				 if(appContext.isLogin())
-					 UIHelper.showPubMarket(MainActivity.this);
-				 else
-					 UIHelper.showLoginDialog(MainActivity.this);
-			 break;
-			 case QUICKACTION_PUB_ZIXUN:// 设置
-				 if(appContext.isLogin())
-					 UIHelper.showPubContent(MainActivity.this,Constant.ContentType.CONTENT_TYPE_ASK,Constant.WzType.WZTYPE_ZRWL);
-				 else
-					 UIHelper.showLoginDialog(MainActivity.this);
-			// case QUICKACTION_EXIT:// 退出
-			// UIHelper.Exit(MainActivity.this);
+			// case QUICKACTION_LOGIN_OR_LOGOUT:// 用户登录-注销
+			// UIHelper.loginOrLogout(MainActivity.this);
+			// if(fragments.get(3).isAdded())
+			// fragments.get(3).onResume();
 			// break;
+			case QUICKACTION_PUB_DIARY:// 我的资料
+				if (appContext.isLogin())
+					UIHelper.showPubDiary(MainActivity.this);
+				else
+					UIHelper.showLoginDialog(MainActivity.this);
+				break;
+			case QUICKACTION_PUB_LOST:// 开源软件
+				if (appContext.isLogin())
+					UIHelper.showPubLost(MainActivity.this);
+				else
+					UIHelper.showLoginDialog(MainActivity.this);
+				break;
+			case QUICKACTION_PUB_MARKET:// 搜索
+				if (appContext.isLogin())
+					UIHelper.showPubMarket(MainActivity.this);
+				else
+					UIHelper.showLoginDialog(MainActivity.this);
+				break;
+			case QUICKACTION_PUB_ZIXUN:// 设置
+				if (appContext.isLogin())
+					UIHelper.showPubContent(MainActivity.this, Constant.ContentType.CONTENT_TYPE_ASK,
+							Constant.WzType.WZTYPE_ZRWL);
+				else
+					UIHelper.showLoginDialog(MainActivity.this);
+				// case QUICKACTION_EXIT:// 退出
+				// UIHelper.Exit(MainActivity.this);
+				// break;
 			}
 		}
 	};

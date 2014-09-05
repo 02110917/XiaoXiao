@@ -83,15 +83,16 @@ public class ListViewChatAdapter extends BaseAdapter
 	{
 		// Log.d("method", "getView");
 		final ChatMessage chatMessage = listItems.get(position);
-		ChatMessage chatMessageBefore =null;
-		if(position>=1){
-			chatMessageBefore = listItems.get(position-1);
+		ChatMessage chatMessageBefore = null;
+		if (position >= 1)
+		{
+			chatMessageBefore = listItems.get(position - 1);
 		}
 		// 自定义视图
 		ListItemView listItemView = null;
-		
-//		if(convertView==null){
-	
+
+		// if(convertView==null){
+
 		// 获取list_item布局文件的视图
 		if (chatMessage.isTo())
 			convertView = listContainer.inflate(R.layout.chatting_item_to, null);
@@ -106,35 +107,36 @@ public class ListViewChatAdapter extends BaseAdapter
 		listItemView.progress = (ProgressBar) convertView.findViewById(R.id.uploading_pb);
 		listItemView.messageSendFail = (ImageView) convertView.findViewById(R.id.msg_send_fail);
 		// 设置控件集到convertView
-//		convertView.setTag(listItemView);
-//		}else{
-//			listItemView = (ListItemView) convertView.getTag();
-//		}
+		// convertView.setTag(listItemView);
+		// }else{
+		// listItemView = (ListItemView) convertView.getTag();
+		// }
 
 		String faceURL = chatMessage.getUserImageHeadUrl();
 
-		if(chatMessage.isTo())
+		if (chatMessage.isTo())
 		{
-			//	err send  P  E
-			//	F	F	  V	 G
-			//	F	T	  G	 G
-			//	T	F	  G	 V
-			//	T	T	  G	 G
-			//只要isSendTo=true 	progress messageSendFail  都gone	
-			if ( chatMessage.isSendTo())
+			// err send P E
+			// F F V G
+			// F T G G
+			// T F G V
+			// T T G G
+			// 只要isSendTo=true progress messageSendFail 都gone
+			if (chatMessage.isSendTo())
 			{ // 信息已送达
 				listItemView.progress.setVisibility(View.GONE);
 				listItemView.messageSendFail.setVisibility(View.GONE);
-			} 
-			else if(chatMessage.isSendError()&&!chatMessage.isSendTo()){
+			} else if (chatMessage.isSendError() && !chatMessage.isSendTo())
+			{
 				listItemView.progress.setVisibility(View.GONE);
 				listItemView.messageSendFail.setVisibility(View.VISIBLE);
-			}else{
+			} else
+			{
 				listItemView.messageSendFail.setVisibility(View.GONE);
 				listItemView.progress.setVisibility(View.VISIBLE);
 			}
 		}
-		if (faceURL==null||faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
+		if (faceURL == null || faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.mini_avatar_shadow);
 		} else
@@ -153,18 +155,25 @@ public class ListViewChatAdapter extends BaseAdapter
 			}
 		});
 		listItemView.message.setText(chatMessage.getBody());
-		
-		if(chatMessageBefore!=null){
+
+		if (chatMessageBefore != null)
+		{
 			long timeBefore = chatMessageBefore.getTime().getTime();
 			long time = chatMessage.getTime().getTime();
-			if(time-timeBefore>600000){
-				listItemView.date.setText(StringUtils.friendly_time(StringUtils.dateToString(chatMessage.getTime())));
-			}
-			else{
+			if (time - timeBefore > 600000)
+			{
+				listItemView.date.setText(StringUtils.friendly_time(StringUtils.dateToString(chatMessage
+						.getTime())));
+			} else
+			{
 				listItemView.date.setText("");
 			}
+		} else
+		{
+			listItemView.date.setText(StringUtils.friendly_time(StringUtils.dateToString(chatMessage
+					.getTime())));
 		}
-		
+
 		// listItemView.content.setText(comment.getPlInfo());
 		// listItemView.content.setTag(comment);// 设置隐藏参数(实体类)
 		//

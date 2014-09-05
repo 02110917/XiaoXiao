@@ -59,11 +59,11 @@ public class UserLoginFragment extends Fragment
 					// 提示登陆成功
 					UIHelper.ToastMessage(context, R.string.msg_login_success);
 					// 跳转--加载用户动态
-//					Intent intent = new Intent(context, MainActivity.class);
-//					intent.putExtra("LOGIN", true);
-//					startActivity(intent);
+					// Intent intent = new Intent(context, MainActivity.class);
+					// intent.putExtra("LOGIN", true);
+					// startActivity(intent);
 					appContext.initLoginInfo();
-					
+
 					XmppControl.getShare(context).deleteAccount();
 					context.getmWebSocketService().setXmppLogin(false);
 					context.getmWebSocketService().loginToXmpp();
@@ -114,7 +114,7 @@ public class UserLoginFragment extends Fragment
 				if (checkInput(uName, uPsd))
 				{
 					mPbLogin.setVisibility(View.VISIBLE);
-					NetControl.getShare(context).login(uName, uPsd,handler);
+					NetControl.getShare(context).login(uName, uPsd, handler);
 				}
 			}
 		});

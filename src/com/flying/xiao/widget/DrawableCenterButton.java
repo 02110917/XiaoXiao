@@ -11,9 +11,11 @@ import android.widget.Button;
  * 
  * 
  */
-public class DrawableCenterButton extends Button {
+public class DrawableCenterButton extends Button
+{
 
-	private boolean isSelect=false ;
+	private boolean isSelect = false;
+
 	public boolean isSelect()
 	{
 		return isSelect;
@@ -24,34 +26,38 @@ public class DrawableCenterButton extends Button {
 		this.isSelect = isSelect;
 	}
 
-	public DrawableCenterButton(Context context) {
+	public DrawableCenterButton(Context context)
+	{
 		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
-	public DrawableCenterButton(Context context, AttributeSet attrs,
-	int defStyle) {
+	public DrawableCenterButton(Context context, AttributeSet attrs, int defStyle)
+	{
 		super(context, attrs, defStyle);
 	}
 
-	public DrawableCenterButton(Context context, AttributeSet attrs) {
+	public DrawableCenterButton(Context context, AttributeSet attrs)
+	{
 		super(context, attrs);
 	}
 
-
 	@Override
-	protected void onDraw(Canvas canvas) {
+	protected void onDraw(Canvas canvas)
+	{
 		Drawable[] drawables = getCompoundDrawables();
-		if (drawables != null) {
+		if (drawables != null)
+		{
 			Drawable drawableRight = drawables[2];
-				if (drawableRight != null) {
-			
+			if (drawableRight != null)
+			{
+
 				float textWidth = getPaint().measureText(getText().toString());
 				int drawablePadding = getCompoundDrawablePadding();
 				int drawableWidth = 0;
 				drawableWidth = drawableRight.getIntrinsicWidth();
 				float bodyWidth = textWidth + drawableWidth + drawablePadding;
-				setPadding(0, 0, (int)(getWidth() - bodyWidth), 0);
+				setPadding(0, 0, (int) (getWidth() - bodyWidth), 0);
 				canvas.translate((getWidth() - bodyWidth) / 2, 0);
 			}
 		}

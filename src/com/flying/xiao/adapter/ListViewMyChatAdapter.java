@@ -22,8 +22,10 @@ import com.flying.xiao.common.URLs;
 import com.flying.xiao.entity.MyChat;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.util.ImageManager2;
+
 /**
  * 我的聊天adapter
+ * 
  * @author zhangmin
  *
  */
@@ -34,14 +36,15 @@ public class ListViewMyChatAdapter extends BaseAdapter
 	private LayoutInflater listContainer;// 视图容器
 	private int itemViewResource;// 自定义项视图源
 	private Handler handler;
-	private AppContext appContext ;
+	private AppContext appContext;
+
 	static class ListItemView
 	{ // 自定义控件集合
 		public ImageView face;
-		public TextView name; 
-		public TextView message ; //消息
-		public TextView time ;
-		
+		public TextView name;
+		public TextView message; // 消息
+		public TextView time;
+
 	}
 
 	/**
@@ -57,8 +60,9 @@ public class ListViewMyChatAdapter extends BaseAdapter
 		this.listContainer = LayoutInflater.from(context); // 创建视图容器并设置上下文
 		this.itemViewResource = resource;
 		this.listItems = data;
-		appContext=(AppContext) ((Activity)context).getApplication();
+		appContext = (AppContext) ((Activity) context).getApplication();
 	}
+
 	@Override
 	public int getCount()
 	{
@@ -81,7 +85,7 @@ public class ListViewMyChatAdapter extends BaseAdapter
 	 * ListView Item设置
 	 */
 	@Override
-	public View getView( int position, View convertView, ViewGroup parent)
+	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		// 自定义视图
 		final ListItemView listItemView;
@@ -90,7 +94,7 @@ public class ListViewMyChatAdapter extends BaseAdapter
 		{
 			// 获取list_item布局文件的视图
 			convertView = listContainer.inflate(this.itemViewResource, null);
-			
+
 			listItemView = new ListItemView();
 			// 获取控件对象
 			listItemView.face = (ImageView) convertView.findViewById(R.id.chat_head);
@@ -106,31 +110,31 @@ public class ListViewMyChatAdapter extends BaseAdapter
 
 		// 设置文字和图片
 		final MyChat chat = listItems.get(position);
-		String faceURL="";
+		String faceURL = "";
 		faceURL = chat.getImageUrl();
-		System.out.println("image url---"+faceURL);
-		if (faceURL==null||faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
+		System.out.println("image url---" + faceURL);
+		if (faceURL == null || faceURL.endsWith(".gif") || StringUtils.isEmpty(faceURL))
 		{
 			listItemView.face.setImageResource(R.drawable.widget_dface);
 		} else
 		{
-			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST+faceURL, R.drawable.widget_dface);
+			ImageManager2.from(context).displayImage(listItemView.face, URLs.HOST + faceURL,
+					R.drawable.widget_dface);
 		}
 		listItemView.face.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-//				UIHelper.showUserInfo(context, chat);
+				// UIHelper.showUserInfo(context, chat);
 			}
-		}); //设置点击进入用户详情
-		listItemView.face.setTag(URLs.HOST+faceURL);
+		}); // 设置点击进入用户详情
+		listItemView.face.setTag(URLs.HOST + faceURL);
 		listItemView.name.setText(chat.getFriendName());
 		listItemView.message.setText(chat.getLastMsg());
 		listItemView.time.setText(StringUtils.friendly_time(StringUtils.dateToString(chat.getTime())));
 		return convertView;
 	}
 
-	
 }

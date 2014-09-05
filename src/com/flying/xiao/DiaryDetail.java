@@ -39,7 +39,8 @@ import com.flying.xiao.util.ImageManager2;
 /**
  * 新鲜事详情
  */
-public class DiaryDetail extends BaseActivity {
+public class DiaryDetail extends BaseActivity
+{
 
 	public ImageView userface;
 	public TextView username;
@@ -67,57 +68,68 @@ public class DiaryDetail extends BaseActivity {
 	private long replyId = 0; // 别人的评论id
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_diary_detail);
 		context = this;
-		if (getIntent().getSerializableExtra("contentObject") != null) {
+		if (getIntent().getSerializableExtra("contentObject") != null)
+		{
 			con = (XContent) getIntent().getSerializableExtra("contentObject");
-		} else {
+		} else
+		{
 			int index = getIntent().getIntExtra("content", 0);
 			con = appContext.listManager.getDiaryContentList().get(index);
 		}
-		mHandler = new Handler() {
+		mHandler = new Handler()
+		{
 
 			@Override
-			public void handleMessage(Message msg) {
+			public void handleMessage(Message msg)
+			{
 				super.handleMessage(msg);
 				XPraise xp;
-				switch (msg.what) {
+				switch (msg.what)
+				{
 				case Constant.HandlerMessageCode.PRAISE_OPERATE_SUCCESS:
 					xp = (XPraise) msg.obj;
-					if (!con.isMeIsPraise()) {
-						for (XPraise x : con.getPraiseList()) {
-							if (x.getUserInfo().getId()
-									.equals(xp.getUserInfo().getId())) {
+					if (!con.isMeIsPraise())
+					{
+						for (XPraise x : con.getPraiseList())
+						{
+							if (x.getUserInfo().getId().equals(xp.getUserInfo().getId()))
+							{
 								x.setId(xp.getId());
 							}
 						}
 						con.setMeIsPraise(true);
-					} else {
+					} else
+					{
 						con.setMeIsPraise(false);
 					}
 					initPraise();
 					break;
 				case Constant.HandlerMessageCode.PRAISE_OPERATE_ERROR:
 					xp = (XPraise) msg.obj;
-					if (con.isMeIsPraise()) {
+					if (con.isMeIsPraise())
+					{
 						con.getPraiseList().add(xp);
-					} else {
+					} else
+					{
 						con.getPraiseList().remove(xp);
 					}
 					initPraise();
 					UIHelper.ToastMessage(context, "操作失败...");
 					break;
 				case Constant.HandlerMessageCode.USER_NOT_LOGIN:
-					if (msg.obj instanceof XPraise) {
+					if (msg.obj instanceof XPraise)
+					{
 						xp = (XPraise) msg.obj;
 						con.getPraiseList().remove(xp);
 					}
 					if (mProgress != null)
 						mProgress.dismiss();
-					UIHelper.ToastMessage(context,
-							R.string.user_login_out_of_date);
+					UIHelper.ToastMessage(context, R.string.user_login_out_of_date);
 					UIHelper.showLoginDialog(context);
 					break;
 
@@ -150,13 +162,15 @@ public class DiaryDetail extends BaseActivity {
 	}
 
 	@Override
-	protected void initHeadView() {
+	protected void initHeadView()
+	{
 		super.initHeadView();
 		mHeadRightView.setVisibility(View.GONE);
 		mHeadTitle.setText("新鲜事");
 	}
 
-	private void initView() {
+	private void initView()
+	{
 		diaryLin = (LinearLayout) findViewById(R.id.diary_detail_lin);
 		pubcommentLin = (LinearLayout) findViewById(R.id.diary_footer);
 		userface = (ImageView) findViewById(R.id.diary_listitem_userface);
@@ -172,10 +186,12 @@ public class DiaryDetail extends BaseActivity {
 		commentInput = (EditText) findViewById(R.id.diary_foot_editer);
 		commentBtn = (Button) findViewById(R.id.diary_foot_pubcomment);
 		commentBtn.setOnClickListener(onclickListener);
-		diaryLin.setOnTouchListener(new OnTouchListener() {
+		diaryLin.setOnTouchListener(new OnTouchListener()
+		{
 
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public boolean onTouch(View v, MotionEvent event)
+			{
 				pubcommentLin.setVisibility(View.GONE);
 				return false;
 			}
@@ -183,32 +199,36 @@ public class DiaryDetail extends BaseActivity {
 
 		final List<XImage> ilist = con.getImages();
 		int size = 0;
-		if (ilist != null && (size = ilist.size()) > 0) {
+		if (ilist != null && (size = ilist.size()) > 0)
+		{
 			ArrayList<String> imageList = new ArrayList<String>();
 			gridView.setVisibility(View.VISIBLE);
-			for (XImage image : ilist) {
+			for (XImage image : ilist)
+			{
 				imageList.add(URLs.HOST + image.getImageUrl());
 			}
-			gridImageAdapter = new GridImageAdapter(this, imageList,gridView);
+			gridImageAdapter = new GridImageAdapter(this, imageList, gridView);
 			gridView.setAdapter(gridImageAdapter);
-		} else {
+		} else
+		{
 			gridView.setVisibility(View.GONE);
 		}
 
 		// GridView设置监听，点击图片全屏浏览
-		gridView.setOnItemClickListener(new OnItemClickListener() {
+		gridView.setOnItemClickListener(new OnItemClickListener()
+		{
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+			{
 				// TODO Auto-generated method stub
 				ArrayList<String> pictureUrls = new ArrayList<String>();
-				for (XImage image : ilist) {
+				for (XImage image : ilist)
+				{
 					pictureUrls.add(URLs.HOST + image.getImageUrl());
 				}
 
-				UIHelper.showFullScreenPicture(context, pictureUrls, position,
-						Constant.PictureType.TYPE_NET);
+				UIHelper.showFullScreenPicture(context, pictureUrls, position, Constant.PictureType.TYPE_NET);
 
 			}
 
@@ -222,16 +242,19 @@ public class DiaryDetail extends BaseActivity {
 
 		date.setText(StringUtils.friendly_time(con.getConPubTime().toString()));
 		String faceURL = con.getConImageUrl();
-		if (faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL)) {
+		if (faceURL.endsWith("portrait.gif") || StringUtils.isEmpty(faceURL))
+		{
 			userface.setImageResource(R.drawable.widget_dface);
-		} else {
-			ImageManager2.from(this).displayImage(userface,
-					URLs.HOST + faceURL, R.drawable.widget_dface);
+		} else
+		{
+			ImageManager2.from(this).displayImage(userface, URLs.HOST + faceURL, R.drawable.widget_dface);
 		}
-		userface.setOnClickListener(new OnClickListener() {
+		userface.setOnClickListener(new OnClickListener()
+		{
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v)
+			{
 				UIHelper.showUserInfo(DiaryDetail.this, con.getUserInfo());
 
 			}
@@ -241,27 +264,29 @@ public class DiaryDetail extends BaseActivity {
 
 	}
 
-	private void initPraise() {
+	private void initPraise()
+	{
 		relies.setVisibility(View.GONE);
 		relies.removeAllViews();// 先清空
 		btncomment.setOnClickListener(onclickListener);
 		xpraises = con.getPraiseList();
-		if (xpraises != null && xpraises.size() > 0) {
-			View view2 = LayoutInflater.from(context).inflate(
-					R.layout.comment_reply, null);
-			TextView tv2 = (TextView) view2
-					.findViewById(R.id.comment_reply_content);
-			tv2.setCompoundDrawablesWithIntrinsicBounds(context.getResources()
-					.getDrawable(R.drawable.widget_comment_count_icon), null,
-					null, null);
+		if (xpraises != null && xpraises.size() > 0)
+		{
+			View view2 = LayoutInflater.from(context).inflate(R.layout.comment_reply, null);
+			TextView tv2 = (TextView) view2.findViewById(R.id.comment_reply_content);
+			tv2.setCompoundDrawablesWithIntrinsicBounds(
+					context.getResources().getDrawable(R.drawable.widget_comment_count_icon), null, null,
+					null);
 			tv2.setClickable(true);
 			tv2.setMovementMethod(LinkMovementMethod.getInstance());
 			int len = xpraises.size();
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < len; i++)
+			{
 				XPraise xp = xpraises.get(i);
 
 				tv2.append(UIHelper.getClickableSpan(context, xp.getUserInfo()));
-				if (i != len - 1) {
+				if (i != len - 1)
+				{
 					tv2.append("、");
 				}
 				// tv2.setText(xp.getUserInfo().getUserRealName()+"赞");
@@ -270,47 +295,47 @@ public class DiaryDetail extends BaseActivity {
 			relies.addView(view2);
 			relies.setVisibility(View.VISIBLE);
 		}
-		if (con.isMeIsPraise()) {
+		if (con.isMeIsPraise())
+		{
 			praiseText.setText("已赞");
 			praiseImage.setImageResource(R.drawable.praise_already);
-		} else {
+		} else
+		{
 			praiseText.setText("赞");
 			praiseImage.setImageResource(R.drawable.praise);
 		}
 
 		praiseLin.setOnClickListener(onclickListener);
 		List<XComment> listComments = con.getComments();
-		if (listComments != null && listComments.size() > 0) {
+		if (listComments != null && listComments.size() > 0)
+		{
 			// 评论内容
-			for (final XComment reply : listComments) {
-				View view2 = LayoutInflater.from(context).inflate(
-						R.layout.comment_reply, null);
-				TextView tv2 = (TextView) view2
-						.findViewById(R.id.comment_reply_content);
+			for (final XComment reply : listComments)
+			{
+				View view2 = LayoutInflater.from(context).inflate(R.layout.comment_reply, null);
+				TextView tv2 = (TextView) view2.findViewById(R.id.comment_reply_content);
 				// String text = "";
-				if (reply.getReplyCommentId() == 0) { // 不是回复别人的
-					tv2.append(UIHelper.getClickableSpan(context,
-							reply.getXuserInfo()));
-					tv2.append("("
-							+ StringUtils.friendly_time(reply.getPlTime()
-									.toString()) + ")：");
+				if (reply.getReplyCommentId() == 0)
+				{ // 不是回复别人的
+					tv2.append(UIHelper.getClickableSpan(context, reply.getXuserInfo()));
+					tv2.append("(" + StringUtils.friendly_time(reply.getPlTime().toString()) + ")：");
 					// text = reply.getXuserInfo().getUserRealName() + "("
 					// + StringUtils.friendly_time(reply.getPlTime().toString())
 					// + ")：";
-				} else {
+				} else
+				{
 					long recommentid = reply.getReplyCommentId();
 					XUserInfo reUser = null;
-					for (XComment r : listComments) {
-						if (r.getPlId() == recommentid) {
+					for (XComment r : listComments)
+					{
+						if (r.getPlId() == recommentid)
+						{
 							reUser = r.getXuserInfo();
 							break;
 						}
 					}
-					tv2.append(UIHelper.getClickableSpan(context,
-							reply.getXuserInfo()));
-					tv2.append("("
-							+ StringUtils.friendly_time(reply.getPlTime()
-									.toString()) + ")回复");
+					tv2.append(UIHelper.getClickableSpan(context, reply.getXuserInfo()));
+					tv2.append("(" + StringUtils.friendly_time(reply.getPlTime().toString()) + ")回复");
 					if (reUser != null)
 						tv2.append(UIHelper.getClickableSpan(context, reUser));
 					tv2.append(":");
@@ -320,20 +345,22 @@ public class DiaryDetail extends BaseActivity {
 				// text+=reply.getPlInfo();
 				// tv2.setText(text);
 				relies.addView(view2);
-				tv2.setOnClickListener(new OnClickListener() {
+				tv2.setOnClickListener(new OnClickListener()
+				{
 
 					@Override
-					public void onClick(View v) {
-						if (appContext.isLogin()) {
+					public void onClick(View v)
+					{
+						if (appContext.isLogin())
+						{
 							pubcommentLin.setVisibility(View.VISIBLE);
 							replyId = reply.getPlId();
-							commentInput.setHint("回复 "
-									+ reply.getXuserInfo().getUserRealName()
-									+ ":");
+							commentInput.setHint("回复 " + reply.getXuserInfo().getUserRealName() + ":");
 							// if (rePubListener != null)
 							// rePubListener.onReCommentClick(position,
 							// reply.getPlId());
-						} else {
+						} else
+						{
 							UIHelper.ToastMessage(context, "您还未登陆,请先登录...");
 							UIHelper.showLoginDialog(context);
 						}
@@ -345,65 +372,75 @@ public class DiaryDetail extends BaseActivity {
 		}
 	}
 
-	private OnClickListener onclickListener = new OnClickListener() {
+	private OnClickListener onclickListener = new OnClickListener()
+	{
 
 		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
+		public void onClick(View v)
+		{
+			switch (v.getId())
+			{
 			case R.id.diary_listitem_comment:
-				if (appContext.isLogin()) {
+				if (appContext.isLogin())
+				{
 					pubcommentLin.setVisibility(View.VISIBLE);
 					commentInput.setHint("说点什么吧...");
 					replyId = 0;
-				} else {
+				} else
+				{
 					UIHelper.ToastMessage(context, "您还未登陆,请先登录...");
 					UIHelper.showLoginDialog(context);
 				}
 				break;
 			case R.id.diary_listitem_praise_lin:
-				if (appContext.isLogin()) {
+				if (appContext.isLogin())
+				{
 					XPraise praise = new XPraise();
-					if (con.isMeIsPraise()) { // 如果已经赞了
-						for (XPraise xp : xpraises) {
-							if (xp.getUserInfo().getId()
-									.equals(appContext.getUserInfo().getId())) {
+					if (con.isMeIsPraise())
+					{ // 如果已经赞了
+						for (XPraise xp : xpraises)
+						{
+							if (xp.getUserInfo().getId().equals(appContext.getUserInfo().getId()))
+							{
 								praise.copy(xp);
 								con.getPraiseList().remove(xp);
 								break;
 							}
 						}
-					} else { // 没有赞
+					} else
+					{ // 没有赞
 						praise.setUserInfo(appContext.getUserInfo());
 						praise.setContentId(con.getId());
-						if (con.getPraiseList() == null) {
+						if (con.getPraiseList() == null)
+						{
 							List<XPraise> list = new ArrayList<XPraise>();
 							con.setPraiseList(list);
 						}
 						con.getPraiseList().add(0, praise);
 					}
 					initPraise();
-					NetControl.getShare(context).praiseOpreate(praise,
-							con.isMeIsPraise(), mHandler);
-				} else {
+					NetControl.getShare(context).praiseOpreate(praise, con.isMeIsPraise(), mHandler);
+				} else
+				{
 					UIHelper.ToastMessage(context, "您还未登陆,请先登录...");
 					UIHelper.showLoginDialog(context);
 				}
 				break;
 			case R.id.diary_foot_pubcomment:
 				String commentStr = commentInput.getText().toString().trim();
-				if (StringUtils.isEmpty(commentStr)) {
+				if (StringUtils.isEmpty(commentStr))
+				{
 					UIHelper.ToastMessage(context, "输入不能为空...");
 					return;
 				}
-				if (!appContext.isLogin()) {
+				if (!appContext.isLogin())
+				{
 					UIHelper.showLoginDialog(context);
 					return;
 				}
-				NetControl.getShare(context).pubComment(
-						appContext.getUserInfo().getId(), con.getId(),
+				NetControl.getShare(context).pubComment(appContext.getUserInfo().getId(), con.getId(),
 						commentStr, replyId, mHandler);
-				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···",
-						true, true);
+				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
 				break;
 			default:
 				break;

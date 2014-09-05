@@ -16,13 +16,15 @@ public class XMarketDetail extends Base
 	private String esPhone;
 	private String esName;
 	private List<XImage> images;
-	private List<XComment> comments ;
-	
-	public List<XComment> getComments() {
+	private List<XComment> comments;
+
+	public List<XComment> getComments()
+	{
 		return comments;
 	}
 
-	public void setComments(List<XComment> comments) {
+	public void setComments(List<XComment> comments)
+	{
 		this.comments = comments;
 	}
 
@@ -66,11 +68,13 @@ public class XMarketDetail extends Base
 		this.erShouType = erShouType;
 	}
 
-	public XContent getContent() {
+	public XContent getContent()
+	{
 		return content;
 	}
 
-	public void setContent(XContent content) {
+	public void setContent(XContent content)
+	{
 		this.content = content;
 	}
 

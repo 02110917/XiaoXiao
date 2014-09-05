@@ -44,38 +44,37 @@ public class AppContext extends Application
 	public static final int NETTYPE_CMNET = 0x03;
 
 	private boolean login = false; // 登录状态
-	private boolean isXmppLogin=false ;
+	private boolean isXmppLogin = false;
 	private XUserInfo userInfo = null;
 
-	public  ListManager listManager ;
+	public ListManager listManager;
+
 	public void setUserInfo(XUserInfo userInfo)
 	{
 		this.userInfo = userInfo;
 	}
 
-	private String dirPath ;
+	private String dirPath;
 	public String headImagePath;
 	public String userInfoPath;
 	public String contentListPath;
-	
-	
+
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
 		// 注册App异常崩溃处理器
-		//TODO ======
-		 //Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
-		this.dirPath=this.getFilesDir().getAbsolutePath();
-		this.headImagePath=dirPath + "/xiao_headimage.png";
-		this.userInfoPath=dirPath + "/xiao_userinfo";
-		this.contentListPath=dirPath+"/xiao_contentlist";
+		// TODO ======
+		Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+		this.dirPath = this.getFilesDir().getAbsolutePath();
+		this.headImagePath = dirPath + "/xiao_headimage.png";
+		this.userInfoPath = dirPath + "/xiao_userinfo";
+		this.contentListPath = dirPath + "/xiao_contentlist";
 		initLoginInfo();
-		listManager=ListManager.getContentMangerShare();
+		listManager = ListManager.getContentMangerShare();
 		listManager.readList(contentListPath);
 	}
-	
-	
+
 	public String readCookie()
 	{
 		SharedPreferences share = getSharedPreferences("Cookie", Context.MODE_PRIVATE);
@@ -89,12 +88,15 @@ public class AppContext extends Application
 		edit.putString("cookie", cookie);
 		edit.commit();
 	}
-	public void clearCookie(){
+
+	public void clearCookie()
+	{
 		SharedPreferences share = getSharedPreferences("Cookie", Context.MODE_PRIVATE);
 		Editor edit = share.edit();
 		edit.clear();
 		edit.commit();
 	}
+
 	public void saveUserLoginInfo(XUserInfo userInfo)
 	{
 		if (userInfo == null || userInfo.getId() <= 0)
@@ -107,9 +109,10 @@ public class AppContext extends Application
 		edit.putString("user_psd", userInfo.getUserPsd());
 		edit.commit();
 	}
+
 	public void writeUserInfo(XUserInfo userInfo)
 	{
-		this.userInfo=userInfo;
+		this.userInfo = userInfo;
 		if (userInfo == null || userInfo.getId() <= 0)
 		{
 			return;
@@ -120,8 +123,8 @@ public class AppContext extends Application
 			objectOut = new ObjectOutputStream(new FileOutputStream(userInfoPath));
 			objectOut.writeObject(userInfo);
 			saveUserLoginInfo(userInfo);
-			this.login=true ;
-			this.userInfo=userInfo;
+			this.login = true;
+			this.userInfo = userInfo;
 
 		} catch (FileNotFoundException e)
 		{
@@ -180,10 +183,12 @@ public class AppContext extends Application
 		return userInfo;
 	}
 
-	public void clearUserInfo(){
-		File f=new File(userInfoPath);
+	public void clearUserInfo()
+	{
+		File f = new File(userInfoPath);
 		f.delete();
 	}
+
 	/**
 	 * 初始化登陆信息
 	 */
@@ -195,7 +200,6 @@ public class AppContext extends Application
 		else
 			this.login = false;
 	}
-
 
 	/**
 	 * 检测网络是否可用
@@ -264,41 +268,42 @@ public class AppContext extends Application
 		return userInfo;
 	}
 
-
 	public void Logout()
 	{
-		login=false ;
-		userInfo=null;
+		login = false;
+		userInfo = null;
 		clearCookie();
 		clearUserInfo();
 	}
 
 	/**
 	 * 获取App安装包信息
+	 * 
 	 * @return
 	 */
-	public PackageInfo getPackageInfo() {
+	public PackageInfo getPackageInfo()
+	{
 		PackageInfo info = null;
-		try { 
+		try
+		{
 			info = getPackageManager().getPackageInfo(getPackageName(), 0);
-		} catch (NameNotFoundException e) {    
+		} catch (NameNotFoundException e)
+		{
 			e.printStackTrace(System.err);
-		} 
-		if(info == null) info = new PackageInfo();
+		}
+		if (info == null)
+			info = new PackageInfo();
 		return info;
 	}
-
 
 	public boolean isXmppLogin()
 	{
 		return isXmppLogin;
 	}
 
-
 	public void setXmppLogin(boolean isXmppLogin)
 	{
 		this.isXmppLogin = isXmppLogin;
 	}
-	
-	
+
 }

@@ -66,11 +66,12 @@ public class PubMarketActivity extends BaseActivity
 	private List<XGoodType> mTypeList;
 	private List<String> mTypeStrList = new ArrayList<String>();
 	private List<XMarketTypeSecond> mTypeSecondList = new ArrayList<XMarketTypeSecond>();
-	
+
 	private static final int MENU_ITEM1 = Menu.FIRST;
 	private static final int MENU_ITEM2 = Menu.FIRST + 1;
-	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
-	String userMd5="";
+	private String imageUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/";
+	String userMd5 = "";
+
 	// private List<String> mTypeSecondStrList = new ArrayList<String>();
 
 	@Override
@@ -78,7 +79,7 @@ public class PubMarketActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_pub_market);
-		userMd5=MD5.Md5(appContext.getUserInfo().getUserName());
+		userMd5 = MD5.Md5(appContext.getUserInfo().getUserName());
 		this.initHeadView();
 		initView();
 		initListener();
@@ -141,7 +142,7 @@ public class PubMarketActivity extends BaseActivity
 		mSpType2.setAdapter(marketType2Adapter);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
+		gridImageAdapter = new GridImageAdapter(this, dataList, gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler = new Handler()
@@ -231,8 +232,10 @@ public class PubMarketActivity extends BaseActivity
 					gridImageAdapter.notifyDataSetChanged();
 				}
 			}
-		}else if(requestCode==1){
-			if(resultCode==RESULT_OK){
+		} else if (requestCode == 1)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				dataList.add(0, imageUrl);
 				gridImageAdapter.notifyDataSetChanged();
 			}
@@ -270,7 +273,8 @@ public class PubMarketActivity extends BaseActivity
 			String _user_phone = mEtUserPhone.getText().toString().trim();
 			String _info = mEtMarketInfo.getText().toString().trim();
 			String _chengse = (String) mSpChengse.getSelectedItem();
-			if(mTypeSecondList==null||mTypeSecondList.size()==0){
+			if (mTypeSecondList == null || mTypeSecondList.size() == 0)
+			{
 				UIHelper.ToastMessage(PubMarketActivity.this, "商品分类不能为空...", Toast.LENGTH_SHORT);
 				return;
 			}
@@ -283,12 +287,12 @@ public class PubMarketActivity extends BaseActivity
 			{
 				UIHelper.ToastMessage(PubMarketActivity.this, "输入信息不能为空...", Toast.LENGTH_SHORT);
 				return;
-			}
-			else if(dataList.size()<=1){
+			} else if (dataList.size() <= 1)
+			{
 				UIHelper.ToastMessage(PubMarketActivity.this, "请至少选择一张图片上传...", Toast.LENGTH_SHORT);
 				return;
 			}
-			RMarket m=new RMarket();
+			RMarket m = new RMarket();
 			m.setName(_name);
 			m.setTypeId(type2);
 			m.setPrice(_price);
@@ -361,7 +365,7 @@ public class PubMarketActivity extends BaseActivity
 		}
 
 	}
-	
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
 	{
@@ -392,10 +396,10 @@ public class PubMarketActivity extends BaseActivity
 		}
 		return true;
 	}
-	
+
 	public Uri getImageUri()
 	{
-		imageUrl+=(userMd5+System.currentTimeMillis()+ ".jpg");
+		imageUrl += (userMd5 + System.currentTimeMillis() + ".jpg");
 		return Uri.fromFile(new File(imageUrl));
 	}
 }

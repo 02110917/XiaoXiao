@@ -5,10 +5,14 @@ import greendroid.widget.QuickAction;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,6 +63,7 @@ import com.flying.xiao.PubMarketActivity;
 import com.flying.xiao.R;
 import com.flying.xiao.SearchActivity;
 import com.flying.xiao.SettingActivity;
+import com.flying.xiao.Suggestion;
 import com.flying.xiao.UserInfoDetail;
 import com.flying.xiao.UserInfoManage;
 import com.flying.xiao.UserLoginActivity;
@@ -66,6 +71,9 @@ import com.flying.xiao.app.AppContext;
 import com.flying.xiao.app.AppManager;
 import com.flying.xiao.asmack.XmppControl;
 import com.flying.xiao.constant.Constant;
+import com.flying.xiao.constant.Constant.WebsocketCode;
+import com.flying.xiao.db.DBHelper;
+import com.flying.xiao.entity.ChatMessage;
 import com.flying.xiao.entity.XContent;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.http.HttpUtil;
@@ -157,6 +165,18 @@ public class UIHelper
 	{
 		Intent intent = new Intent();
 		intent.setClass(context, UserInfoManage.class);
+		context.startActivity(intent);
+	}
+
+	/**
+	 * 显示反馈页面
+	 * 
+	 * @param activity
+	 */
+	public static void showSuggestion(Context context)
+	{
+		Intent intent = new Intent();
+		intent.setClass(context, Suggestion.class);
 		context.startActivity(intent);
 	}
 
@@ -652,10 +672,11 @@ public class UIHelper
 	{
 		if (getVersionCode(cont) >= update.getVerCode())
 			return;
-		final SharedPreferences share=cont.getSharedPreferences("update_time", Context.MODE_PRIVATE);
-		long time=share.getLong("time", 0);
-		if(System.currentTimeMillis()-time<60*60*1000){
-			return ;
+		final SharedPreferences share = cont.getSharedPreferences("update_time", Context.MODE_PRIVATE);
+		long time = share.getLong("time", 0);
+		if (System.currentTimeMillis() - time < 60 * 60 * 1000)
+		{
+			return;
 		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
 		builder.setIcon(android.R.drawable.ic_dialog_info);
@@ -687,13 +708,14 @@ public class UIHelper
 
 	public static void showDownDialog(final Context context, final WPushUpdate update)
 	{
-        final ProgressDialog pd = new ProgressDialog(context);
-        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setCancelable(false);
-        pd.show();
+		final ProgressDialog pd = new ProgressDialog(context);
+		pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		pd.setCancelable(false);
+		pd.show();
 		final Handler handler = new Handler()
 		{
-			int fileLength=0;
+			int fileLength = 0;
+
 			public void handleMessage(Message msg)
 			{
 				if (!Thread.currentThread().isInterrupted())
@@ -701,24 +723,24 @@ public class UIHelper
 					switch (msg.what)
 					{
 					case 0:
-						fileLength=(Integer) msg.obj;
+						fileLength = (Integer) msg.obj;
 						pd.setMax(fileLength);
 						Log.i("文件长度----------->", pd.getMax() + "");
 						break;
 					case 1:
-						int downedFileLength=(Integer) msg.obj;
+						int downedFileLength = (Integer) msg.obj;
 						pd.setProgress(downedFileLength);
 						int x = downedFileLength * 100 / fileLength;
 						break;
 					case 2:
 						Toast.makeText(context, "下载完成", Toast.LENGTH_LONG).show();
-						String path=(String) msg.obj;
+						String path = (String) msg.obj;
 						pd.dismiss();
 						install(context, path);
 						break;
 					case 1100:
 						ToastMessage(context, "下载出错..");
-						break ;
+						break;
 					default:
 						break;
 					}
@@ -744,18 +766,19 @@ public class UIHelper
 		}).start();
 	}
 
-	 /** 
-     * 安装 
-     *  
-     * @param context 
-     *           
-     */  
-    public static void install(Context context,String url) {  
-        Intent intent = new Intent(Intent.ACTION_VIEW);  
-        intent.setDataAndType(Uri.fromFile(new File(url)),  
-                "application/vnd.android.package-archive");  
-        context.startActivity(intent);  
-    }
+	/**
+	 * 安装
+	 * 
+	 * @param context
+	 * 
+	 */
+	public static void install(Context context, String url)
+	{
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(new File(url)), "application/vnd.android.package-archive");
+		context.startActivity(intent);
+	}
+
 	public static int getVersionCode(Context context)
 	{
 		PackageManager manager = context.getPackageManager();
@@ -858,6 +881,126 @@ public class UIHelper
 		spanableInfo.setSpan(new Clickable(l, str.substring(start, end)), start, end,
 				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		return spanableInfo;
+	}
+
+	/**
+	 * @author xzj
+	 * @param context
+	 * @param chatMessage
+	 * @param userinfos
+	 * @param WebSocketCode
+	 */
+	@SuppressWarnings("deprecation")
+	public static void sendNotification(Context context, ChatMessage chatMessage, List<XUserInfo> userinfos,
+			int WebSocketCode)
+	{
+		if(chatMessage==null)
+			return ;
+		// 创建一个NotificationManager的引用
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		// 定义Notification的各种属性
+		Notification notification = new Notification();
+		// 通知图标
+		notification.icon = R.drawable.ic_launcher;
+
+		// 通知产生的时间，会在通知信息里显示
+		notification.when = System.currentTimeMillis();
+		// 添加声音
+		notification.defaults |= Notification.DEFAULT_SOUND;
+		// 添加振动
+		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		// 添加LED灯提醒
+		notification.defaults |= Notification.DEFAULT_LIGHTS;
+		// 在通知栏上点击此通知后自动清除此通知
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		// 通知栏标题
+		String contentTitle = null;
+		// 通知栏内容
+		String contentText = null;
+
+		Intent notificationIntent = null;
+
+		switch (WebSocketCode)
+		{
+		// 好友发来消息
+		case Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_MESSAGE:
+			System.out.println("发来在线消息~！");
+			// 点击该通知后要跳转的Activity
+			notificationIntent = new Intent(context, MyChatActivity.class);
+			// 如果要以该Intent启动一个Activity，一定要设置 Intent.FLAG_ACTIVITY_NEW_TASK 标记。
+			// Intent.FLAG_ACTIVITY_CLEAR_TOP
+			// ：如果在当前Task中，有要启动的Activity，那么把该Acitivity之前的所有Activity都关掉，并把此Activity置前以避免创建Activity的实例。
+			// Intent.FLAG_ACTIVITY_NEW_TASK
+			// ：系统会检查当前所有已创建的Task中是否有该要启动的Activity的Task，若有，则在该Task上创建Activity，若没有则新建具有该Activity属性的Task，并在该新建的Task上创建Activity。
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+			// 状态栏显示的通知文本提示
+			notification.tickerText = chatMessage.getFrom() + "发来一条消息";
+			contentTitle = chatMessage.getFrom();
+			contentText = chatMessage.getBody();
+			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+			break;
+		// 好友发来离线消息
+		case Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_OFF_LINE_MESSAGE:
+			System.out.println("发来离线消息~！");
+			// 点击该通知后要跳转的Activity
+			notificationIntent = new Intent(context, MyChatActivity.class);
+			// 如果要以该Intent启动一个Activity，一定要设置 Intent.FLAG_ACTIVITY_NEW_TASK 标记。
+			// Intent.FLAG_ACTIVITY_CLEAR_TOP
+			// ：如果在当前Task中，有要启动的Activity，那么把该Acitivity之前的所有Activity都关掉，并把此Activity置前以避免创建Activity的实例。
+			// Intent.FLAG_ACTIVITY_NEW_TASK
+			// ：系统会检查当前所有已创建的Task中是否有该要启动的Activity的Task，若有，则在该Task上创建Activity，若没有则新建具有该Activity属性的Task，并在该新建的Task上创建Activity。
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+//			System.out.println(chatMessage.getFrom());
+			// 状态栏显示的通知文本提示
+			notification.tickerText = chatMessage.getFrom() + "给您发来的离线消息";
+			// 通知栏标题
+			contentTitle = chatMessage.getFrom();
+			// 通知栏内容
+			contentText = chatMessage.getBody();
+			System.out.println(contentText);
+			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+			break;
+
+		// 有人添加你为好友
+		case Constant.HandlerMessageCode.GET_MY_USERS_SUCCESS:
+			System.out.println("有人添加你~！");
+			// 点击该通知后要跳转的Activity
+			notificationIntent = new Intent(context, MyFriends.class);
+			// 如果要以该Intent启动一个Activity，一定要设置 Intent.FLAG_ACTIVITY_NEW_TASK 标记。
+			// Intent.FLAG_ACTIVITY_CLEAR_TOP
+			// ：如果在当前Task中，有要启动的Activity，那么把该Acitivity之前的所有Activity都关掉，并把此Activity置前以避免创建Activity的实例。
+			// Intent.FLAG_ACTIVITY_NEW_TASK
+			// ：系统会检查当前所有已创建的Task中是否有该要启动的Activity的Task，若有，则在该Task上创建Activity，若没有则新建具有该Activity属性的Task，并在该新建的Task上创建Activity。
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+			StringBuffer newFriends = new StringBuffer();
+			for (XUserInfo xUserInfo : userinfos)
+			{
+				newFriends.append(xUserInfo.getUserName() + "、");
+			}
+			newFriends.deleteCharAt(newFriends.length() - 1);
+			newFriends.append("想加你为好友哦~！");
+			// 状态栏显示的通知文本提示
+			notification.tickerText = "有小伙伴想加你为好友哦~！";
+			// 通知栏标题
+			contentTitle = "添加好友";
+			// 通知栏内容
+			contentText = newFriends.toString();
+			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+			break;
+		// 预留推送
+
+		default:
+			break;
+		}
+		// 把Notification传递给 NotificationManager
+		notificationManager.notify(0, notification);
 	}
 
 }

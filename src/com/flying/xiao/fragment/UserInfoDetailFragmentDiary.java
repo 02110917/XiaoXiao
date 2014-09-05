@@ -31,31 +31,32 @@ import com.flying.xiao.control.NetControl;
 import com.flying.xiao.entity.XComment;
 import com.flying.xiao.entity.XContent;
 import com.flying.xiao.widget.PullDownListView;
- 
+
 public class UserInfoDetailFragmentDiary extends Fragment implements PullDownListView.OnRefreshListioner
 {
 
 	private static final String TAG = "UserInfoDetailFragmentDiary";
 	private PullDownListView mPullDownListview;
 	private ListView mListView;
-	public LinearLayout pubCommentEditLin ;
-	public Button btnPubComment ;
-	public EditText etEditComment ;
+	public LinearLayout pubCommentEditLin;
+	public Button btnPubComment;
+	public EditText etEditComment;
 	private List<XContent> mDiaryList;
 	private ListViewMainDiaryAdapter mAdapter;
 	private Handler mHandler;
 	private int mCurPage = 0;
-	private int pubCommentPosition=0;
-	private long recommentId=0;
-	private boolean isRecomment ; //是否是回复已有的评论
+	private int pubCommentPosition = 0;
+	private long recommentId = 0;
+	private boolean isRecomment; // 是否是回复已有的评论
 	private ProgressDialog mProgress;
-	private AppContext appContext ;
+	private AppContext appContext;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		appContext=(AppContext) getActivity().getApplication();
-		mDiaryList=new ArrayList<XContent>();
+		appContext = (AppContext) getActivity().getApplication();
+		mDiaryList = new ArrayList<XContent>();
 	}
 
 	@Override
@@ -71,12 +72,12 @@ public class UserInfoDetailFragmentDiary extends Fragment implements PullDownLis
 		mPullDownListview = (PullDownListView) v.findViewById(R.id.main_fragment_list_view_diary);
 		mListView = mPullDownListview.mListView;
 		mPullDownListview.setRefreshListioner(this);
-		pubCommentEditLin=(LinearLayout)v.findViewById(R.id.diary_footer);
-		btnPubComment=(Button)v.findViewById(R.id.diary_foot_pubcomment);
-		etEditComment=(EditText)v.findViewById(R.id.diary_foot_editer);
+		pubCommentEditLin = (LinearLayout) v.findViewById(R.id.diary_footer);
+		btnPubComment = (Button) v.findViewById(R.id.diary_foot_pubcomment);
+		etEditComment = (EditText) v.findViewById(R.id.diary_foot_editer);
 		btnPubComment.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
@@ -93,52 +94,55 @@ public class UserInfoDetailFragmentDiary extends Fragment implements PullDownLis
 					UIHelper.showLoginDialog(getActivity());
 					return;
 				}
-				long replyId=0;
-				if(isRecomment){
-					replyId=recommentId;
+				long replyId = 0;
+				if (isRecomment)
+				{
+					replyId = recommentId;
 				}
-				NetControl.getShare(getActivity()).pubComment(ac.getUserInfo().getId(),mDiaryList.get(pubCommentPosition).getId(),
-						_commentStr, replyId,mHandler);
+				NetControl.getShare(getActivity()).pubComment(ac.getUserInfo().getId(),
+						mDiaryList.get(pubCommentPosition).getId(), _commentStr, replyId, mHandler);
 				mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
 			}
 		});
-		mAdapter = new ListViewMainDiaryAdapter(getActivity(),pubCommentEditLin, mDiaryList, R.layout.main_fragment_diary_listitem);
+		mAdapter = new ListViewMainDiaryAdapter(getActivity(), pubCommentEditLin, mDiaryList,
+				R.layout.main_fragment_diary_listitem);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnScrollListener(new OnScrollListener()
 		{
-			
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState)
 			{
 				pubCommentEditLin.setVisibility(View.GONE);
 			}
-			
+
 			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+					int totalItemCount)
 			{
-				
+
 			}
 		});
 		mAdapter.setPubBtnListener(new OnPubBtnClickListener()
 		{
-			
+
 			@Override
 			public void onPubCommentBtnClick(int position)
 			{
-				isRecomment=false ;
-				pubCommentPosition=position;
+				isRecomment = false;
+				pubCommentPosition = position;
 				etEditComment.requestFocus();
 			}
 		});
 		mAdapter.setRePubListener(new OnRePubCommentCliclListener()
 		{
-			
+
 			@Override
-			public void onReCommentClick(int position,long commentId)
+			public void onReCommentClick(int position, long commentId)
 			{
-				isRecomment=true;
-				recommentId=commentId;
-				pubCommentPosition=position;
+				isRecomment = true;
+				recommentId = commentId;
+				pubCommentPosition = position;
 				etEditComment.requestFocus();
 			}
 		});
@@ -160,12 +164,12 @@ public class UserInfoDetailFragmentDiary extends Fragment implements PullDownLis
 				case Constant.HandlerMessageCode.MAIN_LOAD_DATA_SUCCESS:
 					mPullDownListview.onRefreshComplete();
 					mPullDownListview.onLoadMoreComplete();
-					if(mCurPage==0) //如果是刷新获得重新加载  则清楚之前的数据
+					if (mCurPage == 0) // 如果是刷新获得重新加载 则清楚之前的数据
 						mDiaryList.clear();
-					List<XContent> list=(List<XContent>) msg.obj;
-					if(list.size()==Constant.MAX_PAGE_COUNT)
+					List<XContent> list = (List<XContent>) msg.obj;
+					if (list.size() == Constant.MAX_PAGE_COUNT)
 						mPullDownListview.setMore(true);
-					else if(list.size()<Constant.MAX_PAGE_COUNT)
+					else if (list.size() < Constant.MAX_PAGE_COUNT)
 						mPullDownListview.setMore(false);
 					mDiaryList.addAll(list);
 					mAdapter.notifyDataSetChanged();
@@ -198,23 +202,26 @@ public class UserInfoDetailFragmentDiary extends Fragment implements PullDownLis
 				}
 			}
 		};
-		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, 0, mHandler);
+		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, 0,
+				mHandler);
 
 	}
 
 	@Override
 	public void onRefresh()
 	{
-		mCurPage=0;
-		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, 0, mHandler);
-		
+		mCurPage = 0;
+		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, 0,
+				mHandler);
+
 	}
 
 	@Override
 	public void onLoadMore()
 	{
 		mCurPage++;
-		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, mCurPage, mHandler);		
+		NetControl.getShare(getActivity()).getContentData(Constant.ContentType.CONTENT_TYPE_DIARY, mCurPage,
+				mHandler);
 	}
 
 }

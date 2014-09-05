@@ -23,72 +23,76 @@ import com.flying.xiao.entity.XUserInfo;
 
 /**
  * 聊天界面
+ * 
  * @author zhangmin
  *
  */
 public class ChatActivity extends BaseActivity
 {
-	private EditText mEtmsgInput ;
+	private EditText mEtmsgInput;
 	private Button mBtnSend;
 	private ListView mLvMsgShow;
-	private ListViewChatAdapter adapter ;
+	private ListViewChatAdapter adapter;
 	private List<ChatMessage> mChatMessageList;
-	private XUserInfo userInfo ;
-	private DBHelper dbHelper ;
-	
+	private XUserInfo userInfo;
+	private DBHelper dbHelper;
+
 	private WebSocketMsgReceive receive;
 	private IntentFilter filter;
-	
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chat);
-		dbHelper=DBHelper.getDbHelper(this);
-		//TODO 从数据库取 【改正】
-		userInfo=(XUserInfo) getIntent().getSerializableExtra("userInfo");
-		mChatMessageList=dbHelper.selectMessages(userInfo.getUserName());
+		dbHelper = DBHelper.getDbHelper(this);
+		// TODO 从数据库取 【改正】
+		userInfo = (XUserInfo) getIntent().getSerializableExtra("userInfo");
+		mChatMessageList = dbHelper.selectMessages(userInfo.getUserName());
 		initHeadView();
 		initView();
-		mHandler=new Handler(){
+		mHandler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
 			{
 				super.handleMessage(msg);
-				
-			}};
+
+			}
+		};
 	}
 
 	@Override
 	protected void initHeadView()
 	{
 		super.initHeadView();
-		mHeadTitle.setText("与"+userInfo.getUserRealName()+"聊天");
-	} 
-	private void initView(){
-		mEtmsgInput=(EditText)findViewById(R.id.chat_editer);
-		mBtnSend=(Button)findViewById(R.id.chat_send);
-		mLvMsgShow=(ListView)findViewById(R.id.chat_list_view);
-		adapter=new ListViewChatAdapter(this, mChatMessageList);
+		mHeadTitle.setText("与" + userInfo.getUserRealName() + "聊天");
+	}
+
+	private void initView()
+	{
+		mEtmsgInput = (EditText) findViewById(R.id.chat_editer);
+		mBtnSend = (Button) findViewById(R.id.chat_send);
+		mLvMsgShow = (ListView) findViewById(R.id.chat_list_view);
+		adapter = new ListViewChatAdapter(this, mChatMessageList);
 		mLvMsgShow.setAdapter(adapter);
-		mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount()-1);
+		mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount() - 1);
 		mBtnSend.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				String _msg=mEtmsgInput.getText().toString();
-				if(StringUtils.isEmpty(_msg)){
+				String _msg = mEtmsgInput.getText().toString();
+				if (StringUtils.isEmpty(_msg))
+				{
 					UIHelper.ToastMessage(ChatActivity.this, "输入不能为空");
-					return ;
+					return;
 				}
-				
-				//TODO  从intent获取聊天的对象 UserInfo
-				ChatMessage chatMsg=new ChatMessage();
+
+				// TODO 从intent获取聊天的对象 UserInfo
+				ChatMessage chatMsg = new ChatMessage();
 				chatMsg.setBody(_msg);
 				chatMsg.setFrom(appContext.getUserInfo().getUserName());
 				chatMsg.setTo(userInfo.getUserName());
@@ -97,36 +101,38 @@ public class ChatActivity extends BaseActivity
 				chatMsg.setTo(true);
 				mChatMessageList.add(chatMsg);
 				adapter.notifyDataSetChanged();
-				//发送消息
+				// 发送消息
 				mWebSocketService.sendMessage(chatMsg);
-//				XmppControl.getShare(ChatActivity.this).sendMessage(chatMsg, mHandler);
+				// XmppControl.getShare(ChatActivity.this).sendMessage(chatMsg,
+				// mHandler);
 				dbHelper.insertMsg(chatMsg);
 				mEtmsgInput.setText("");
-				mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount()-1);
+				mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount() - 1);
 			}
 		});
 	}
-	
-	public void notifyDataSetChanged(){
+
+	public void notifyDataSetChanged()
+	{
 		mChatMessageList.clear();
 		mChatMessageList.addAll(dbHelper.selectMessages(userInfo.getUserName()));
 		adapter.notifyDataSetChanged();
-		mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount()-1);
+		mLvMsgShow.setSelection(mLvMsgShow.getAdapter().getCount() - 1);
 	}
-//	@Override
-//	protected void onStart()
-//	{
-//		super.onStart();
-//		receive = new WebSocketMsgReceive();
-//		filter = new IntentFilter();
-//		filter.addAction("com.flying.xiao.WebSocketMsgReceive");
-//		registerReceiver(receive, filter);
-//	}
-//
-//	@Override
-//	protected void onStop()
-//	{
-//		super.onStop();
-//		unregisterReceiver(receive);
-//	}
+	// @Override
+	// protected void onStart()
+	// {
+	// super.onStart();
+	// receive = new WebSocketMsgReceive();
+	// filter = new IntentFilter();
+	// filter.addAction("com.flying.xiao.WebSocketMsgReceive");
+	// registerReceiver(receive, filter);
+	// }
+	//
+	// @Override
+	// protected void onStop()
+	// {
+	// super.onStop();
+	// unregisterReceiver(receive);
+	// }
 }

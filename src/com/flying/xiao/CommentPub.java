@@ -1,6 +1,5 @@
 package com.flying.xiao;
 
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,35 +22,36 @@ import com.flying.xiao.entity.XComment;
 /**
  * 发表评论
  */
-public class CommentPub extends BaseActivity{
+public class CommentPub extends BaseActivity
+{
 
 	private EditText mContent;
 	private TextView mQuote;
-    private ProgressDialog mProgress;
-	
+	private ProgressDialog mProgress;
+
 	long commentid;
 	long contentid;
 	long authorid;
 	String author;
 	String content;
-	
-	
+
 	String _content;
-	
-	//-------对评论回复还需加2变量------
-	private int _replyid;//被回复的单个评论id
-	private int _authorid;//该评论的原始作者id
-	
+
+	// -------对评论回复还需加2变量------
+	private int _replyid;// 被回复的单个评论id
+	private int _authorid;// 该评论的原始作者id
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comment_pub);
 		this.initHeadView();
 		this.initView();
-		
+
 	}
-	
-    @Override
+
+	@Override
 	protected void initHeadView()
 	{
 		super.initHeadView();
@@ -60,22 +60,23 @@ public class CommentPub extends BaseActivity{
 		mHeadRightBtn.setVisibility(View.VISIBLE);
 	}
 
-	//初始化视图控件
-    private void initView()
-    {
-    	commentid = getIntent().getLongExtra("comment_id", 0);
-    	contentid = getIntent().getLongExtra("content_id", 0);
-    	authorid = getIntent().getLongExtra("user_id", 0);
-    	author = getIntent().getStringExtra("user_name");
-    	content = getIntent().getStringExtra("comment_info");
-    	
-    	mContent = (EditText)findViewById(R.id.comment_pub_content);
-    	mHeadRightBtn.setOnClickListener(publishClickListener);    	
-    	
-    	mQuote = (TextView)findViewById(R.id.comment_pub_quote);
-    	mQuote.setText(UIHelper.parseQuoteSpan(author,content));
-//    	mQuote.parseLinkText();
-    	mHandler=new Handler(){
+	// 初始化视图控件
+	private void initView()
+	{
+		commentid = getIntent().getLongExtra("comment_id", 0);
+		contentid = getIntent().getLongExtra("content_id", 0);
+		authorid = getIntent().getLongExtra("user_id", 0);
+		author = getIntent().getStringExtra("user_name");
+		content = getIntent().getStringExtra("comment_info");
+
+		mContent = (EditText) findViewById(R.id.comment_pub_content);
+		mHeadRightBtn.setOnClickListener(publishClickListener);
+
+		mQuote = (TextView) findViewById(R.id.comment_pub_quote);
+		mQuote.setText(UIHelper.parseQuoteSpan(author, content));
+		// mQuote.parseLinkText();
+		mHandler = new Handler()
+		{
 
 			@Override
 			public void handleMessage(Message msg)
@@ -110,25 +111,30 @@ public class CommentPub extends BaseActivity{
 				default:
 					break;
 				}
-			}};
-    }
-	
-	private View.OnClickListener publishClickListener = new View.OnClickListener() {
-		public void onClick(View v) {	
+			}
+		};
+	}
+
+	private View.OnClickListener publishClickListener = new View.OnClickListener()
+	{
+		public void onClick(View v)
+		{
 			_content = mContent.getText().toString();
-			if(StringUtils.isEmpty(_content)){
+			if (StringUtils.isEmpty(_content))
+			{
 				UIHelper.ToastMessage(v.getContext(), "请输入评论内容");
 				return;
 			}
-			
-			final AppContext ac = (AppContext)getApplication();
-			if(!ac.isLogin()){
+
+			final AppContext ac = (AppContext) getApplication();
+			if (!ac.isLogin())
+			{
 				UIHelper.showLoginDialog(CommentPub.this);
 				return;
-			}						
-	    	mProgress = ProgressDialog.show(v.getContext(), null, "发表中···",true,true); 			
-	    	NetControl.getShare(CommentPub.this).pubComment(authorid, contentid,
-	    			_content,commentid,mHandler);
+			}
+			mProgress = ProgressDialog.show(v.getContext(), null, "发表中···", true, true);
+			NetControl.getShare(CommentPub.this).pubComment(authorid, contentid, _content, commentid,
+					mHandler);
 		}
 	};
 }

@@ -115,14 +115,15 @@ public class DBHelper extends SQLiteOpenHelper
 		SQLiteDatabase db = this.getWritableDatabase();
 		for (XUserInfo userInfo : userInfos)
 		{
-//			ContentValues values = new ContentValues();
-//			values.put(F_COL_USER_ID, userInfo.getId());
-//			values.put(F_COL_USER_REAL_NAME, userInfo.getUserRealName());
-//			values.put(F_COL_USER_HEAD_IMAGE_URL, userInfo.getUserHeadImageUrl());
-//			values.put(F_COL_USER_INFO, userInfo.getUserGerenshuoming());
-//			values.put(F_COL_USER_TYPE, userInfo.getUserTypeId());
-//			values.put(F_COL_USER_DETAIL, userInfo.getUserInfoDetail());
-//			values.put(F_COL_USER_PHONE, userInfo.getUserPhone());
+			// ContentValues values = new ContentValues();
+			// values.put(F_COL_USER_ID, userInfo.getId());
+			// values.put(F_COL_USER_REAL_NAME, userInfo.getUserRealName());
+			// values.put(F_COL_USER_HEAD_IMAGE_URL,
+			// userInfo.getUserHeadImageUrl());
+			// values.put(F_COL_USER_INFO, userInfo.getUserGerenshuoming());
+			// values.put(F_COL_USER_TYPE, userInfo.getUserTypeId());
+			// values.put(F_COL_USER_DETAIL, userInfo.getUserInfoDetail());
+			// values.put(F_COL_USER_PHONE, userInfo.getUserPhone());
 			if (isHaveThisUser(userInfo.getUserName()))
 			{ // update
 				String sql = "update " + TABLENAME + " set " + F_COL_USER_ID + "=?," + F_COL_USER_REAL_NAME
@@ -135,14 +136,14 @@ public class DBHelper extends SQLiteOpenHelper
 						{ userInfo.getId(), userInfo.getUserRealName(), userInfo.getUserHeadImageUrl(),
 								userInfo.getUserGerenshuoming(), userInfo.getUserTypeId(),
 								userInfo.getUserInfoDetail(), userInfo.getUserPhone(), userInfo.getUserName() });
-//				String whereClause = F_COL_USER_NAME + "=?";// 修改条件
-//				String[] whereArgs =
-//				{ userInfo.getUserName() };// 修改条件的参数
-//				db.update(TABLENAME, values, whereClause, whereArgs);// 执行修改
+				// String whereClause = F_COL_USER_NAME + "=?";// 修改条件
+				// String[] whereArgs =
+				// { userInfo.getUserName() };// 修改条件的参数
+				// db.update(TABLENAME, values, whereClause, whereArgs);// 执行修改
 			} else
 			{// insert
-//				values.put(F_COL_USER_NAME, userInfo.getUserName());
-//				db.insert(TABLENAME, null, values);
+				// values.put(F_COL_USER_NAME, userInfo.getUserName());
+			// db.insert(TABLENAME, null, values);
 			}
 		}
 		db.close();

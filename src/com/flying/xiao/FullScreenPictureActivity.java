@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.flying.xiao.adapter.FullScreenPictureAdapter;
 
-public class FullScreenPictureActivity extends BaseActivity {
+public class FullScreenPictureActivity extends BaseActivity
+{
 
 	private ViewPager viewPager;
 	private TextView currentPositionText;
@@ -21,7 +22,8 @@ public class FullScreenPictureActivity extends BaseActivity {
 	private ArrayList<String> pictureUrls;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.picture_full_screen);
@@ -32,28 +34,33 @@ public class FullScreenPictureActivity extends BaseActivity {
 		initView();
 	}
 
-	private void initView() {
+	private void initView()
+	{
 		viewPager = (ViewPager) findViewById(R.id.picture_pager);
 		currentPositionText = (TextView) findViewById(R.id.current_position);
 		currentPositionText.setText(initPosition + 1 + "/" + pictureSize);
 		viewPager.setAdapter(new FullScreenPictureAdapter(pictureUrls, this));
 		viewPager.setCurrentItem(initPosition);
-		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+		viewPager.setOnPageChangeListener(new OnPageChangeListener()
+		{
 
 			@Override
-			public void onPageSelected(int position) {
+			public void onPageSelected(int position)
+			{
 				// TODO Auto-generated method stub
 				currentPositionText.setText(position + 1 + "/" + pictureSize);
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			public void onPageScrolled(int arg0, float arg1, int arg2)
+			{
 				// TODO Auto-generated method stub
 
 			}
 
 			@Override
-			public void onPageScrollStateChanged(int arg0) {
+			public void onPageScrollStateChanged(int arg0)
+			{
 				// TODO Auto-generated method stub
 
 			}

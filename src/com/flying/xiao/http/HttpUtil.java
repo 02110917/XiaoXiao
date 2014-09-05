@@ -447,6 +447,37 @@ public class HttpUtil {
 			throw AppException.network(e);
 		}
 	}
+	
+	/**
+	 * 反馈
+	 * 
+	 * @param appContext
+	 * @param email
+	 * @param phone
+	 * @param name
+	 * @param userId
+	 * @return Base
+	 * @throws AppException
+	 */
+	public static Base suggest(AppContext appContext,String email,String phone,String name,String userId) throws AppException {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("email", email);
+		params.put("phone", phone);
+		params.put("name", name);
+		params.put("userId", userId);
+		String suggesturl = URLs.URL_SUGGEST;
+		Base base = new Base();
+		try {
+			String result = http_post(appContext, suggesturl, params);
+			System.out.println("json---" + result);
+			base = base.jsonToBase(result);
+			return base;
+		} catch (Exception e) {
+			if (e instanceof AppException)
+				throw (AppException) e;
+			throw AppException.network(e);
+		}
+	}
 
 	/**
 	 * 获取内容列表

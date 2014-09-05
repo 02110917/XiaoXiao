@@ -90,5 +90,7 @@
     <string name="new_password_prompt">请输入新密码</string>
     <string name="new_password_prompt_again">请再次输入新密码</string>
     <string name="confirm">确认</string>
+    <string name="suggest_fail">反馈失败</string>
+    <string name="suggest_success">反馈成功</string>
 
 </resources>

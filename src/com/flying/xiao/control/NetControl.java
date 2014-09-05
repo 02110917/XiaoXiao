@@ -149,6 +149,40 @@ public class NetControl {
 		}.start();
 	}
 
+	/**
+	 * 反馈
+	 * 
+	 * @param userName
+	 * @param password
+	 * @param handler
+	 */
+	public void suggest(final String email, final String phone,final String name,final String userId,final String suggestion,
+			final Handler handler) {
+		new Thread() {
+			@Override
+			public void run() {
+				Message msg = new Message();
+				try {
+
+					Base base = HttpUtil.suggest(appContext,email, phone,name,userId);
+					if (base == null || base.getErrorCode() != 0) {
+						msg.what = Constant.HandlerMessageCode.LOGIN_FAILD;//反馈失败
+						msg.obj = base;
+					} else {
+						msg.what = Constant.HandlerMessageCode.LOGIN_SUCCESS;//反馈成功
+						msg.obj = base;
+					}
+				} catch (AppException e) {
+					e.printStackTrace();
+					msg.what = Constant.HandlerMessageCode.NET_THROW_EXCEPTION;
+					msg.obj = e;
+				}
+				handler.sendMessage(msg);
+
+			}
+		}.start();
+	}
+	
 	public void getContentData(final int type, final long userId,
 			final int page, final boolean isMyCollect, final Handler handler) {
 		new Thread() {

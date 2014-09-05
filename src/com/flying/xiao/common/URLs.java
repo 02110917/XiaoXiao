@@ -26,6 +26,7 @@ public class URLs implements Serializable {
 //	public final static String URL_MAIN_MARKET =HOST+ "/XiaoServer/servlet/GetContent?type=market";
 //	public final static String URL_MAIN_ASK =HOST+ "/XiaoServer/servlet/GetContent?type=ask";
 	public final static String URL_LOGIN =HOST+ "/XiaoServer/servlet/UserServlet";
+	public final static String URL_SUGGEST =HOST+ "/XiaoServer/servlet/ContactUs";
 	public final static String URL_GET_CONTENT_DETAIL =HOST+ "/XiaoServer/servlet/GetContentDetail";
 	public final static String URL_PUB_COMMENT =HOST+ "/XiaoServer/servlet/PubComment";
 	public final static String URL_PUB_MESSAGE =HOST+ "/XiaoServer/servlet/PubMessage";

@@ -112,14 +112,17 @@
         <activity
             android:name="com.flying.xiao.FullScreenPictureActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-         <activity
+        <activity
             android:name="com.flying.xiao.SearchActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.flying.xiao.AlertPasswordActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-            <activity
+        <activity
             android:name="com.flying.xiao.UserInfoManage"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+         <activity
+            android:name="com.flying.xiao.Suggestion"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.flying.xiao.MainActivity"
@@ -128,6 +131,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+
         <service android:name=".service.WebSocketService" >
         </service>
 
@@ -136,7 +140,7 @@
                 <action android:name="com.flying.xiao.WebSocketMsgReceive" />
             </intent-filter>
         </receiver>
-                <receiver android:name="com.flying.xiao.boardcastreceive.ChangeStateReceive" >
+        <receiver android:name="com.flying.xiao.boardcastreceive.ChangeStateReceive" >
             <intent-filter>
                 <action android:name="com.flying.xiao.ChangeStateReceive" />
             </intent-filter>

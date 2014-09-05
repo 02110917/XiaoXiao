@@ -97,6 +97,10 @@ public class WebSocketService extends Service
 				org.jivesoftware.smack.packet.Message xmsg = (org.jivesoftware.smack.packet.Message) msg.obj;
 				ChatMessage cm = ChatMessage.getInstance(xmsg, false, appContext);
 				dbHelper.insertMsg(cm);
+				//调用notification
+				UIHelper.sendNotification(WebSocketService.this, cm, null, Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_MESSAGE);
+				System.out.println("即时消息："+cm.getBody());
+				
 				UIHelper.ToastMessage(appContext, "xmpp接收到消息:" + cm.getBody(), true);
 				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
 				sendBroadcast(intent);
@@ -107,6 +111,11 @@ public class WebSocketService extends Service
 				{
 					dbHelper.insertOfflineMessage(msglist);
 				}
+				ChatMessage chatMessage = msglist.get(msglist.size()-1);
+				//调用notification
+				UIHelper.sendNotification(WebSocketService.this, chatMessage, null, Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_OFF_LINE_MESSAGE);
+				System.out.println("离线消息的大小："+msglist.size()+"最后一条离线消息："+chatMessage.getBody());
+				
 				UIHelper.ToastMessage(appContext, "xmpp接收到离线消息:", true);
 				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_CHAT_STATE);
 				sendBroadcast(intent);
@@ -142,9 +151,13 @@ public class WebSocketService extends Service
 				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
 				sendBroadcast(intent);
 				break;
-			case Constant.HandlerMessageCode.GET_MY_USERS_SUCCESS:
+			case Constant.HandlerMessageCode.GET_MY_USERS_SUCCESS://有人添加你之后获取他们的对象信息插入数据库
 				List<XUserInfo> userinfos = (List<XUserInfo>) msg.obj;
 				dbHelper.insertFriends(userinfos);
+				//调用notification
+				UIHelper.sendNotification(WebSocketService.this, null, userinfos, Constant.XmppHandlerMsgCode.HANDLER_CODE_GET_OFF_LINE_MESSAGE);
+				
+				
 				intent.putExtra("type",Constant.BroadCastReceiveType.BROAD_RECEIVE_CHANGE_FRIENDS_STATE);
 				sendBroadcast(intent);
 				break;

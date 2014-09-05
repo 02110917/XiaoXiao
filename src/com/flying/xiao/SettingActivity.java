@@ -51,7 +51,7 @@ public class SettingActivity extends BaseActivity
 
 			break;
 		case R.id.position_paper:// 意见反馈
-
+			UIHelper.showSuggestion(this);
 			break;
 		case R.id.clear_cash:// 清除缓存
 

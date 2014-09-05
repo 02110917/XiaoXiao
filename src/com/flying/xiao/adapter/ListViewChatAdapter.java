@@ -163,6 +163,8 @@ public class ListViewChatAdapter extends BaseAdapter
 			else{
 				listItemView.date.setText("");
 			}
+		}else{
+			listItemView.date.setText(StringUtils.friendly_time(StringUtils.dateToString(chatMessage.getTime())));
 		}
 		
 		// listItemView.content.setText(comment.getPlInfo());

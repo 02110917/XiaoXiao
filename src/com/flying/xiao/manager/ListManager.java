@@ -15,7 +15,6 @@ import com.flying.xiao.entity.XDynamic;
 import com.flying.xiao.entity.XGoodType;
 import com.flying.xiao.entity.XMessage;
 import com.flying.xiao.entity.XUserInfo;
-import com.flying.xiao.websocket.WFriend;
 
 
 public class ListManager
@@ -36,10 +35,6 @@ public class ListManager
 	private List<XUserInfo> departmentList ;
 	private List<XUserInfo> businessList ;
 	
-	/**
-	 * 我的好友
-	 */
-	private List<XUserInfo> myFriendList ;
 	
 	/**
 	 * 我的动态
@@ -57,11 +52,6 @@ public class ListManager
 	private List<XGoodType>marketTypeList;
 	
 	
-	/**
-	 * 我的在线好友
-	 */
-	
-	private List<WFriend> myOnlineFriend;
 	
 	/**
 	 * all list
@@ -75,12 +65,10 @@ public class ListManager
 		askContentList=new ArrayList<XContent>();
 		departmentList=new ArrayList<XUserInfo>();
 		businessList=new ArrayList<XUserInfo>();
-		myFriendList=new ArrayList<XUserInfo>();
 		myDynamicList=new ArrayList<XDynamic>();
 		marketTypeList=new ArrayList<XGoodType>();
 		myMessageList=new ArrayList<XMessage>();
 		
-		myOnlineFriend=new ArrayList<WFriend>();
 	}
 	private void initList(){
 		if(newsContentList==null)
@@ -97,23 +85,15 @@ public class ListManager
 			departmentList=new ArrayList<XUserInfo>();
 		if(businessList==null)
 			businessList=new ArrayList<XUserInfo>();
+		
 	}
 	public static ListManager getContentMangerShare(){
 		if(contentManager==null)
 			contentManager=new ListManager();
-//		contentManager.initList();
+		contentManager.initList();
 		return contentManager;
 	}
 	
-	
-	public List<WFriend> getMyOnlineFriend()
-	{
-		return myOnlineFriend;
-	}
-	public void setMyOnlineFriend(List<WFriend> myOnlineFriend)
-	{
-		this.myOnlineFriend = myOnlineFriend;
-	}
 	public List<XContent> getContentListByType(int conType){
 		switch (conType)
 		{
@@ -206,15 +186,6 @@ public class ListManager
 		this.businessList = businessList;
 	}
 	
-	public List<XUserInfo> getMyFriendList()
-	{
-		return myFriendList;
-	}
-	public void setMyFriendList(List<XUserInfo> myFriendList)
-	{
-		this.myFriendList = myFriendList;
-	}
-	
 	public List<XGoodType> getMarketTypeList()
 	{
 		return marketTypeList;
@@ -235,7 +206,6 @@ public class ListManager
 		list.add(askContentList);
 		list.add(departmentList);
 		list.add(businessList);
-		list.add(myFriendList);
 		list.add(myDynamicList);
 		list.add(marketTypeList);
 		list.add(myMessageList);
@@ -306,77 +276,12 @@ public class ListManager
 			askContentList=(List<XContent>) list.get(4);
 			departmentList=(List<XUserInfo>) list.get(5);
 			businessList=(List<XUserInfo>) list.get(6);
-			myFriendList=(List<XUserInfo>) list.get(7);
 			myDynamicList=(List<XDynamic>) list.get(8);
 			marketTypeList=(List<XGoodType>) list.get(9);
 			myMessageList=(List<XMessage>) list.get(10);
 		}
 	}
 	
-	/**
-	 * 根据用户Id获取好友对象
-	 * @param userId
-	 * @return
-	 */
-	public XUserInfo getUserInfoById(long userId){
-		for(XUserInfo userInfo:myFriendList){
-			if(userInfo.getId()==userId){
-				return userInfo;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * 根据用户Id获取在线好友对象
-	 * @param userId
-	 * @return
-	 */
-	public WFriend getWfriendById(long userId){
-		WFriend friend=null;
-		for(WFriend userInfo:myOnlineFriend){
-			if( userInfo.getFriendUserId()==userId){
-				friend=userInfo;
-				break ;
-			}
-		}
-		return friend;
-	}
-	
-	public void removeOnlineFriendById(long id){
-		for(WFriend userInfo:myOnlineFriend){
-			if(userInfo.getFriendUserId()==id){
-				myOnlineFriend.remove(userInfo);
-//				return ;
-			}
-		}
-	}
-	
-//	private void setMyFriendOnlineOrOffLine(long userId,boolean isOnline){
-//		for(XUserInfo userInfo:myFriendList){
-//			if(userInfo.getId()==userId){
-//				userInfo.setOnline(isOnline);
-//			}
-//		}
-//	}
-	/**
-	 * 将在线好友 状态设为TRUE
-	 * @return
-	 */
-	public void setMyFriendOnline(){
-		
-		for(XUserInfo userInfo:myFriendList){
-			userInfo.setOnline(false);
-		}
-		
-		for(WFriend friend:myOnlineFriend){
-		long id=friend.getFriendUserId();
-		XUserInfo userInfo=getUserInfoById(id);
-		if(userInfo!=null)
-			userInfo.setOnline(true);
-		
-	}
-	}
 	
 	
 	

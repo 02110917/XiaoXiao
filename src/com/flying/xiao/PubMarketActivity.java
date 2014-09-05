@@ -141,7 +141,7 @@ public class PubMarketActivity extends BaseActivity
 		mSpType2.setAdapter(marketType2Adapter);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList);
+		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler = new Handler()

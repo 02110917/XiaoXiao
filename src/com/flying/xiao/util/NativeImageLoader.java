@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.util.LruCache;
+import android.widget.ImageView;
 
 /**
  * 本地图片加载器,采用的是异步解析本地图片，单例模式利用getInstance()获取NativeImageLoader实例
@@ -57,8 +58,8 @@ public class NativeImageLoader {
 	 * @param mCallBack
 	 * @return
 	 */
-	public Bitmap loadNativeImage(final String path, final NativeImageCallBack mCallBack){
-		return this.loadNativeImage(path, null, mCallBack);
+	public Bitmap loadNativeImage(final String path,ImageView imageView, final NativeImageCallBack mCallBack){
+		return this.loadNativeImage(path, null,imageView, mCallBack);
 	}
 	
 	/**
@@ -69,7 +70,7 @@ public class NativeImageLoader {
 	 * @param mCallBack
 	 * @return
 	 */
-	public Bitmap loadNativeImage(final String path, final Point mPoint, final NativeImageCallBack mCallBack){
+	public Bitmap loadNativeImage(final String path, final Point mPoint,final ImageView imageView, final NativeImageCallBack mCallBack){
 		//先获取内存中的Bitmap
 		Bitmap bitmap = getBitmapFromMemCache(path);
 		
@@ -78,7 +79,7 @@ public class NativeImageLoader {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				mCallBack.onImageLoader((Bitmap)msg.obj, path);
+				mCallBack.onImageLoader((Bitmap)msg.obj, path,imageView);
 			}
 			
 		};
@@ -188,6 +189,6 @@ public class NativeImageLoader {
 		 * @param bitmap
 		 * @param path
 		 */
-		public void onImageLoader(Bitmap bitmap, String path);
+		public void onImageLoader(Bitmap bitmap, String path,ImageView imageView);
 	}
 }

@@ -189,7 +189,7 @@ public class DiaryDetail extends BaseActivity {
 			for (XImage image : ilist) {
 				imageList.add(URLs.HOST + image.getImageUrl());
 			}
-			gridImageAdapter = new GridImageAdapter(this, imageList);
+			gridImageAdapter = new GridImageAdapter(this, imageList,gridView);
 			gridView.setAdapter(gridImageAdapter);
 		} else {
 			gridView.setVisibility(View.GONE);

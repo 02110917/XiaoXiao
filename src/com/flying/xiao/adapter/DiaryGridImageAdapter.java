@@ -15,23 +15,23 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.flying.xiao.R;
+import com.flying.xiao.app.AppContext;
+import com.flying.xiao.util.AsyncImageLoader;
 import com.flying.xiao.util.ImageManager2;
 import com.flying.xiao.util.NativeImageLoader;
 import com.flying.xiao.util.NativeImageLoader.NativeImageCallBack;
 import com.flying.xiao.view.MyImageView;
 import com.flying.xiao.view.MyImageView.OnMeasureListener;
 
-public class GridImageAdapter extends BaseAdapter {
+public class DiaryGridImageAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private ArrayList<String> dataList;
 	private DisplayMetrics dm;
-	private GridView mGridView ;
-	public GridImageAdapter(Context c, ArrayList<String> dataList,GridView mGridView) {
+	public DiaryGridImageAdapter(Context c, ArrayList<String> dataList) {
 
 		mContext = c;
 		this.dataList = dataList;
-		this.mGridView=mGridView;
 		dm = new DisplayMetrics();
 		((Activity) mContext).getWindowManager().getDefaultDisplay()
 				.getMetrics(dm);
@@ -73,36 +73,15 @@ public class GridImageAdapter extends BaseAdapter {
 			imageView = (MyImageView) convertView;
 		}
 		
-		String path;
-		if (dataList != null && position<dataList.size() )
+		String path="";
+		if (dataList != null  )
 		{
 			path = dataList.get(position);
 			imageView.setTag(path);
 		}
-		else
-			path = "camera_default";
-		Log.i("path", "path:"+path+"::position"+position);
-		if (path.contains("default"))
-			imageView.setImageResource(R.drawable.camera_default);
-		else{
-			//利用NativeImageLoader类加载本地图片
-			Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint,imageView, new NativeImageCallBack() {
-				
-				@Override
-				public void onImageLoader(Bitmap bitmap, String path,ImageView imageView) {
-					if(bitmap != null && imageView != null){
-						imageView.setImageBitmap(bitmap);
-					}
-				}
-			});
-			
-			if(bitmap != null){
-				imageView.setImageBitmap(bitmap);
-			}else{
-				imageView.setImageResource(R.drawable.friends_sends_pictures_no);
-			}
-//            ImageManager2.from(mContext).displayImage(imageView, path,R.drawable.camera_default,100,100);
-		}
+//		imageView.setImageResource(R.drawable.friends_sends_pictures_no);
+//		AsyncImageLoader.displayImage((AppContext)mContext.getApplicationContext(), path, imageView, R.drawable.friends_sends_pictures_no);
+		ImageManager2.from(mContext).displayImage(imageView, path,R.drawable.friends_sends_pictures_no,100,100);
 		return imageView;
 	}
 	

@@ -120,13 +120,12 @@ public class ChildAdapter extends BaseAdapter {
 			}
 		});
 		//利用NativeImageLoader类加载本地图片
-		Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint, new NativeImageCallBack() {
+		Bitmap bitmap = NativeImageLoader.getInstance().loadNativeImage(path, mPoint,viewHolder.mImageView, new NativeImageCallBack() {
 			
 			@Override
-			public void onImageLoader(Bitmap bitmap, String path) {
-				ImageView mImageView = (ImageView) mGridView.findViewWithTag(path);
-				if(bitmap != null && mImageView != null){
-					mImageView.setImageBitmap(bitmap);
+			public void onImageLoader(Bitmap bitmap, String path,ImageView imageView) {
+				if(bitmap != null && imageView != null){
+					imageView.setImageBitmap(bitmap);
 				}
 			}
 		});

@@ -81,11 +81,11 @@ public class ShowImageActivity extends BaseActivity {
 		}
 	};
 	
-	@Override
-	public void onBackPressed() {
-		Toast.makeText(this, "选中 " + adapter.getSelectItems().size() + " item", Toast.LENGTH_LONG).show();
-		super.onBackPressed();
-	}
+//	@Override
+//	public void onBackPressed() {
+//		Toast.makeText(this, "选中 " + adapter.getSelectItems().size() + " item", Toast.LENGTH_LONG).show();
+//		super.onBackPressed();
+//	}
 	
 	
 

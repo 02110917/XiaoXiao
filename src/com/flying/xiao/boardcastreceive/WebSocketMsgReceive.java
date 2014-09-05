@@ -8,7 +8,9 @@ import com.flying.xiao.ChatActivity;
 import com.flying.xiao.MyFriends;
 import com.flying.xiao.common.UIHelper;
 import com.flying.xiao.constant.Constant.WebsocketCode;
+import com.flying.xiao.websocket.WBase;
 import com.flying.xiao.websocket.WMessage;
+import com.flying.xiao.websocket.WPushUpdate;
 import com.google.gson.Gson;
 public class WebSocketMsgReceive extends BroadcastReceiver
 {
@@ -19,9 +21,7 @@ public class WebSocketMsgReceive extends BroadcastReceiver
 		Gson gson=new Gson();
 		try
 		{
-			WMessage msg=gson.fromJson(message, WMessage.class);
-			long sendId=msg.getUserSendId();
-			long receive=msg.getUserReceiveId();
+			WBase msg=gson.fromJson(message, WBase.class);
 			switch (msg.getCode())
 			{
 //			case WebsocketCode.WEBSOCKET_CODE_FRIEND_LIST:
@@ -45,6 +45,12 @@ public class WebSocketMsgReceive extends BroadcastReceiver
 //				break ;
 			case WebsocketCode.WEBSOCKET_CODE_ONCLOSE:
 //				UIHelper.ToastMessage(context, "websocket---断开连接",true);
+				break ;
+			case WebsocketCode.WEBSOCKET_PUSH_UPDATE: //推送更新
+				WPushUpdate pushUpdate=gson.fromJson(message, WPushUpdate.class);
+				if(pushUpdate!=null){
+					UIHelper.showUpdateDialog(context, pushUpdate);
+				}
 				break ;
 			default:
 				break;

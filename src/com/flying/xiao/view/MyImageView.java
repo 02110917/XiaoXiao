@@ -11,6 +11,11 @@ public class MyImageView extends ImageView {
 		this.onMeasureListener = onMeasureListener;
 	}
 
+	public MyImageView(Context context)
+	{
+		super(context);
+	}
+
 	public MyImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}

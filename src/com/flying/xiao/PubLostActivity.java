@@ -90,7 +90,7 @@ public class PubLostActivity extends BaseActivity
 		gridView = (GridView) findViewById(R.id.pub_lost_grid);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList);
+		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler = new Handler()

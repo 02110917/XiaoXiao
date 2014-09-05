@@ -45,12 +45,6 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		System.out.println(conType + "----onCreateView-----------");
 		appContext=(AppContext) getActivity().getApplication();
 		if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN) //获取全局数据
 			contentList=appContext.listManager.getContentListByType(conType);
@@ -62,22 +56,6 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 				isMyCollect=true ;
 			}
 		}
-		View view = inflater.inflate(R.layout.main_fragment_news, null);
-		initView(view);
-		return view;
-	}
-
-	private void initView(View v)
-	{
-		mPullDownListview = (PullDownListView) v.findViewById(R.id.main_fragment_list_view_news);
-		mListView = mPullDownListview.mListView;
-		
-		if(conType==Constant.ContentType.CONTENT_TYPE_MARKET)
-			mAdapter= new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_market_listitem,true);
-		else
-			mAdapter = new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_news_listitem);
-		mListView.setAdapter(mAdapter);
-		mPullDownListview.setRefreshListioner(this);
 		mHandler = new Handler()
 		{
 
@@ -115,6 +93,29 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 		};
 
 		NetControl.getShare(getActivity()).getContentData(conType,userId, 0,isMyCollect, mHandler);
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+	{
+		System.out.println(conType + "----onCreateView-----------");
+		
+		View view = inflater.inflate(R.layout.main_fragment_news, null);
+		initView(view);
+		return view;
+	}
+
+	private void initView(View v)
+	{
+		mPullDownListview = (PullDownListView) v.findViewById(R.id.main_fragment_list_view_news);
+		mListView = mPullDownListview.mListView;
+		
+		if(conType==Constant.ContentType.CONTENT_TYPE_MARKET)
+			mAdapter= new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_market_listitem,true);
+		else
+			mAdapter = new ListViewMainContentAdapter(getActivity(), contentList, R.layout.main_fragment_news_listitem);
+		mListView.setAdapter(mAdapter);
+		mPullDownListview.setRefreshListioner(this);
 		
 		mListView.setOnItemClickListener(new OnItemClickListener()
 		{
@@ -157,6 +158,16 @@ public class MainContentFragment extends Fragment implements PullDownListView.On
 	public void onResume()
 	{
 		super.onResume();
+		if(showType==Constant.MainContentFragmentShowType.TYPE_MAIN) //获取全局数据
+			contentList=appContext.listManager.getContentListByType(conType);
+		else // 获取登陆用户数据
+		{
+			contentList=new ArrayList<XContent>(); 
+			userId=appContext.getUserInfo().getId();
+			if(showType==Constant.MainContentFragmentShowType.TYPE_MY_COLLECT){
+				isMyCollect=true ;
+			}
+		}
 	}
 
 	

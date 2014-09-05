@@ -24,7 +24,9 @@ import com.flying.xiao.control.NetControl;
 import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.ChatMessage;
 import com.flying.xiao.entity.XUserInfo;
+import com.flying.xiao.websocket.WBase;
 import com.flying.xiao.websocket.WMessage;
+import com.flying.xiao.websocket.WPushUpdate;
 import com.google.gson.Gson;
 
 import de.tavendo.autobahn.WebSocket;
@@ -185,6 +187,14 @@ public class WebSocketService extends Service
 		// Util.getLocalIpAddress());
 		dbHelper = DBHelper.getDbHelper(appContext);
 		isDestoryServer = false;
+		try
+		{
+			Thread.sleep(5000);
+		} catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		start();
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -254,13 +264,6 @@ public class WebSocketService extends Service
 	{
 		if (mConnection != null && mConnection.isConnected())
 			return;
-		// if (appContext.isLogin())
-		// {
-		// wsUri = URLs.WSURI + "?userId=" + appContext.getUserInfo().getId();
-		// } else
-		// {
-		// wsUri = URLs.WSURI;
-		// }
 		wsUri = URLs.WSURI;
 		try
 		{
@@ -301,7 +304,7 @@ public class WebSocketService extends Service
 				{
 					// UIHelper.ToastMessage(WebSocketService.this,
 					// "onClose："+reason, true);
-					dbHelper.updateUserOffLine(); // 断开连接 将好友在线状态置为false
+//					dbHelper.updateUserOffLine(); // 断开连接 将好友在线状态置为false
 					Intent intent = new Intent();
 					WMessage msg = new WMessage();
 					msg.setCode(WebsocketCode.WEBSOCKET_CODE_ONCLOSE);
@@ -336,72 +339,17 @@ public class WebSocketService extends Service
 		Gson gson = new Gson();
 		try
 		{
-			WMessage msg = gson.fromJson(message, WMessage.class);
-			long sendId = msg.getUserSendId();
-			long receive = msg.getUserReceiveId();
+			WBase msg = gson.fromJson(message, WBase.class);
 			switch (msg.getCode())
 			{
-			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_LIST:
-			// WFriends friends = gson.fromJson(message, WFriends.class);
-			// // listManager.getMyOnlineFriend().addAll(friends.getFriends());
-			// dbHelper.updateUserOffLine();
-			// if (friends == null || friends.getFriends() == null)
-			// return;
-			// for (WFriend wf : friends.getFriends())
-			// {
-			// dbHelper.updateUserOnlineOrOffLine(wf.getFriendUserId(), true);
-			// }
-			// break;
-			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_ONLINE:
-			// dbHelper.updateUserOnlineOrOffLine(sendId, true);
-			// // WFriend wf=new WFriend();
-			// // wf.setFriendUserId(sendId);
-			// // listManager.getMyOnlineFriend().add(wf);
-			// // ListManager.getContentMangerShare().setMyFriendOnline(sendId);
-			// break;
-			// case WebsocketCode.WEBSOCKET_CODE_FRIEND_OFFLINE:
-			// dbHelper.updateUserOnlineOrOffLine(sendId, false);
-			// // listManager.removeOnlineFriendById(sendId);
-			// //
-			// ListManager.getContentMangerShare().setMyFriendOffLine(sendId);
-			// break;
-			// case WebsocketCode.WEBSOCKET_SEND_MESSAGE_TEXT:
-			// ChatMessage cm = ChatMessage.getInstance(msg, false, appContext);
-			// dbHelper.insertMsg(cm);
-			// WMessage wm = new WMessage();
-			// wm.setCode(WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS);
-			// wm.setMessage("发送到达");
-			// wm.setMessageId(cm.getMessageId());
-			// // wm.setMsg(cm.getMessageId()+"");
-			// wm.setUserSendId(receive);
-			// wm.setUserReceiveId(sendId);
-			// sendMessage(wm);
-			// break;
-			// case WebsocketCode.WEBSOCKET_SEND_TO_SUCCESS: // 信息已送达
-			// dbHelper.updateMsgSendTo(msg.getMessageId());
-			// UIHelper.ToastMessage(appContext, "信息已送达...", true);
-			// break;
-			// case WebsocketCode.WEBSOCKET_SEND_TO_SERVER: // 信息发送到服务器
-			// dbHelper.updateMsgSendTo(msg.getMessageId());
-			// UIHelper.ToastMessage(appContext, "信息已送达...服务器", true);
-			// break;
-			// case WebsocketCode.WEBSOCKET_OFFLINE_MESSAGE: // 离线消息
-			// WOfflineMessages offlineMessage = gson.fromJson(message,
-			// WOfflineMessages.class);
-			// if (offlineMessage != null)
-			// {
-			// List<OfflineMessage> list = offlineMessage.getOfflineMessages();
-			// if (list != null && list.size() > 0)
-			// {
-			// dbHelper.insertOfflineMessage(list);
-			// }
-			// }
-			//
-			// break;
 			case WebsocketCode.WEBSOCKET_SEND_HEART:
 				isSendtoHeart = true;
 				heartReSendTime = 0;
 				break;
+			case WebsocketCode.WEBSOCKET_PUSH_UPDATE:
+//				UIHelper.ToastMessage(WebSocketService.this, "推送更新");
+//				sendBroadcast(intent);
+				break ;
 			default:
 				break;
 			}

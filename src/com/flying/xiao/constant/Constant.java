@@ -143,6 +143,11 @@ public class Constant {
 		 * 离线消息
 		 */
 		public static final int WEBSOCKET_OFFLINE_MESSAGE = 10;
+		
+		/**
+		 * 推送更新
+		 */
+		public static final int WEBSOCKET_PUSH_UPDATE=110;
 	}
 
 	public static class DynamicType {

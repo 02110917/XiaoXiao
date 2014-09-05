@@ -12,12 +12,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.flying.xiao.R;
 import com.flying.xiao.app.AppContext;
@@ -103,7 +103,7 @@ public class ListViewMainDiaryAdapter extends BaseAdapter {
 		// 自定义视图
 		final ListItemView listItemView;
 		final AppContext ac = (AppContext) context.getApplicationContext();
-		GridImageAdapter gridImageAdapter;
+		DiaryGridImageAdapter gridImageAdapter;
 		if (convertView == null) {
 			// 获取list_item布局文件的视图
 			convertView = listContainer.inflate(this.itemViewResource, null);
@@ -146,7 +146,7 @@ public class ListViewMainDiaryAdapter extends BaseAdapter {
 			for (XImage image : ilist) {
 				imageList.add(URLs.HOST + image.getImageUrl());
 			}
-			gridImageAdapter = new GridImageAdapter(context, imageList);
+			gridImageAdapter = new DiaryGridImageAdapter(context, imageList);
 			// if(size<=3){
 			// listItemView.gridView.setNumColumns(size);
 			// }else{

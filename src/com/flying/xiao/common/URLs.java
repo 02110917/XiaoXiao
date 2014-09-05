@@ -5,8 +5,8 @@ public class URLs implements Serializable {
 	
 //	public final static String HOST = "http://xiaolife.net";
 //	public final static String HOST = "http://zhangmin.web.myjhost.net/";
-//	public final static String HOST = "http://192.168.23.1:8080";
-	public final static String HOST = "http://115.29.79.84";
+	public final static String HOST = "http://192.168.23.1:8080";
+//	public final static String HOST = "http://115.29.79.84";
 //	public final static String HOST = "http://192.168.1.105:8080";
 //	public final static String HOST = "http://192.168.43.186:8080";
 	public final static String HTTP = "http://";
@@ -14,8 +14,8 @@ public class URLs implements Serializable {
 	
 	private final static String URL_SPLITTER = "/";
 	private final static String URL_UNDERLINE = "_";
-//	public final static String WSURI = "ws://192.168.23.1:8080/XiaoServer/websocket";
-	public final static String WSURI = "ws://115.29.79.84/XiaoServer/websocket";
+	public final static String WSURI = "ws://192.168.23.1:8080/XiaoServer/websocket";
+//	public final static String WSURI = "ws://115.29.79.84/XiaoServer/websocket";
 //	public final static String WSURI = "ws://xiaolife.net/XiaoServer/websocket";
 //	public final static String WSURI = "ws://zhangmin.web.myjhost.net/XiaoServer/websocket";
 //	public final static String WSURI = "ws://192.168.43.186:8080/XiaoServer/websocket";

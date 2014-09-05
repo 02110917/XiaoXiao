@@ -71,7 +71,7 @@ public class PubDiaryActivity extends BaseActivity
 		gridView = (GridView) findViewById(R.id.myGrid);
 		dataList = new ArrayList<String>();
 		dataList.add("camera_default");
-		gridImageAdapter = new GridImageAdapter(this, dataList);
+		gridImageAdapter = new GridImageAdapter(this, dataList,gridView);
 		gridView.setAdapter(gridImageAdapter);
 		registerForContextMenu(gridView);
 		mHandler=new Handler(){

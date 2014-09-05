@@ -49,7 +49,9 @@ public class BaseActivity extends FragmentActivity
 
 	protected WebSocketService mWebSocketService;
 	private ChangeStateReceive receive;
+	private WebSocketMsgReceive msgReceive ;
 	private IntentFilter filter;
+	private IntentFilter msgFilter;
 	protected ServiceConnection serviceConnection = new ServiceConnection()
 	{
 
@@ -231,6 +233,11 @@ public class BaseActivity extends FragmentActivity
 			filter.addAction("com.flying.xiao.ChangeStateReceive");
 			registerReceiver(receive, filter);
 		}
+		msgReceive=new WebSocketMsgReceive();
+		msgFilter=new IntentFilter();
+		msgFilter.addAction("com.flying.xiao.WebSocketMsgReceive");
+		registerReceiver(msgReceive, msgFilter);
+		
 	}
 
 	@Override
@@ -241,5 +248,6 @@ public class BaseActivity extends FragmentActivity
 		{
 			unregisterReceiver(receive);
 		}
+		unregisterReceiver(msgReceive);
 	}
 }

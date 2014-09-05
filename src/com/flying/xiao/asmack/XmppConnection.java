@@ -217,6 +217,9 @@ public class XmppConnection
 		{
 			xe.printStackTrace();
 		}
+		catch (IllegalStateException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 

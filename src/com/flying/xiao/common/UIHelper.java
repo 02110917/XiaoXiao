@@ -445,6 +445,14 @@ public class UIHelper
 		context.startActivity(intent);
 	}
 
+	public static void showLostAndMarketChatPub(Context context, XUserInfo userInfo)
+	{
+		Intent intent = new Intent();
+		intent.setClass(context, ChatActivity.class);
+		intent.putExtra("userInfo", userInfo);
+		context.startActivity(intent);
+	}
+	
 	/**
 	 * 调用打电话程序
 	 * 

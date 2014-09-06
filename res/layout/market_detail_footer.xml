@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_marginLeft="10dp"
-         android:layout_marginRight="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal" >
 
         <LinearLayout
@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
-                
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/text_size_18" />
 
@@ -36,7 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:gravity="center_vertical"
-                
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>
@@ -50,32 +48,43 @@
                 android:id="@+id/market_detail_footer_btn_call"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="电话"
                 android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="电话"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/market_detail_footer_btn_msg"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
                 android:text="短信"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_16" />
 
             <TextView
                 android:id="@+id/market_detail_footer_btn_words"
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
                 android:text="留言"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/text_size_16" />
+
+            <TextView
+                android:id="@+id/market_detail_footer_btn_message"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:text="聊天"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>

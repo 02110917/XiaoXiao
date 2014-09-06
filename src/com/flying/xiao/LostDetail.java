@@ -55,6 +55,7 @@ public class LostDetail extends BaseActivity
 	private TextView mCallPhone; // 电话
 	private TextView mSendMsg; // 短信
 	private TextView mWriteWords; // 留言
+	private TextView mChat;//聊天
 	private TextView indexView;
 	private XContent con;
 	private List<XImage> imageUrls;
@@ -143,9 +144,11 @@ public class LostDetail extends BaseActivity
 		mCallPhone = (TextView) findViewById(R.id.market_detail_footer_btn_call);
 		mSendMsg = (TextView) findViewById(R.id.market_detail_footer_btn_msg);
 		mWriteWords = (TextView) findViewById(R.id.market_detail_footer_btn_words);
+		mChat = (TextView)findViewById(R.id.market_detail_footer_btn_message);
 		mCallPhone.setOnClickListener(listener);
 		mSendMsg.setOnClickListener(listener);
 		mWriteWords.setOnClickListener(listener);
+		mChat.setOnClickListener(listener);
 		mTitle.setText(con.getConTitle());
 		mPubTime.setText(StringUtils.friendly_time(con.getConPubTime().toString()));
 		mPubname.setText(con.getUserInfo().getUserRealName());
@@ -228,6 +231,8 @@ public class LostDetail extends BaseActivity
 			case R.id.market_detail_footer_btn_words:
 				UIHelper.showLostAndMarketCommentPub(LostDetail.this, con.getId());
 				break;
+			case R.id.market_detail_footer_btn_message:
+				UIHelper.showChat(LostDetail.this, con.getUserInfo());
 			default:
 				break;
 			}

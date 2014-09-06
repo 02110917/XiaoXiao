@@ -65,7 +65,7 @@ public class AppContext extends Application
 		super.onCreate();
 		// ◊¢≤·App“Ï≥£±¿¿£¥¶¿Ì∆˜
 		// TODO ======
-		Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+		//Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
 		this.dirPath = this.getFilesDir().getAbsolutePath();
 		this.headImagePath = dirPath + "/xiao_headimage.png";
 		this.userInfoPath = dirPath + "/xiao_userinfo";

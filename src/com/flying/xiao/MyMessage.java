@@ -97,14 +97,9 @@ public class MyMessage extends BaseActivity implements PullDownListView.OnRefres
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 			{
-				// XMessage message=myMessageList.get(position-1);
-				// if(message.getType()==Constant.DynamicType.DYNAMIC_TYPE_PRAISE_ME||message.getType()==Constant.DynamicType.DYNAMIC_TYPE_CONTENT_COMMENT){
-				// XContent content=message.getContent();
-				// // content.setId(dynamic.getContentId());
-				// // content.setConTitle(dynamic.getContentTitle());
-				// UIHelper.showContentInfo(MyMessage.this, content,
-				// content.getConTypeId());
-				// }
+				 XMessage message=myMessageList.get(position-1);
+				
+				 UIHelper.showMyMessageDetail(MyMessage.this,message);
 			}
 		});
 		btnPubComment = (Button) findViewById(R.id.diary_foot_pubcomment);
@@ -193,7 +188,8 @@ public class MyMessage extends BaseActivity implements PullDownListView.OnRefres
 						mProgress.dismiss();
 					// »Ö¸´³õÊ¼µ×²¿À¸
 					XMessage com = (XMessage) msg.obj;
-					myMessageList.add(com);
+					List<XMessage> replies = myMessageList.get(replyId).getReplys();
+					replies.add(com);
 					etEditComment.setText("");
 					mFooterLayout.setVisibility(View.GONE);
 					adapter.notifyDataSetChanged();

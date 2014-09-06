@@ -55,6 +55,7 @@ import com.flying.xiao.MyDynamic;
 import com.flying.xiao.MyFriends;
 import com.flying.xiao.MyInfoActivity;
 import com.flying.xiao.MyMessage;
+import com.flying.xiao.MyMessageDetail;
 import com.flying.xiao.PubContentActivity;
 import com.flying.xiao.PubDiaryActivity;
 import com.flying.xiao.PubLostActivity;
@@ -75,6 +76,7 @@ import com.flying.xiao.constant.Constant.WebsocketCode;
 import com.flying.xiao.db.DBHelper;
 import com.flying.xiao.entity.ChatMessage;
 import com.flying.xiao.entity.XContent;
+import com.flying.xiao.entity.XMessage;
 import com.flying.xiao.entity.XUserInfo;
 import com.flying.xiao.http.HttpUtil;
 import com.flying.xiao.service.WebSocketService;
@@ -228,6 +230,19 @@ public class UIHelper
 		context.startActivity(intent);
 	}
 
+	/**
+	 * 显示留言详情
+	 * @param context
+	 */
+	public static void showMyMessageDetail(Context context,XMessage message)
+	{
+		Intent intent = new Intent();
+		intent.setClass(context, MyMessageDetail.class);
+		intent.putExtra("message", message);
+		context.startActivity(intent);
+	}
+
+	
 	/**
 	 * 显示内容详情页面
 	 * 

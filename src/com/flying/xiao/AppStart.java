@@ -32,29 +32,6 @@ public class AppStart extends BaseActivity
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.start, null);
 		setContentView(view);
-		Intent intent = new Intent();
-		intent.setClass(this, WebSocketService.class);
-		startService(intent);
-		// new Thread(new Runnable()
-		// {
-		//
-		// @Override
-		// public void run()
-		// {
-		// Map<String, String> map=new HashMap<String, String>();
-		// map.put("userInfo", "dsdsd");
-		// map.put("headImage", "dsdsdsds");
-		// try
-		// {
-		// HttpUtil.http_post(appContext,
-		// URLs.HOST+"/XiaoServer/servlet/ChangeUserInfo", map, null);
-		// } catch (AppException e)
-		// {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// }).start();
 		final Handler handler = new Handler()
 		{
 

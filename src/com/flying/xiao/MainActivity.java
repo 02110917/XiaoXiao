@@ -8,6 +8,7 @@ import greendroid.widget.QuickActionWidget.OnQuickActionClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -28,6 +29,7 @@ import com.flying.xiao.fragment.CommunityFragment;
 import com.flying.xiao.fragment.MainDiary;
 import com.flying.xiao.fragment.MainFragment;
 import com.flying.xiao.fragment.MeFragment;
+import com.flying.xiao.service.WebSocketService;
 
 public class MainActivity extends BaseActivity
 {
@@ -60,6 +62,9 @@ public class MainActivity extends BaseActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		Intent intent = new Intent();
+		intent.setClass(this, WebSocketService.class);
+		startService(intent);
 		appContext = (AppContext) getApplication();
 		// Õ¯¬Á¡¨Ω”≈–∂œ
 		if (!appContext.isNetworkConnected())

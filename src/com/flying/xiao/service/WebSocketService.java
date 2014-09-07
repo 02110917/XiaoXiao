@@ -190,10 +190,7 @@ public class WebSocketService extends Service
 				sendBroadcast(intent);
 				break;
 			case 1000:
-				Intent intent1 = new Intent();
-				intent1.setAction("com.flying.xiao.WebSocketMsgReceive");
-				intent1.putExtra("message", (String)msg.obj);
-				sendBroadcast(intent1);
+				
 				break ;
 			default:
 				break;
@@ -310,6 +307,10 @@ public class WebSocketService extends Service
 					// UIHelper.ToastMessage(WebSocketService.this, payload,
 					// true);
 					System.out.println("WebSocketService:" + payload);
+					Intent intent1 = new Intent();
+					intent1.setAction("com.flying.xiao.WebSocketMsgReceive");
+					intent1.putExtra("message", payload);
+					sendBroadcast(intent1);
 					dealMessage(payload);
 				}
 
@@ -361,29 +362,6 @@ public class WebSocketService extends Service
 				heartReSendTime = 0;
 				break;
 			case WebsocketCode.WEBSOCKET_PUSH_UPDATE:
-				// UIHelper.ToastMessage(WebSocketService.this, "ÍÆËÍ¸üÐÂ");
-				// sendBroadcast(intent);
-				new Thread(new Runnable()
-				{
-					
-					@Override
-					public void run()
-					{
-						try
-						{
-							Thread.sleep(5000);
-						} catch (InterruptedException e)
-						{
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						Message msg=new Message();
-						msg.obj=message;
-						msg.what=1000;
-						handler.sendMessage(msg);
-					}
-				}).start();
-				
 
 				break;
 			default:

@@ -72,7 +72,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:drawableLeft="@drawable/time_icon_normal"
+                 
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
                     

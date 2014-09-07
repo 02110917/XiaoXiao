@@ -59,6 +59,7 @@ import com.flying.xiao.entity.XGoodType;
 import com.flying.xiao.entity.XMessage;
 import com.flying.xiao.entity.XPraise;
 import com.flying.xiao.entity.XUserInfo;
+import com.flying.xiao.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -315,6 +316,8 @@ public class HttpUtil
 		{
 			for (String f : files)
 			{
+				
+				Util.compressBmpToFile(f); //Ñ¹Ëõ
 				multipartEntityBuilder.addBinaryBody(fileKey, new File(f));
 			}
 		}

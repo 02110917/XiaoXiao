@@ -25,9 +25,9 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:includeFontPadding="false"
-            android:maxLines="2"
+            android:maxLines="1"
             android:layout_marginRight="5dp"
-            android:text="fdgjfgsklgjls"
+            android:text="fdgjfgsklghhhhhhhhhhhhhhhhhhjls"
             android:textColor="@color/listitem_black"
             android:textSize="@dimen/text_size_17"
             android:textStyle="bold" />
@@ -55,18 +55,19 @@
 
             <TextView
                 android:id="@+id/main_listitem_author"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:text="zhangmin"
                 android:textColor="@color/listitem_gray"
                 android:gravity="center"
+                android:singleLine="true"
                 android:textSize="@dimen/text_size_12" />
 
             <TextView
                 android:id="@+id/main_listitem_date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dip"
+                android:layout_marginLeft="5dip"
                 android:text="2014-6-6"
                 android:gravity="center"
                 android:textColor="@color/listitem_gray"
@@ -76,8 +77,9 @@
                  android:id="@+id/main_listitem_price"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:layout_marginLeft="10dip"
+                 android:layout_marginLeft="5dip"
                  android:text="200元"
+                 android:singleLine="true"
                  android:textColor="#ff4500"
                  android:gravity="right"
                  android:layout_marginRight="5dp"

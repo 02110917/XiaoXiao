@@ -155,7 +155,7 @@ public class MarketDetail extends BaseActivity
 		progressBar = (ProgressBar) findViewById(R.id.listview_foot_progress);
 		mTitle.setText(con.getConTitle());
 		mPubTime.setText(StringUtils.friendly_time(con.getConPubTime().toString()));
-		mScanTimes.setText(con.getConHot() + "");
+//		mScanTimes.setText(con.getConHot() + "");
 		mPrice.setText(con.getPrice() + "Ôª");
 		mPubname.setText(con.getUserInfo().getUserRealName());
 		MypaperAdapter adapter = new MypaperAdapter();
@@ -192,6 +192,7 @@ public class MarketDetail extends BaseActivity
 					mDetailInfo.loadDataWithBaseURL(null, body, "text/html", "utf-8", null);
 					mPhone.setText(xmarketDetail.getEsPhone());
 					mPubname.setText(xmarketDetail.getEsName());
+//					mScanTimes.setText(xmarketDetail.getErShouGoodsType().getEsGoodsTypeName());
 					break;
 				case Constant.HandlerMessageCode.COLLECTION_OPERATE_FAIL:
 					UIHelper.ToastMessage(MarketDetail.this, "²Ù×÷Ê§°Ü...");

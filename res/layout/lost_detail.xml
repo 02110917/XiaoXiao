@@ -70,7 +70,7 @@
                     android:layout_alignLeft="@+id/lost_detail_title"
                     android:layout_centerVertical="true"
                     android:textSize="@dimen/text_size_18"
-                    android:drawableLeft="@drawable/time_icon_normal"
+                    android:drawableLeft="@drawable/place"
                      />
 
             </RelativeLayout>

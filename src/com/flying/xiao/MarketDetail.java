@@ -3,6 +3,8 @@ package com.flying.xiao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Text;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +63,7 @@ public class MarketDetail extends BaseActivity
 	private TextView mCallPhone; // 电话
 	private TextView mSendMsg; // 短信
 	private TextView mWriteWords; // 留言
+	private TextView mChat;//聊天
 	private TextView indexView;
 	private XContent con;
 	private Handler mCommentHandler;
@@ -149,6 +152,8 @@ public class MarketDetail extends BaseActivity
 		mCallPhone = (TextView) findViewById(R.id.market_detail_footer_btn_call);
 		mSendMsg = (TextView) findViewById(R.id.market_detail_footer_btn_msg);
 		mWriteWords = (TextView) findViewById(R.id.market_detail_footer_btn_words);
+		mChat = (TextView)findViewById(R.id.market_detail_footer_btn_message);
+		mChat.setOnClickListener(listener);
 		mCallPhone.setOnClickListener(listener);
 		mSendMsg.setOnClickListener(listener);
 		mWriteWords.setOnClickListener(listener);
@@ -234,6 +239,10 @@ public class MarketDetail extends BaseActivity
 				break;
 			case R.id.market_detail_footer_btn_words:
 				UIHelper.showLostAndMarketCommentPub(MarketDetail.this, con.getId());
+				break;
+			case R.id.market_detail_footer_btn_message:
+				UIHelper.showChat(MarketDetail.this, con.getUserInfo());
+			default:
 				break;
 			}
 		}

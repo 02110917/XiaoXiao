@@ -16,7 +16,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	 <!--震动，和闪光灯提示notification里用到的-->
+    <uses-permission android:name="android.permission.VIBRATE"/>  
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>  
     <application
         android:name="com.flying.xiao.app.AppContext"
         android:allowBackup="true"
@@ -123,6 +125,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
          <activity
             android:name="com.flying.xiao.Suggestion"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+          <activity
+            android:name="com.flying.xiao.MyMessageDetail"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.flying.xiao.MainActivity"

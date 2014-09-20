@@ -1,15 +1,14 @@
 package com.flying.xiao.http;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -316,8 +315,8 @@ public class HttpUtil
 		{
 			for (String f : files)
 			{
-				
-				Util.compressBmpToFile(f); //压缩
+
+				Util.compressBmpToFile(f); // 压缩
 				multipartEntityBuilder.addBinaryBody(fileKey, new File(f));
 			}
 		}
@@ -1172,64 +1171,155 @@ public class HttpUtil
 		return lists;
 	}
 
-	public static void downLoadFile(String filePath, Handler handler) throws Exception
+//	public static void downLoadFile(String filePath, Handler handler) throws Exception
+//	{
+//		/*
+//		 * 连接到服务器
+//		 */
+//		InputStream inputStream = null;
+//		HttpURLConnection connection = null;
+//		OutputStream outputStream = null;
+//		int fileLength;
+//		int downedFileLength = 0;
+//		URL url = new URL(filePath);
+//		connection = (HttpURLConnection) url.openConnection();
+//		if (connection.getReadTimeout() == 5)
+//		{
+//			Log.i("---------->", "当前网络有问题");
+//			// return;
+//		}
+//		inputStream = connection.getInputStream();
+//		String savePAth = Environment.getExternalStorageDirectory() + "/Xiao";
+//		File file1 = new File(savePAth);
+//		if (!file1.exists())
+//		{
+//			file1.mkdir();
+//		}
+//		String savePathString = Environment.getExternalStorageDirectory() + "/Xiao/" + "xiao.apk";
+//		File file = new File(savePathString);
+//		if (!file.exists())
+//		{
+//
+//			file.createNewFile();
+//		}
+//		/*
+//		 * 向SD卡中写入文件,用Handle传递线程
+//		 */
+//		Message message = new Message();
+//
+//		outputStream = new FileOutputStream(file);
+//		byte[] buffer = new byte[64];
+//		fileLength = connection.getContentLength();
+//		message.what = 0;
+//		message.obj = fileLength;
+//		handler.sendMessage(message);
+//		int readLength;
+//		while ((readLength = inputStream.read(buffer)) != -1)
+//		{
+//			outputStream.write(buffer);
+//			downedFileLength += readLength;
+//			// Log.i("-------->", downedFileLength+"");
+//			Message message1 = new Message();
+//			message1.what = 1;
+//			message1.obj = downedFileLength;
+//			handler.sendMessage(message1);
+//
+//		}
+//		outputStream.flush();
+//		inputStream.close();
+//		outputStream.close();
+//		connection.disconnect();
+//		Message message2 = new Message();
+//		message2.what = 2;
+//		message2.obj = savePathString;
+//		handler.sendMessage(message2);
+//
+//	}
+
+	public static void downLoadFile(String httpUrl, Handler handler)
 	{
-		/*
-		 * 连接到服务器
-		 */
-		InputStream inputStream = null;
-		URLConnection connection = null;
-		OutputStream outputStream = null;
-		int fileLength;
-		int downedFileLength = 0;
-		URL url = new URL(filePath);
-		connection = url.openConnection();
-		if (connection.getReadTimeout() == 5)
+		// TODO Auto-generated method stub
+		final String fileName = "xiao.apk";
+		File tmpFile = new File("/sdcard/update");
+		if (!tmpFile.exists())
 		{
-			Log.i("---------->", "当前网络有问题");
-			// return;
+			tmpFile.mkdir();
 		}
-		inputStream = connection.getInputStream();
-		String savePAth = Environment.getExternalStorageDirectory() + "/Xiao";
-		File file1 = new File(savePAth);
-		if (!file1.exists())
-		{
-			file1.mkdir();
-		}
-		String savePathString = Environment.getExternalStorageDirectory() + "/Xiao/" + "xiao.apk";
-		File file = new File(savePathString);
-		if (!file.exists())
-		{
+		final File file = new File("/sdcard/update/" + fileName);
 
-			file.createNewFile();
-		}
-		/*
-		 * 向SD卡中写入文件,用Handle传递线程
-		 */
-		Message message = new Message();
-
-		outputStream = new FileOutputStream(file);
-		byte[] buffer = new byte[512];
-		fileLength = connection.getContentLength();
-		message.what = 0;
-		message.obj = fileLength;
-		handler.sendMessage(message);
-		int readLength;
-		while ((readLength = inputStream.read(buffer)) != -1)
+		try
 		{
-			outputStream.write(buffer);
-			downedFileLength += readLength;
-			// Log.i("-------->", downedFileLength+"");
-			Message message1 = new Message();
-			message1.what = 1;
-			message1.obj = downedFileLength;
-			handler.sendMessage(message1);
-		}
-		Message message2 = new Message();
-		message2.what = 2;
-		message2.obj = savePathString;
-		handler.sendMessage(message2);
+			URL url = new URL(httpUrl);
+			try
+			{
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				InputStream is = conn.getInputStream();
+				int fileLength = conn.getContentLength();
+				Message message = new Message();
+				message.what = 0;
+				message.obj = fileLength;
+				handler.sendMessage(message);
+				FileOutputStream fos = new FileOutputStream(file);
+				byte[] buf = new byte[256];
+				conn.connect();
+				double count = 0;
+				int readCount=0;
+				if (conn.getResponseCode() >= 400)
+				{
+					message.what = 1100;
+					handler.sendMessage(message);
+					return ;
+				} else
+				{
+					while (count <= 100)
+					{
+						if (is != null)
+						{
+							int numRead = is.read(buf);
+							if (numRead <= 0)
+							{
+								break;
+							} else
+							{
+								fos.write(buf, 0, numRead);
+								readCount+=numRead;
+								Message message1 = new Message();
+								message1.what = 1;
+								message1.obj = readCount;
+								handler.sendMessage(message1);
+							}
 
+						} else
+						{
+							break;
+						}
+
+					}
+
+				}
+				conn.disconnect();
+				fos.close();
+				is.close();
+				Message message2 = new Message();
+				message2.what = 2;
+				message2.obj = file;
+				handler.sendMessage(message2);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+				Message message=new Message();
+				message.what = 1100;
+				handler.sendMessage(message);
+			}
+		} catch (MalformedURLException e)
+		{
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+			Message message=new Message();
+			message.what = 1100;
+			handler.sendMessage(message);
+		}
 	}
 
 }

@@ -50,7 +50,7 @@ public class AppStart extends BaseActivity
 			{
 				handler.sendEmptyMessage(0x01);
 			}
-		}, 1000);
+		}, 1700);
 
 		// 渐变展示启动屏
 		// AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);

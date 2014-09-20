@@ -757,9 +757,9 @@ public class UIHelper
 						break;
 					case 2:
 						Toast.makeText(context, "下载完成", Toast.LENGTH_LONG).show();
-						String path = (String) msg.obj;
+						File file = (File) msg.obj;
 						pd.dismiss();
-						install(context, path);
+						install(context, file);
 						break;
 					case 1100:
 						ToastMessage(context, "下载出错..");
@@ -795,11 +795,14 @@ public class UIHelper
 	 * @param context
 	 * 
 	 */
-	public static void install(Context context, String url)
+	public static void install(Context context, File file)
 	{
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(new File(url)), "application/vnd.android.package-archive");
+//		 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
 		context.startActivity(intent);
+		AppManager.getAppManager().AppExit(context);
+//		((Activity)context).finish();
 	}
 
 	public static int getVersionCode(Context context)
